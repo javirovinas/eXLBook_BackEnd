@@ -12,7 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('instructor_logbook_accesses', function (Blueprint $table) {
-            $table->id();
+            $table->id('instructor_id');
+            $table->string('logbook_id');
+            $table->string('UID')->unique();
+            $table->string('log_name');
+            $table->string('i_username');
+            $table->string('i_password');
             $table->timestamps();
         });
     }
