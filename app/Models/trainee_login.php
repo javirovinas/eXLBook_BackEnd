@@ -7,5 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class trainee_login extends Model
 {
-    use HasFactory;
+    public static function createTrainee($data)
+    {
+        return Trainee_login::create($data);
+    }
+
 }
