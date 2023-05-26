@@ -17,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// Admin Login route
+Route::post('/login', 'AuthController@login');
+
+// Routes for creating new accounts
+Route::post('login/instructors', 'AdminController@createInstructor');
+Route::post('login/trainees', 'AdminController@createTrainee');
