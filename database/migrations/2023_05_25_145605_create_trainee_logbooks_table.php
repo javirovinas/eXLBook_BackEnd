@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trainee_logbooks', function (Blueprint $table) {
+        Schema::create('tasks', function (Blueprint $table) {
             $table->id('logbook_id');
             $table->string('log_name');
             $table->string('work_order_no');
             $table->text('task_detail')->nullable();
             $table->string('category')->nullable();
             $table->string('ATA')->nullable();
-            $table->enum('TEE_SO', ['yes', 'no'])->default('no');
-            $table->timestamp('student_signed_off_at')->nullable();
-            $table->enum('INS_SO', ['yes', 'no'])->default('no');
-            $table->timestamp('instructor_signed_off_at')->nullable();
+            $table->timestamp('TEE_SO')->nullable();
+            $table->timestamp('INS_SO')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trainee_logbooks');
+        Schema::dropIfExists('tasks');
     }
 };
