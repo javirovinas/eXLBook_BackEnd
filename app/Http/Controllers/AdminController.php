@@ -51,18 +51,24 @@ class AdminController extends Controller
             'id' => 'required|unique:trainees,id|unique:instructors,id',
             'uid' => 'required|unique',
             'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email',
+            'last_name' => 'required',                'email' => 'required|email',
             'password' => 'required',
         ]);
-
-        $username = $data['first_name'] . '.' . $data['last_name'];     //Create username and password for instructor
-        $instructorData = [
+        $username = $data['first_name'] . '.' . $data['last_name'];     // Create username and password for instructor
+            $instructorData = [
             'username' => $username,
             'password' => $data['password'],
             'instructor_id' => $data['id'],
             'instructor_name' => $username,
-        ];
+            ];
+        
+            // Save instructor details and username in the instructor_details table
+            $instructor = new Instructor_details();
+            $instructor->username = $username;
+            $instructor->instructor_id = $data['id'];
+            $instructor->instructor_name = $username;
+            // Set other instructor details here
+            $instructor->save();
 
         $instructor = Instructor_details::createInstructor($data);
 

@@ -2,6 +2,8 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\AdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,8 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Admin Login route
-Route::post('/login', 'AuthController@login');
+Route::post('/login', [AdminAuthController::class, 'login']);
 
 // Routes for creating new accounts
-Route::post('login/instructors', 'AdminController@createInstructor');
+Route::post('login/instructors', [AdminController::class, 'createInstructor']);
 Route::post('login/trainees', 'AdminController@createTrainee');

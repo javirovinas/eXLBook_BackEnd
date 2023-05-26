@@ -5,9 +5,39 @@ namespace App\Http\Controllers;
 use App\Models\Instructor_details;
 use App\Http\Requests\StoreInstructor_detailsRequest;
 use App\Http\Requests\UpdateInstructor_detailsRequest;
+use Illuminate\Http\Request;
 
 class InstructorDetailsController extends Controller
 {
+    public function createInstructor(Request $request)
+    {
+        // Validate the input data
+        $validatedData = $request->validate([
+            'id' => 'required',
+            'uid' => 'required',
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|confirmed|min:8|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]+$/',
+        ]);
+
+        // Generate the username by joining the first name and last name
+        $username = $request->input('first_name') . '.' . $request->input('last_name');
+
+        // Create a new Instructor instance
+        $instructor = new Instructor_details;
+        $instructor->id = $request->input('id');
+        $instructor->uid = $request->input('uid');
+        $instructor->first_name = $request->input('first_name');
+        $instructor->last_name = $request->input('last_name');
+        $instructor->email = $request->input('email');
+        $instructor->username = $username;
+        $instructor->password = $request->input('password');
+        $instructor->save();
+
+        return response()->json(['message' => 'Instructor created successfully'], 201);
+    }
+    
     /**
      * Display a listing of the resource.
      */
