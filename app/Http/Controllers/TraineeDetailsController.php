@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\trainee_details;
+use App\Models\Trainee_details;
 use App\Http\Requests\Storetrainee_detailsRequest;
 use App\Http\Requests\Updatetrainee_detailsRequest;
 use Illuminate\Http\Request;
@@ -10,6 +10,44 @@ use Illuminate\Http\Request;
 class TraineeDetailsController extends Controller
 {
     public function createTrainee(Request $request)
+    {
+        // Validate the input data
+        $validatedData = $request->validate([
+            'trainee_id' => 'required',
+            'uid' => 'required',
+            'first_name' => 'required',
+            'family_name' => 'required',
+            'username' => 'required',
+            'password' => 'required',
+            'email' => 'required|email',
+        ]);
+
+        // Create a new Trainee_details instance
+        $trainee = new Trainee_details;
+        $trainee->trainee_id = $request->input('trainee_id');
+        $trainee->uid = $request->input('uid');
+        $trainee->first_name = $request->input('first_name');
+        $trainee->family_name = $request->input('family_name');
+        $trainee->t_username = $request->input('username');
+        $trainee->t_password = $request->input('password');
+        $trainee->email = $request->input('email');
+        $trainee->save();
+
+        return response()->json(['message' => 'Trainee created successfully'], 201);
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
+        //
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create(Request $request)
     {
         // Validate the input data
         $validatedData = $request->validate([
@@ -38,22 +76,6 @@ class TraineeDetailsController extends Controller
         $trainee->save();
 
         return response()->json(['message' => 'Trainee created successfully'], 201);
-    }
-
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
     }
 
     /**
