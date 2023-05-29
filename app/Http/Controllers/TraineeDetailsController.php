@@ -9,33 +9,6 @@ use Illuminate\Http\Request;
 
 class TraineeDetailsController extends Controller
 {
-    public function createTrainee(Request $request)
-    {
-        // Validate the input data
-        $validatedData = $request->validate([
-            'trainee_id' => 'required',
-            'uid' => 'required',
-            'first_name' => 'required',
-            'family_name' => 'required',
-            'username' => 'required',
-            'password' => 'required',
-            'email' => 'required|email',
-        ]);
-
-        // Create a new Trainee_details instance
-        $trainee = new Trainee_details;
-        $trainee->trainee_id = $request->input('trainee_id');
-        $trainee->uid = $request->input('uid');
-        $trainee->first_name = $request->input('first_name');
-        $trainee->family_name = $request->input('family_name');
-        $trainee->t_username = $request->input('username');
-        $trainee->t_password = $request->input('password');
-        $trainee->email = $request->input('email');
-        $trainee->save();
-
-        return response()->json(['message' => 'Trainee created successfully'], 201);
-    }
-
     /**
      * Display a listing of the resource.
      */
@@ -49,31 +22,25 @@ class TraineeDetailsController extends Controller
      */
     public function create(Request $request)
     {
-        // Validate the input data
-        $validatedData = $request->validate([
-            'id' => 'required',
+        $data = $request->validate([
+            'trainee_id' => 'required',
             'uid' => 'required',
             'first_name' => 'required',
-            'last_name' => 'required',
+            'family_name' => 'required',
+            'username' => 'required',
+            'password' => 'required',
             'email' => 'required|email',
-            'password' => 'required|confirmed|min:8|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]+$/',
-            'category' => 'required',
         ]);
 
-        // Generate the username by joining the first name and last name
-        $username = $request->input('first_name') . '.' . $request->input('last_name');
-
-        // Create a new Trainee instance
-        $trainee = new Trainee_details;
-        $trainee->id = $request->input('id');
-        $trainee->uid = $request->input('uid');
-        $trainee->first_name = $request->input('first_name');
-        $trainee->last_name = $request->input('last_name');
-        $trainee->email = $request->input('email');
-        $trainee->category = $request->input('category');
-        $trainee->username = $username;
-        $trainee->password = $request->input('password');
-        $trainee->save();
+        $trainee = Trainee_details::create([
+            'trainee_id' => $data['trainee_id'],
+            'uid' => $data['uid'],
+            'first_name' => $data['first_name'],
+            'family_name' => $data['family_name'],
+            'username' => $data['username'],
+            'password' => $data['password'],
+            'email' => $data['email'],
+        ]);
 
         return response()->json(['message' => 'Trainee created successfully'], 201);
     }
