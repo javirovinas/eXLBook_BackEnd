@@ -8,17 +8,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Trainee_details extends Model
 {
-    protected $table = 'trainee_details';
+    protected $table = 'trainees';
 
     protected $fillable = [
         'trainee_id',
-        'uid',
+        'UID',
         'first_name',
         'family_name',
-        'username',
-        'password',
+        't_username',
+        't_password',
         'email',
     ];
 
-    // Additional model logic, relationships, and methods can be defined here
+    protected $primaryKey = 'trainee_id';
+
+    public function logbook()
+    {
+        return $this->hasOne(Logbook::class, 'trainee_id');
+    }
 }
