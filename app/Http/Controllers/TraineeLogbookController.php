@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Storetrainee_logbookRequest;
 use App\Http\Requests\Updatetrainee_logbookRequest;
 use Illuminate\Http\Request;
+use App\Models\logbook;
 
 
 class TraineeLogbookController extends Controller
@@ -56,12 +57,16 @@ class TraineeLogbookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function showLogbook(trainee_logbook $trainee_logbook)       //Retreive the logbook
+    public function showLogbook(request $request, trainee_logbook $trainee_logbook)       //Retreive the logbook
     {
-        $trainee = Auth::guard('trainee')->user();
-        $logbook = Trainee_logbook::where('trainee_id', $trainee->id)->first();
-
-        return response()->json(['logbook' => $logbook], 200);
+        {
+            $traineeId = $request->input('trainee_id');
+    
+            // Retrieve the logbook associated with the trainee, including its tasks
+            $logbook = Logbook::with('tasks')->where('trainee_id', $traineeId)->first();
+    
+            return response()->json(['logbook' => $logbook], 200);
+        }
     }
 
     public function saveLogbook(Request $request)
