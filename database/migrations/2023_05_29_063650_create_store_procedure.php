@@ -123,10 +123,10 @@ return new class extends Migration
         DB::unprepared("DROP PROCEDURE IF EXISTS `Insert_into_tasks`;");
         DB::unprepared("DROP PROCEDURE IF EXISTS `Insert_into_trainees`;");
 
-        Schema::dropIfExists('instructors');
-        Schema::dropIfExists('trainees');
-        Schema::dropIfExists('logbooks');
         Schema::dropIfExists('tasks');
+        Schema::dropIfExists('logbooks');
+        Schema::dropIfExists('trainees');
+        Schema::dropIfExists('instructors');
     }
 };
 
