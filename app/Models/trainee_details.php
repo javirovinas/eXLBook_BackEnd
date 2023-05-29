@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Trainee_details extends Model
 {
-    protected $table = 'trainee_details';
+    protected $table = 'trainees';
 
     protected $fillable = [
         'trainee_id',
@@ -19,6 +19,8 @@ class Trainee_details extends Model
         'password',
         'email',
     ];
+
+    protected $primarykey = 'trainee_id';
 
     public function logbook()
     {

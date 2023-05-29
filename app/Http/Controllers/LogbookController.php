@@ -15,7 +15,6 @@ class LogbookController extends Controller
     public function assignLogbook(Request $request)
         {
             $data = $request->validate([
-                'logbook_id' => 'required',
                 'log_name' => 'required',
                 'instructor_id' => 'required',
                 'trainee_id' => 'required',
@@ -27,8 +26,8 @@ class LogbookController extends Controller
     
             // Create a new logbook record and associate it with the instructor and trainee
             $logbook = new Logbook($data);
-            $logbook->instructor_id = $instructor->id;
-            $logbook->trainee_id = $trainee->id;
+            $logbook->instructor_id = $instructor->instructor_id;
+            $logbook->trainee_id = $trainee->trainee_id;
             $logbook->save();
     
             return response()->json(['message' => 'Logbook assigned successfully'], 201);

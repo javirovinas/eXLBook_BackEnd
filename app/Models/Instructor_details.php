@@ -8,7 +8,7 @@ use App\Models\logbook;
 
 class Instructor_details extends Model
 {
-    protected $table = 'instructor_details';
+    protected $table = 'instructors';
 
     protected $fillable = [
         'instructor_id',
@@ -19,6 +19,8 @@ class Instructor_details extends Model
         'i_password',
         'email',
     ];
+
+    protected $primaryKey = 'instructor_id';
 
     public function logbook()
     {

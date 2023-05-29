@@ -19,13 +19,13 @@ return new class extends Migration
             $table->unsignedBigInteger('instructor_id');
             
             // Foreign keys
-            $table->foreign('trainee_id')->references('trainee_id')->on('trainees');
-            $table->foreign('instructor_id')->references('instructor_id')->on('instructors');
+            $table->foreign('trainee_id')->references('trainee_id')->on('trainees')->onDelete('cascade');
+            $table->foreign('instructor_id')->references('instructor_id')->on('instructors')->onDelete('cascade');
             
             $table->timestamps();
 
-            $table->foreign('instructor_id')->references('instructor_id')->on('instructor_details')->onDelete('cascade');
-            $table->foreign('trainee_id')->references('trainee_id')->on('trainee_details')->onDelete('cascade');
+            //$table->foreign('instructor_id')->references('instructor_id')->on('instructor_details')->onDelete('cascade');
+            //$table->foreign('trainee_id')->references('trainee_id')->on('trainee_details')->onDelete('cascade');
        
         });
         DB::statement('ALTER TABLE logbooks AUTO_INCREMENT = 10000;');
