@@ -17,6 +17,10 @@ return new class extends Migration
             $table->string('trainee_id');
             $table->string('instructor_id');
             $table->timestamps();
+
+            $table->foreign('instructor_id')->references('instructor_id')->on('instructor_details')->onDelete('cascade');
+            $table->foreign('trainee_id')->references('trainee_id')->on('trainee_details')->onDelete('cascade');
+       
         });
     }
 

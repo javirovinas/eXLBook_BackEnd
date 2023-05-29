@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\logbook;
 
 class Instructor_details extends Model
 {
@@ -18,4 +19,9 @@ class Instructor_details extends Model
         'i_password',
         'email',
     ];
+
+    public function logbook()
+    {
+        return $this->hasMany(Logbook::class);
+    }
 }

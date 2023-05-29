@@ -20,5 +20,8 @@ class Trainee_details extends Model
         'email',
     ];
 
-    // Additional model logic, relationships, and methods can be defined here
+    public function logbook()
+    {
+        return $this->hasOne(Logbook::class);
+    }
 }

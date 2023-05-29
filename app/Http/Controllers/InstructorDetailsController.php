@@ -21,9 +21,30 @@ class InstructorDetailsController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $data = $request->validate([
+            'instructor_id' => 'required',
+            'uid' => 'required',
+            'first_name' => 'required',
+            'family_name' => 'required',
+            'username' => 'required',
+            'password' => 'required',
+            'email' => 'required|email',
+        ]);
+
+        $instructor = Instructor_details::create([
+            'instructor_id' => $data['instructor_id'],
+            'uid' => $data['uid'],
+            'first_name' => $data['first_name'],
+            'family_name' => $data['family_name'],
+            'username' => $data['username'],
+            'password' => $data['password'],
+            'email' => $data['email'],
+        ]);
+
+        return response()->json(['message' => 'Instructor created successfully'], 201);
+
     }
 
     /**
@@ -31,26 +52,7 @@ class InstructorDetailsController extends Controller
      */
     public function store(StoreInstructor_detailsRequest $request)
     {
-        
-        $validatedData = $request->validate([
-            'uid' => 'required',
-            'first_name' => 'required',
-            'family_name' => 'required',
-            'username' => 'required',
-            'password' => 'required|confirmed|min:8|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]+$/',
-            'email' => 'required|email',
-        ]);
-
-        $instructor = new Instructor_details;
-        $instructor->UID = $request->input('uid');
-        $instructor->first_name = $request->input('first_name');
-        $instructor->family_name = $request->input('family_name');
-        $instructor->i_username = $$request->input('username');;
-        $instructor->i_password = $request->input('password');
-        $instructor->email = $request->input('email');
-        $instructor->save();
-
-        return response()->json(['message' => 'Instructor created successfully'], 201);
+        //
     }
 
     /**
