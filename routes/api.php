@@ -25,4 +25,4 @@ Route::post('/login', [AdminAuthController::class, 'login']);
 
 // Routes for creating new accounts
 Route::post('login/instructors', [AdminController::class, 'createInstructor']);
-Route::post('login/trainees', 'AdminController@createTrainee');
+Route::post('login/trainees', [AdminController::class, 'createTrainee']);

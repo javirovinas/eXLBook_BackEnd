@@ -9,34 +9,6 @@ use Illuminate\Http\Request;
 
 class InstructorDetailsController extends Controller
 {
-    public function createInstructor(Request $request)
-    {
-        // Validate the input data
-        $validatedData = $request->validate([
-            'id' => 'required',
-            'uid' => 'required',
-            'first_name' => 'required',
-            'last_name' => 'required',
-            'email' => 'required|email',
-            'password' => 'required|confirmed|min:8|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]+$/',
-        ]);
-
-        // Generate the username by joining the first name and last name
-        $username = $request->input('first_name') . '.' . $request->input('last_name');
-
-        // Create a new Instructor instance
-        $instructor = new Instructor_details;
-        $instructor->id = $request->input('id');
-        $instructor->uid = $request->input('uid');
-        $instructor->first_name = $request->input('first_name');
-        $instructor->last_name = $request->input('last_name');
-        $instructor->email = $request->input('email');
-        $instructor->username = $username;
-        $instructor->password = $request->input('password');
-        $instructor->save();
-
-        return response()->json(['message' => 'Instructor created successfully'], 201);
-    }
     
     /**
      * Display a listing of the resource.
@@ -59,7 +31,26 @@ class InstructorDetailsController extends Controller
      */
     public function store(StoreInstructor_detailsRequest $request)
     {
-        //
+        
+        $validatedData = $request->validate([
+            'uid' => 'required',
+            'first_name' => 'required',
+            'family_name' => 'required',
+            'username' => 'required',
+            'password' => 'required|confirmed|min:8|regex:/^(?=.*[a-zA-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]+$/',
+            'email' => 'required|email',
+        ]);
+
+        $instructor = new Instructor_details;
+        $instructor->UID = $request->input('uid');
+        $instructor->first_name = $request->input('first_name');
+        $instructor->family_name = $request->input('family_name');
+        $instructor->i_username = $$request->input('username');;
+        $instructor->i_password = $request->input('password');
+        $instructor->email = $request->input('email');
+        $instructor->save();
+
+        return response()->json(['message' => 'Instructor created successfully'], 201);
     }
 
     /**
