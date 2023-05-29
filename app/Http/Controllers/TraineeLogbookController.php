@@ -52,21 +52,27 @@ class TraineeLogbookController extends Controller
         $logbook->logbookEntries()->save($logbookEntry);
 
         return response()->json(['message' => 'Logbook entry added successfully'], 201);
-    }
+        }
 
     /**
      * Display the specified resource.
      */
     public function showLogbook(request $request, trainee_logbook $trainee_logbook)       //Retreive the logbook
     {
-        {
             $traineeId = $request->input('trainee_id');
-    
-            // Retrieve the logbook associated with the trainee, including its tasks
-            $logbook = Logbook::with('tasks')->where('trainee_id', $traineeId)->first();
-    
-            return response()->json(['logbook' => $logbook], 200);
-        }
+
+            // Retrieve the logbook associated with the trainee
+            $logbook = Logbook::where('trainee_id', $traineeId)->first();
+        
+            if ($logbook) 
+            {
+                // Retrieve the tasks associated with the logbook
+                $tasks = $logbook->tasks()->get();
+        
+                return response()->json(['logbook' => $logbook, 'tasks' => $tasks], 200);
+            } else {
+                return response()->json(['message' => 'Logbook not found for the given trainee'], 404);
+            }
     }
 
     public function saveLogbook(Request $request)

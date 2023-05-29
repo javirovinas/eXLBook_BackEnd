@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\TraineeDetailsController;
+use App\Http\Controllers\TraineeLogbookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,11 +24,20 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // Admin Login route
-Route::post('/login', [AdminAuthController::class, 'login']);
+Route::post('admin/login', [AdminAuthController::class, 'login']);
 
 // Routes for creating new accounts
-Route::post('login/instructors', [AdminController::class, 'createinstructor']);
-Route::post('login/trainees', [AdminController::class, 'createtrainee']);
+Route::post('admin/login/instructors', [AdminController::class, 'createinstructor']);
+Route::post('admin/login/trainees', [AdminController::class, 'createtrainee']);
 
 //Routes for assigning logbooks
-Route::post('/login/logbooks', [LogbookController::class, 'assignLogbook']);
+Route::post('admin/login/logbooks', [LogbookController::class, 'assignLogbook']);
+
+//Routes for instructor login
+Route::post('/instructors/login', [InstructorDetailsController::class, 'login']);
+
+//Routes for Trainee login
+Route::post('/trainees/login', [TraineeDetailsController::class, 'login']);
+
+//Routes for accessing the logbooks by trainee
+Route::post('/tranee/login/{trianee_id}', [TraineeLogbookController::class, 'showLogbook']);

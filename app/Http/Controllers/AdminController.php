@@ -51,6 +51,7 @@ class AdminController extends Controller
             'username' => 'required',
             'password' => 'required',
         ]);
+
         $traineeData = [
             'UID' => $data['uid'],
             'first_name' => $data['first_name'],
