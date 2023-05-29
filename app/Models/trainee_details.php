@@ -12,18 +12,18 @@ class Trainee_details extends Model
 
     protected $fillable = [
         'trainee_id',
-        'uid',
+        'UID',
         'first_name',
         'family_name',
-        'username',
-        'password',
+        't_username',
+        't_password',
         'email',
     ];
 
-    protected $primarykey = 'trainee_id';
+    protected $primaryKey = 'trainee_id';
 
     public function logbook()
     {
-        return $this->hasOne(Logbook::class);
+        return $this->hasOne(Logbook::class, 'trainee_id');
     }
 }

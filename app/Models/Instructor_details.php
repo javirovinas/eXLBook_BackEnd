@@ -24,6 +24,6 @@ class Instructor_details extends Model
 
     public function logbook()
     {
-        return $this->hasMany(Logbook::class);
+        return $this->hasMany(Logbook::class, 'instructor_id');
     }
 }

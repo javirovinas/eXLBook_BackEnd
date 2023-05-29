@@ -22,27 +22,7 @@ class TraineeDetailsController extends Controller
      */
     public function create(Request $request)
     {
-        $data = $request->validate([
-            'trainee_id' => 'required',
-            'uid' => 'required',
-            'first_name' => 'required',
-            'family_name' => 'required',
-            'username' => 'required',
-            'password' => 'required',
-            'email' => 'required|email',
-        ]);
-
-        $trainee = Trainee_details::create([
-            'trainee_id' => $data['trainee_id'],
-            'UID' => $data['uid'],
-            'first_name' => $data['first_name'],
-            'family_name' => $data['family_name'],
-            't_username' => $data['username'],
-            't_password' => $data['password'],
-            'email' => $data['email'],
-        ]);
-
-        return response()->json(['message' => 'Trainee created successfully'], 201);
+        //
     }
 
     /**
