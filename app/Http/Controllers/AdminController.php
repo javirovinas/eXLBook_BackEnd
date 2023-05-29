@@ -44,17 +44,15 @@ class AdminController extends Controller
     public function createTrainee(Request $request)
     {
         $data = $request->validate([
-            'UID' => 'required',
+            'uid' => 'required',
             'first_name' => 'required',
             'family_name' => 'required',
             'email' => 'required|email',
             'username' => 'required',
             'password' => 'required',
         ]);
-
-
         $traineeData = [
-            'UID' => $data['UID'],
+            'UID' => $data['uid'],
             'first_name' => $data['first_name'],
             'family_name' => $data['family_name'],
             't_username' => $data['username'],
