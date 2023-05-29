@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\LogbookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,3 +27,6 @@ Route::post('/login', [AdminAuthController::class, 'login']);
 // Routes for creating new accounts
 Route::post('login/instructors', [AdminController::class, 'create']);
 Route::post('login/trainees', [AdminController::class, 'create']);
+
+//Routes for assigning logbooks
+Route::post('/login/logbooks', [LogbookController::class, 'assignLogbook']);
