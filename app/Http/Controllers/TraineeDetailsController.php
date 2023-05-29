@@ -34,11 +34,11 @@ class TraineeDetailsController extends Controller
 
         $trainee = Trainee_details::create([
             'trainee_id' => $data['trainee_id'],
-            'uid' => $data['uid'],
+            'UID' => $data['uid'],
             'first_name' => $data['first_name'],
             'family_name' => $data['family_name'],
-            'username' => $data['username'],
-            'password' => $data['password'],
+            't_username' => $data['username'],
+            't_password' => $data['password'],
             'email' => $data['email'],
         ]);
 
