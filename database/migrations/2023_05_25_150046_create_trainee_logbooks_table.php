@@ -25,9 +25,6 @@ return new class extends Migration
 
             // Set composite primary key
             $table->primary(['logbook_id', 'work_order_no']);
-
-            //Set foreign key
-            $table->foreign('logbook_id')->references('logbook_id')->on('logbooks')->onDelete('cascade');
         });
     }
 
