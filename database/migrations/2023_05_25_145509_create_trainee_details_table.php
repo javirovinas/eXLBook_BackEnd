@@ -12,7 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('trainee', function (Blueprint $table) {
+        Schema::create('trainees', function (Blueprint $table) {
             $table->id('trainee_id');
             $table->string('UID')->unique();
             $table->string('first_name');
@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamps();
         });
-        DB::statement('ALTER TABLE trainee AUTO_INCREMENT = 1000;');
+        DB::statement('ALTER TABLE trainees AUTO_INCREMENT = 1000;');
     }
 
     /**
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('trainee');
+        Schema::dropIfExists('trainees');
     }
 };

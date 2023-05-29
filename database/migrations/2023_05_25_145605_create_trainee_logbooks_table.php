@@ -12,15 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tasks', function (Blueprint $table) {
-            $table->id('logbook_id');
+            $table->unsignedBigInteger('logbook_id');
+            $table->unsignedInteger('work_order_no');
             $table->string('log_name');
-            $table->string('work_order_no');
             $table->text('task_detail')->nullable();
-            $table->string('category')->nullable();
+            $table->string('category')->nullable();            
             $table->string('ATA')->nullable();
             $table->timestamp('TEE_SO')->nullable();
             $table->timestamp('INS_SO')->nullable();
+            $table->boolean('archived')->default(false);
             $table->timestamps();
+
+            // Set composite primary key
+            $table->primary(['logbook_id', 'work_order_no']);
         });
     }
 
