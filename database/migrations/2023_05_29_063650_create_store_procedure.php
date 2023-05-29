@@ -39,23 +39,23 @@ return new class extends Migration
 
             DROP PROCEDURE IF EXISTS `Insert_into_tasks`;
 
-            CREATE PROCEDURE `Insert_into_tasks`(IN logbook_id BIGINT(20) UNSIGNED, IN work_order_no INT(10) UNSIGNED, IN log_name VARCHAR(255), IN task_detail VARCHAR(255), IN category VARCHAR(255), IN ATA VARCHAR(255), IN archived TINYINT(1))
+            CREATE PROCEDURE `Insert_into_tasks`(IN logbook_id BIGINT(20) UNSIGNED, IN work_order_no INT(10) UNSIGNED, IN logbook_name VARCHAR(255), IN task_detail VARCHAR(255), IN category VARCHAR(255), IN ATA VARCHAR(255), IN archived TINYINT(1))
             BEGIN
-                INSERT INTO tasks (logbook_id, work_order_no, log_name, task_detail, category, ATA, archived)
+                INSERT INTO tasks (logbook_id, work_order_no, logbook_name, task_detail, category, ATA, archived)
                 VALUES  
-                ('10005', '1', 'logbook_1', 'This is task number 1', 'B', '21', '0'),
-                ('10005', '2', 'logbook_1', 'This is task number 2 (archived)', 'B', '21', '1'),
-                ('10005', '3', 'logbook_1', 'This is task number 2 re-entered', 'B', '21', '0'),
-                ('10005', '4', 'logbook_1', 'This is task number 3', 'B', '23', '0'),
-                ('10005', '5', 'logbook_1', 'This is task number 4', 'B', '23', '0'),
-                ('10006', '1', 'logbook_2', 'Entering a task here', 'A1', '13', '0'),
-                ('10006', '2', 'logbook_2', 'Entering a task for task 2 here', 'A1', '13', '0'),
-                ('10006', '3', 'logbook_2', 'Entering a task for task 3 here', 'A1', '14', '0'),
-                ('10007', '1', 'logbook_3', 'Student filled task 1', 'C2', '07', '0'),
-                ('10007', '2', 'logbook_3', 'Student filled task 2', 'C2', '07', '0'),
-                ('10007', '3', 'logbook_3', 'Student filled task 3', 'C2', '07', '0'),
-                ('10007', '4', 'logbook_3', 'Student filled task 3 (archived)', 'C2', '07', '1'),
-                ('10007', '5', 'logbook_3', 'Student filled task 3 again', 'C2', '07', '0');
+                ('10001', '1', 'logbook_1', 'This is task number 1', 'B', '21', '0'),
+                ('10001', '2', 'logbook_1', 'This is task number 2 (archived)', 'B', '21', '1'),
+                ('10001', '3', 'logbook_1', 'This is task number 2 re-entered', 'B', '21', '0'),
+                ('10001', '4', 'logbook_1', 'This is task number 3', 'B', '23', '0'),
+                ('10001', '5', 'logbook_1', 'This is task number 4', 'B', '23', '0'),
+                ('10002', '1', 'logbook_2', 'Entering a task here', 'A1', '13', '0'),
+                ('10002', '2', 'logbook_2', 'Entering a task for task 2 here', 'A1', '13', '0'),
+                ('10002', '3', 'logbook_2', 'Entering a task for task 3 here', 'A1', '14', '0'),
+                ('10003', '1', 'logbook_3', 'Student filled task 1', 'C2', '07', '0'),
+                ('10003', '2', 'logbook_3', 'Student filled task 2', 'C2', '07', '0'),
+                ('10003', '3', 'logbook_3', 'Student filled task 3', 'C2', '07', '0'),
+                ('10003', '4', 'logbook_3', 'Student filled task 3 (archived)', 'C2', '07', '1'),
+                ('10003', '5', 'logbook_3', 'Student filled task 3 again', 'C2', '07', '0');
             END;
 
             DROP PROCEDURE IF EXISTS `Insert_into_trainees`;
@@ -82,22 +82,6 @@ return new class extends Migration
             ['UID' => '103', 'first_name' => 'Kate', 'family_name' => 'Maher', 'i_username' => 'kat.maher1', 'i_password' => 'sfjsohi92', 'email' => 'kmaher@gmail.com'],
         ]);
 
-        DB::table('tasks')->insert([
-            ['logbook_id' => 10005, 'work_order_no' => 1, 'log_name' => 'logbook_1', 'task_detail' => 'This is task number 1', 'category' => 'B', 'ATA' => '21', 'archived' => 0],
-            ['logbook_id' => 10005, 'work_order_no' => 2, 'log_name' => 'logbook_1', 'task_detail' => 'This is task number 2 (archived)', 'category' => 'B', 'ATA' => '21', 'archived' => 1],
-            ['logbook_id' => 10005, 'work_order_no' => 3, 'log_name' => 'logbook_1', 'task_detail' => 'This is task number 2 re-entered', 'category' => 'B', 'ATA' => '21', 'archived' => 0],
-            ['logbook_id' => 10005, 'work_order_no' => 4, 'log_name' => 'logbook_1', 'task_detail' => 'This is task number 3', 'category' => 'B', 'ATA' => '23', 'archived' => 0],
-            ['logbook_id' => 10005, 'work_order_no' => 5, 'log_name' => 'logbook_1', 'task_detail' => 'This is task number 4', 'category' => 'B', 'ATA' => '23', 'archived' => 0],
-            ['logbook_id' => 10006, 'work_order_no' => 1, 'log_name' => 'logbook_2', 'task_detail' => 'Entering a task here', 'category' => 'A1', 'ATA' => '13', 'archived' => 0],
-            ['logbook_id' => 10006, 'work_order_no' => 2, 'log_name' => 'logbook_2', 'task_detail' => 'Entering a task for task 2 here', 'category' => 'A1', 'ATA' => '13', 'archived' => 0],
-            ['logbook_id' => 10006, 'work_order_no' => 3, 'log_name' => 'logbook_2', 'task_detail' => 'Entering a task for task 3 here', 'category' => 'A1', 'ATA' => '14', 'archived' => 0],
-            ['logbook_id' => 10007, 'work_order_no' => 1, 'log_name' => 'logbook_3', 'task_detail' => 'Student filled task 1', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
-            ['logbook_id' => 10007, 'work_order_no' => 2, 'log_name' => 'logbook_3', 'task_detail' => 'Student filled task 2', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
-            ['logbook_id' => 10007, 'work_order_no' => 3, 'log_name' => 'logbook_3', 'task_detail' => 'Student filled task 3', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
-            ['logbook_id' => 10007, 'work_order_no' => 4, 'log_name' => 'logbook_3', 'task_detail' => 'Student filled task 3 (archived)', 'category' => 'C2', 'ATA' => '07', 'archived' => 1],
-            ['logbook_id' => 10007, 'work_order_no' => 5, 'log_name' => 'logbook_3', 'task_detail' => 'Student filled task 3 again', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
-        ]);
-
         DB::table('trainees')->insert([
             ['UID' => '1050', 'first_name' => 'Terry', 'family_name' => 'Miller', 't_username' => 't.miller1', 't_password' => 'jsgeey159', 'email' => 'tmiller@gmail.com'],
             ['UID' => '1234', 'first_name' => 'Jane', 'family_name' => 'Ryan', 't_username' => 'j.ryan', 't_password' => 'wywooev739', 'email' => 'jdoe@gmail.com'],
@@ -110,6 +94,22 @@ return new class extends Migration
             ['logbook_name' => 'logbook2', 'trainee_id' => 1000, 'instructor_id' => 101],
             ['logbook_name' => 'logbook3', 'trainee_id' => 1002, 'instructor_id' => 100],
             ['logbook_name' => 'logbook4', 'trainee_id' => 1001, 'instructor_id' => 103],
+        ]);
+
+        DB::table('tasks')->insert([
+            ['logbook_id' => 10001, 'work_order_no' => 1, 'logbook_name' => 'logbook_1', 'task_detail' => 'This is task number 1', 'category' => 'B', 'ATA' => '21', 'archived' => 0],
+            ['logbook_id' => 10001, 'work_order_no' => 2, 'logbook_name' => 'logbook_1', 'task_detail' => 'This is task number 2 (archived)', 'category' => 'B', 'ATA' => '21', 'archived' => 1],
+            ['logbook_id' => 10001, 'work_order_no' => 3, 'logbook_name' => 'logbook_1', 'task_detail' => 'This is task number 2 re-entered', 'category' => 'B', 'ATA' => '21', 'archived' => 0],
+            ['logbook_id' => 10001, 'work_order_no' => 4, 'logbook_name' => 'logbook_1', 'task_detail' => 'This is task number 3', 'category' => 'B', 'ATA' => '23', 'archived' => 0],
+            ['logbook_id' => 10001, 'work_order_no' => 5, 'logbook_name' => 'logbook_1', 'task_detail' => 'This is task number 4', 'category' => 'B', 'ATA' => '23', 'archived' => 0],
+            ['logbook_id' => 10002, 'work_order_no' => 1, 'logbook_name' => 'logbook_2', 'task_detail' => 'Entering a task here', 'category' => 'A1', 'ATA' => '13', 'archived' => 0],
+            ['logbook_id' => 10002, 'work_order_no' => 2, 'logbook_name' => 'logbook_2', 'task_detail' => 'Entering a task for task 2 here', 'category' => 'A1', 'ATA' => '13', 'archived' => 0],
+            ['logbook_id' => 10002, 'work_order_no' => 3, 'logbook_name' => 'logbook_2', 'task_detail' => 'Entering a task for task 3 here', 'category' => 'A1', 'ATA' => '14', 'archived' => 0],
+            ['logbook_id' => 10003, 'work_order_no' => 1, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 1', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
+            ['logbook_id' => 10003, 'work_order_no' => 2, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 2', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
+            ['logbook_id' => 10003, 'work_order_no' => 3, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 3', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
+            ['logbook_id' => 10003, 'work_order_no' => 4, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 3 (archived)', 'category' => 'C2', 'ATA' => '07', 'archived' => 1],
+            ['logbook_id' => 10003, 'work_order_no' => 5, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 3 again', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
         ]);
     }
 
