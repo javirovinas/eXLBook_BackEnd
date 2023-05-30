@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
-use app\Models\Trainee_details;
 use Illuminate\Http\Request;
 
 class TraineeAuth
@@ -15,6 +14,6 @@ class TraineeAuth
             return $next($request);
         }
 
-        return response()->json(['message' => 'Unauthorized'], 401);
+        return response()->json(['message' => 't-Unauthorized'], 401);
     }
 }

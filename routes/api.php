@@ -43,7 +43,7 @@ Route::post('admin/login/logbooks', [LogbookController::class, 'assignLogbook'])
 
 Route::middleware('auth.trainee')->group(function () {
 //Routes for Trainee login
-Route::post('/trainees/login', [TraineeDetailsController::class, 'login']);
+Route::post('/trainees/login', [TraineeLoginController::class, 'login']);
 
 //Routes for accessing the logbooks by trainee
 Route::get('/trainee/login/{trainee_id}', [TraineeLogbookController::class, 'showLogbook']);

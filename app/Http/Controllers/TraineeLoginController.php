@@ -6,8 +6,31 @@ use App\Models\trainee_login;
 use App\Http\Requests\Storetrainee_loginRequest;
 use App\Http\Requests\Updatetrainee_loginRequest;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Middleware\AdminAuth;
+use Illuminate\Support\Str;
+
+
 class TraineeLoginController extends Controller
 {
+    public function login(Request $request)
+    {
+        $isAuthenticated = Trainee_login::login($request->username, $request->password);
+
+        if ($isAuthenticated) {
+            $trainee = Auth::guard('trainee')->user();
+            $trainee->api_token = Str::random(60);
+            $trainee->save();
+
+            return response()->json(['token' => $trainee->api_token], 200);
+        }
+
+        return response()->json(['error' => 'Invalid credentials'], 401);
+    }
     /**
      * Display a listing of the resource.
      */

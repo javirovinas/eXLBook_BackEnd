@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\Admin_login;
-use app\Models\Instructor_details;
-use app\Models\Trainee_details;
+use App\Models\Instructor_details;
+use App\Models\Trainee_details;
 
 return [
 
@@ -49,7 +49,7 @@ return [
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
-            'hash' => false,
+            'hash' => true,
         ],
 
         'trainee' => [
@@ -57,13 +57,13 @@ return [
             'provider' => 'trainees',
         ],
         'instructor' => [
-            'driver' => 'eloquent',
+            'driver' => 'session',
             'model' => 'instructors',
         ],
 
         'admin' => [
-            'driver' => 'eloquent',
-            'model' => 'admins',
+            'driver' => 'session',
+            'provider' => 'admins',
         ],
     ],
 
@@ -105,10 +105,10 @@ return [
             ],
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'users' => [
+            'driver' => 'database',
+            'table' => 'users',
+        ],
 
     /*
     |--------------------------------------------------------------------------
