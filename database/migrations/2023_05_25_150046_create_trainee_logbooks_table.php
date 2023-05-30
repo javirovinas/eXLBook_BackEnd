@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('task_id');
             $table->unsignedBigInteger('logbook_id');
             $table->unsignedInteger('work_order_no');
-            $table->string('logbook_name');
+            $table->string('log_name');
             $table->text('task_detail')->nullable();
             $table->string('category')->nullable();            
             $table->string('ATA')->nullable();

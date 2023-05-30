@@ -111,7 +111,7 @@ return new class extends Migration
             ['logbook_id' => 10003, 'work_order_no' => 3, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 3', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
             ['logbook_id' => 10003, 'work_order_no' => 4, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 3 (archived)', 'category' => 'C2', 'ATA' => '07', 'archived' => 1],
             ['logbook_id' => 10003, 'work_order_no' => 5, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 3 again', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
-        ]);
+        ]);*/
     }
 
     /**
