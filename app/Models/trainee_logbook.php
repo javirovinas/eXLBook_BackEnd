@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class trainee_logbook extends Model
 {
     use HasFactory;
-    use Archivable;
+    //use Archivable;
 
     protected $fillable = ['log_name', 'work_order_no', 'task_detail', 'category', 'ATA', 'TEE_SO', 'INS_SO'];
 
