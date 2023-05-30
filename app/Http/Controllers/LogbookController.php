@@ -191,6 +191,8 @@ class LogbookController extends Controller
         $logbook = logbook::find($logbookId);
 
         if ($logbook) {
+
+            $logbook = logbook::delete($logbookId);
             return response() -> json([
                 'status' => 200,
                 'message' => 'Logbook deleted successfully'
