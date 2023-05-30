@@ -24,9 +24,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-//Admin
-
-Route::middleware('auth.admin')->group(function () {
 
 // Admin Login route
 Route::post('admin/login', [AdminAuthController::class, 'login']);
@@ -37,7 +34,6 @@ Route::post('admin/login/trainees', [AdminController::class, 'createtrainee']);
 
 //Routes for assigning logbooks
 Route::post('admin/login/logbooks', [LogbookController::class, 'assignLogbook']);
-});
 
 //Trainees
 

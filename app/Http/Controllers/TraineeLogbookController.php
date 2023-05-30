@@ -142,7 +142,7 @@ class TraineeLogbookController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(trainee_logbook $trainee_logbook)
+    public function destroy(Request $request, trainee_logbook $trainee_logbook)
     {
         $traineeId = $request->input('trainee_id');
 

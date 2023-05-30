@@ -11,12 +11,12 @@ class Admin_login extends Authenticatable
 {
     // Define the table name if different from 'admin_login'
     protected $table = 'admin_login';
-    protected $fillable = ['username', 'password', 'api_token'];
+    protected $fillable = ['username', 'password',];
     public $timestamps = false;
-    protected $hidden = ['password', 'api_token'];
+    protected $hidden = 'password';
 
     
-    public static function login($username, $password)
+  /*  public static function login($username, $password)
     {
         $admin = self::where('username', $username)->first();
 
@@ -26,7 +26,7 @@ class Admin_login extends Authenticatable
         }
 
         return false;
-    }
+    } */
 
     public function createTrainee($data)
     {

@@ -2,10 +2,10 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Admin_login;
 use Closure;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Admin_login;
-use Illuminate\Support\Facades\Request;
+use Illuminate\Http\Request;
 
 class AdminAuth
 {
@@ -17,5 +17,5 @@ class AdminAuth
         else{
         return response()->json(['message' => 'Unauthorized'], 401);
         }
-    }
+    }   
 }
