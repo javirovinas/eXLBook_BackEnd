@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 
 class AdminAuth
 {
-    public function handle(Request $request, Closure $next)
+    /*public function handle(Request $request, Closure $next)
     {
         if (Auth::guard('admin')->check()) {
             return $next($request);
@@ -17,5 +17,5 @@ class AdminAuth
         else{
         return response()->json(['message' => 'Unauthorized'], 401);
         }
-    }   
+    }  */ 
 }
