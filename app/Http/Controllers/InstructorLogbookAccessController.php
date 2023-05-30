@@ -8,6 +8,16 @@ use App\Http\Requests\UpdateInstructor_logbook_accessRequest;
 
 class InstructorLogbookAccessController extends Controller
 {
+
+    public function getLogbooksAssigned() {
+
+    }
+
+
+    public function getTasksAssigned() {
+        
+    }
+
     /**
      * Display a listing of the resource.
      */

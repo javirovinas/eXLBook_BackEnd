@@ -99,7 +99,44 @@ class TraineeLogbookController extends Controller
      */
     public function update(Updatetrainee_logbookRequest $request, trainee_logbook $trainee_logbook)
     {
-        //
+        $data = $request->validate([
+            'logbook_id' => 'required',
+            'work_order_no' => 'required',
+            'log_name' => 'required',
+            'task_detail' => 'nullable',
+            'category' => 'nullable',
+            'ATA' => 'nullable',
+            'TEE_SO' => 'nullable',
+            'INS_SO' => 'nullable',
+            'archived' => 'boolean',
+        ]);
+
+        $traineeId = $request->input('trainee_id');
+
+        $logbook = Logbook::where('trainee_id', $traineeId)->first();
+
+        $tasks = trainee_logbook::where('logbook_id', $logbook->logbook_id)
+                     ->where('trainee_id', $traineeId)
+                     ->get();
+
+        if ($logbook) {
+            $logbook = logbook::update([
+                'logbook_id' => $request -> logbook_id,
+                'work_order_no' => $request -> work_order_no,
+                'log_name' => $request -> log_name,
+                'task_detail' => $request -> task_detail,
+                'category' => $request -> category,
+                'ATA' => $request -> ATA,
+                'TEE_SO' => $request -> TEE_SO,
+                'INS_SO' => $request -> INS_SO,
+                'archived' => $request -> archived
+            ]);
+
+            return response()->json(['message' => 'Logbook successfully updated'], 200); 
+
+        } else {
+            return response()->json(['message' => "Logbook doesn't exist"], 404);
+        };
     }
 
     /**
@@ -107,6 +144,17 @@ class TraineeLogbookController extends Controller
      */
     public function destroy(trainee_logbook $trainee_logbook)
     {
-        //
+        $traineeId = $request->input('trainee_id');
+
+        $logbook = Logbook::where('trainee_id', $traineeId)->first();
+
+        if ($logbook) {
+
+            $logbook = logbook::delete($logbook);
+
+            return response()->json(['message' => 'Logbook successfully deleted'], 200);
+        } else {
+            return response()->json(['message' => 'Logbook not found'], 404);
+        }
     }
 }
