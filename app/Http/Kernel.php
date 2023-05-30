@@ -3,6 +3,9 @@
 namespace App\Http;
 
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
+use Http\middleware\AdminAuth;
+use Http\middleware\TraineeAuth;
+use Http\middleware\InstructorAuth;
 
 class Kernel extends HttpKernel
 {
@@ -21,6 +24,9 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ValidatePostSize::class,
         \App\Http\Middleware\TrimStrings::class,
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
+        'auth.trainee' => \App\Http\Middleware\TraineeAuth::class,
+        'auth.instructor' => \App\Http\Middleware\InstructorAuth::class,
+        'auth.admin' => \App\Http\Middleware\AuthenticateAdmin::class,
     ];
 
     /**

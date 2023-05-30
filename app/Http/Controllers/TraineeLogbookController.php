@@ -57,22 +57,23 @@ class TraineeLogbookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function showLogbook(request $request, trainee_logbook $trainee_logbook)       //Retreive the logbook
+    public function showLogbook($logbookId, request $request, trainee_logbook $trainee_logbook)       //Retreive the logbook
     {
             $traineeId = $request->input('trainee_id');
 
-            // Retrieve the logbook associated with the trainee
+             // Retrieve the logbook associated with the trainee
             $logbook = Logbook::where('trainee_id', $traineeId)->first();
-        
-            if ($logbook) 
-            {
-                // Retrieve the tasks associated with the logbook
-                $tasks = $logbook->tasks()->get();
-        
-                return response()->json(['logbook' => $logbook, 'tasks' => $tasks], 200);
+
+            if ($logbook) {
+            // Retrieve the tasks associated with the logbook
+            $tasks = trainee_logbook::where('logbook_id', $logbook->logbook_id)
+                     ->where('trainee_id', $traineeId)
+                     ->get();
+
+            return response()->json(['logbook' => $logbook, 'tasks' => $tasks], 200);
             } else {
                 return response()->json(['message' => 'Logbook not found for the given trainee'], 404);
-            }
+                }
     }
 
     public function saveLogbook(Request $request)

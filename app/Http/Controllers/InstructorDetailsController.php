@@ -7,35 +7,70 @@ use App\Http\Requests\UpdateInstructor_detailsRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
+
 use App\Models\Instructor_details;
+use App\Models\trainee_logbook;
+use App\Models\logbook;
+use App\Models\Trainee_details;
 
 class InstructorDetailsController extends Controller
 {
     public function login(Request $request)
     {
-    $credentials = $request->only('username', 'password');
+        $credentials = $request->only('username', 'password');
 
-    // Validate the credentials
-    $validator = Validator::make($credentials, [
-        'username' => 'required',
-        'password' => 'required',
-    ]);
+        // Validate the credentials
+        $validator = Validator::make($credentials, [
+            'username' => 'required',
+            'password' => 'required',
+        ]);
 
-    if ($validator->fails()) {
-        return response()->json(['message' => 'Invalid credentials'], 401);
+        if ($validator->fails()) {
+            return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+
+        // Authenticate the instructor
+        $instructor = Instructor_details::where('i_username', $credentials['username'])
+            ->where('i_password', $credentials['password'])
+            ->first();
+
+        if (!$instructor) {
+            return response()->json(['message' => 'Authentication failed'], 401);
+        }
+
+        return response()->json(['message' => 'Login successful'], 200);
     }
 
-    // Authenticate the instructor
-    $instructor = Instructor_details::where('username', $credentials['username'])->first();
+    public function getLogbooks($instructorId, $logbookId)
+    {
+        $logbooks = Logbook::where('logbook_id', $logbookId) -> where('instructor_id', $instructorId)->first();
 
-    if (!$instructor || !Hash::check($credentials['password'], $instructor->password)) {
-        return response()->json(['message' => 'Authentication failed'], 401);
+        if ($logbooks->isEmpty()) {
+            return response()->json(['message' => 'No logbooks found for the instructor'], 404);
+        }
+
+        $traineeLogbooks = [];
+        foreach ($logbooks as $logbook) {
+        $trainee = Trainee_details::find($logbook->trainee_id);
+        $traineeName = $trainee->first_name . ' ' . $trainee->family_name;
+        $traineeLogbooks[] = [
+            'logbook_id' => $logbook->logbook_id,
+            'trainee_id' => $trainee->trainee_id,
+            'trainee_name' => $traineeName,
+        ];
+        }
+        return response()->json(['trainee_logbooks' => $traineeLogbooks], 200);
     }
 
-    // Retrieve the assigned trainees for the instructor
-    $trainees = $instructor->trainees()->get();
+    public function getTasks($logbookId)
+    {
+        $tasks = trainee_logbook::where('logbook_id', $logbookId)->get();
 
-    return response()->json(['trainees' => $trainees], 200);
+        if ($tasks->isEmpty()) {
+            return response()->json(['message' => 'No tasks found for the logbook'], 404);
+        }
+
+        return response()->json(['tasks' => $tasks], 200);
     }
 
     
