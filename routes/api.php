@@ -7,7 +7,8 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\InstructorDetailsController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\TraineeDetailsController;
-use App\Http\Controllers\TraineeLogbookController;
+use App\Http\Controllers\TraineeLoginController;
+use GuzzleHttp\Middleware;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,27 +31,27 @@ Route::post('admin/login', [AdminAuthController::class, 'login']);
 
 // Routes for creating new accounts
 Route::post('admin/login/instructors', [AdminController::class, 'createinstructor']);
-Route::post('admin/login/trainees', [AdminController::class, 'createtrainee']);
+Route::post('admin/trainees', [AdminController::class, 'createtrainee']);
 
 //Routes for assigning logbooks
 Route::post('admin/login/logbooks', [LogbookController::class, 'assignLogbook']);
 
 //Trainees
 
-Route::middleware('auth.trainee')->group(function () {
+
 //Routes for Trainee login
 Route::post('/trainees/login', [TraineeLoginController::class, 'login']);
 
 //Routes for accessing the logbooks by trainee
-Route::get('/trainee/login/{trainee_id}', [TraineeLogbookController::class, 'showLogbook']);
+Route::get('/trainee/{trainee_id}', [TraineeLogbookController::class, 'showLogbook']);
 
 //Route for logbook entry by trainee
 Route::post('/trainee/{trainee_id}', [TraineeLogbookController::class, 'storeLogbookEntry']);
-});
+
 
 //instructors
 
-Route::middleware('auth.instructor')->group(function () {
+
 
 //Routes for instructor login
 Route::post('/instructors/login', [InstructorDetailsController::class, 'login']);
@@ -60,4 +61,3 @@ Route::get('/instructor/login/{instructor_id}/logbooks', [InstructorDetailsContr
 
 //Route for Instructor accessing logbooks
 Route::get('/instructor/login/{instructor_id}/logbooks/{logbookId}', [InstructorDetailsController::class, 'getTasks']);
-});

@@ -8,12 +8,12 @@ use app\Models\Instructor_details;
 
 class InstructorAuth
 {
-    public function handle($request, Closure $next)
+    /*public function handle($request, Closure $next)
     {
         if (Auth::guard('instructor')->check()) {
             return $next($request);
         }
 
         return response()->json(['message' => 'Unauthorized'], 401);
-    }
+    }*/
 }

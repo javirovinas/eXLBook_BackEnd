@@ -11,7 +11,7 @@ class Admin_login extends Authenticatable
 {
     // Define the table name if different from 'admin_login'
     protected $table = 'admin_login';
-    protected $fillable = ['username', 'password',];
+    protected $fillable = ['username', 'password', 'api_token'];
     public $timestamps = false;
     protected $hidden = 'password';
 

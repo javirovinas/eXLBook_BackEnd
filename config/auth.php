@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\Admin_login;
-use App\Models\Instructor_details;
-use App\Models\Trainee_details;
 
 return [
 
@@ -52,7 +49,7 @@ return [
             'hash' => true,
         ],
 
-        'trainee' => [
+       /* 'trainee' => [
             'driver' => 'session',
             'provider' => 'trainees',
         ],
@@ -64,7 +61,7 @@ return [
         'admin' => [
             'driver' => 'session',
             'provider' => 'admins',
-        ],
+        ],*/
     ],
 
     /*
@@ -89,7 +86,8 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-        'trainees' => [
+    ],
+       /* 'trainees' => [
             'driver' => 'eloquent',
             'model' => App\Models\Trainee_login::class,
             ],
@@ -108,7 +106,7 @@ return [
         'users' => [
             'driver' => 'database',
             'table' => 'users',
-        ],
+        ],*/
 
     /*
     |--------------------------------------------------------------------------
