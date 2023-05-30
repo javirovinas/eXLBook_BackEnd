@@ -45,9 +45,12 @@ class LogbookController extends Controller
         $logbooks = logbook::all();
 
         if ($logbooks -> count() > 0) {
-            return response() -> json([]);
+            return response() -> json([
+                'message' => 'Logbooks fetched successfully',
+                'logbooks' => $logbooks
+            ], 200);
         } else {
-            return response() -> json([]);
+            return response() -> json(['message' => 'No logbooks found'], 404);
         }
     }
 
