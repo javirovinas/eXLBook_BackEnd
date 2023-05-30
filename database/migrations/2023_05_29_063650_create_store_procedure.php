@@ -1,3 +1,4 @@
+/** 
 <?php
 
 use Illuminate\Database\Migrations\Migration;
@@ -73,28 +74,28 @@ return new class extends Migration
 
         DB::unprepared($store_procedure);
 
-        // Insert data into tables
+    //     // Insert data into tables
 
-        DB::table('instructors')->insert([
-            ['UID' => '105', 'first_name' => 'Rory', 'family_name' => 'McCarthy', 'i_username' => 'rorymcc', 'i_password' => 'owefh23', 'email' => 'rorymcc@gmail.com'],
-            ['UID' => '110', 'first_name' => 'John', 'family_name' => 'Doe', 'i_username' => 'j.doe', 'i_password' => 'oethwe34', 'email' => 'jdoe@gmail.com'],
-            ['UID' => '200', 'first_name' => 'Emily', 'family_name' => 'Swift', 'i_username' => 'em.swift', 'i_password' => 'reoghiro54', 'email' => 'eswift@gmail.com'],
-            ['UID' => '103', 'first_name' => 'Kate', 'family_name' => 'Maher', 'i_username' => 'kat.maher1', 'i_password' => 'sfjsohi92', 'email' => 'kmaher@gmail.com'],
-        ]);
+    //     DB::table('instructors')->insert([
+    //         ['UID' => '105', 'first_name' => 'Rory', 'family_name' => 'McCarthy', 'i_username' => 'rorymcc', 'i_password' => 'owefh23', 'email' => 'rorymcc@gmail.com'],
+    //         ['UID' => '110', 'first_name' => 'John', 'family_name' => 'Doe', 'i_username' => 'j.doe', 'i_password' => 'oethwe34', 'email' => 'jdoe@gmail.com'],
+    //         ['UID' => '200', 'first_name' => 'Emily', 'family_name' => 'Swift', 'i_username' => 'em.swift', 'i_password' => 'reoghiro54', 'email' => 'eswift@gmail.com'],
+    //         ['UID' => '103', 'first_name' => 'Kate', 'family_name' => 'Maher', 'i_username' => 'kat.maher1', 'i_password' => 'sfjsohi92', 'email' => 'kmaher@gmail.com'],
+    //     ]);
 
-        DB::table('trainees')->insert([
-            ['UID' => '1050', 'first_name' => 'Terry', 'family_name' => 'Miller', 't_username' => 't.miller1', 't_password' => 'jsgeey159', 'email' => 'tmiller@gmail.com'],
-            ['UID' => '1234', 'first_name' => 'Jane', 'family_name' => 'Ryan', 't_username' => 'j.ryan', 't_password' => 'wywooev739', 'email' => 'jdoe@gmail.com'],
-            ['UID' => '2345', 'first_name' => 'Barry', 'family_name' => 'Sweeney', 't_username' => 'b.sweeney12', 't_password' => 'oiwqwwehqy98', 'email' => 'bsweeney@gmail.com'],
-            ['UID' => '1879', 'first_name' => 'Lisa', 'family_name' => 'Brennan', 't_username' => 'liz.brenn1', 't_password' => 'hewaiu09', 'email' => 'lbrennan@gmail.com'],
-        ]);
+    //     DB::table('trainees')->insert([
+    //         ['UID' => '1050', 'first_name' => 'Terry', 'family_name' => 'Miller', 't_username' => 't.miller1', 't_password' => 'jsgeey159', 'email' => 'tmiller@gmail.com'],
+    //         ['UID' => '1234', 'first_name' => 'Jane', 'family_name' => 'Ryan', 't_username' => 'j.ryan', 't_password' => 'wywooev739', 'email' => 'jdoe@gmail.com'],
+    //         ['UID' => '2345', 'first_name' => 'Barry', 'family_name' => 'Sweeney', 't_username' => 'b.sweeney12', 't_password' => 'oiwqwwehqy98', 'email' => 'bsweeney@gmail.com'],
+    //         ['UID' => '1879', 'first_name' => 'Lisa', 'family_name' => 'Brennan', 't_username' => 'liz.brenn1', 't_password' => 'hewaiu09', 'email' => 'lbrennan@gmail.com'],
+    //     ]);
 
-        DB::table('logbooks')->insert([
-            ['logbook_name' => 'logbook1', 'trainee_id' => 1003, 'instructor_id' => 102],
-            ['logbook_name' => 'logbook2', 'trainee_id' => 1000, 'instructor_id' => 101],
-            ['logbook_name' => 'logbook3', 'trainee_id' => 1002, 'instructor_id' => 100],
-            ['logbook_name' => 'logbook4', 'trainee_id' => 1001, 'instructor_id' => 103],
-        ]);
+    //     DB::table('logbooks')->insert([
+    //         ['logbook_name' => 'logbook1', 'trainee_id' => 1003, 'instructor_id' => 102],
+    //         ['logbook_name' => 'logbook2', 'trainee_id' => 1000, 'instructor_id' => 101],
+    //         ['logbook_name' => 'logbook3', 'trainee_id' => 1002, 'instructor_id' => 100],
+    //         ['logbook_name' => 'logbook4', 'trainee_id' => 1001, 'instructor_id' => 103],
+    //     ]);
 
         DB::table('tasks')->insert([
             ['logbook_id' => 10001, 'work_order_no' => 1, 'logbook_name' => 'logbook_1', 'task_detail' => 'This is task number 1', 'category' => 'B', 'ATA' => '21', 'archived' => 0],
@@ -110,7 +111,7 @@ return new class extends Migration
             ['logbook_id' => 10003, 'work_order_no' => 3, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 3', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
             ['logbook_id' => 10003, 'work_order_no' => 4, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 3 (archived)', 'category' => 'C2', 'ATA' => '07', 'archived' => 1],
             ['logbook_id' => 10003, 'work_order_no' => 5, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 3 again', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
-        ]);*/
+        ]);
     }
 
     /**
@@ -129,4 +130,5 @@ return new class extends Migration
         Schema::dropIfExists('instructors');
     }
 };
+
 
