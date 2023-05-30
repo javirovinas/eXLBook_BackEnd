@@ -26,7 +26,7 @@ class Kernel extends HttpKernel
         \Illuminate\Foundation\Http\Middleware\ConvertEmptyStringsToNull::class,
         'auth.trainee' => \App\Http\Middleware\TraineeAuth::class,
         'auth.instructor' => \App\Http\Middleware\InstructorAuth::class,
-        'auth.admin' => \App\Http\Middleware\AuthenticateAdmin::class,
+        'auth.admin' => \App\Http\Middleware\AdminAuth::class,
     ];
 
     /**

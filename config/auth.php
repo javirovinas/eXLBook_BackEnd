@@ -54,16 +54,16 @@ return [
 
         'trainee' => [
             'driver' => 'session',
-            'provider' => App\Models\Trainee_details::class,
+            'provider' => 'trainees',
         ],
         'instructor' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Instructor_details::class,
+            'model' => 'instructors',
         ],
 
         'admin' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Admin_login::class,
+            'model' => 'admins',
         ],
     ],
 
@@ -88,10 +88,10 @@ return [
         'users' => [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
-      
+        ],
         'trainees' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Trainee_details::class,
+            'model' => App\Models\Trainee_login::class,
             ],
 
             'admins' => [
@@ -109,7 +109,6 @@ return [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
-    ],
 
     /*
     |--------------------------------------------------------------------------
