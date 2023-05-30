@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Storetrainee_logbookRequest;
 use App\Http\Requests\Updatetrainee_logbookRequest;
 use Illuminate\Http\Request;
+use App\Models\logbook;
 
 
 class TraineeLogbookController extends Controller
@@ -51,17 +52,28 @@ class TraineeLogbookController extends Controller
         $logbook->logbookEntries()->save($logbookEntry);
 
         return response()->json(['message' => 'Logbook entry added successfully'], 201);
-    }
+        }
 
     /**
      * Display the specified resource.
      */
-    public function showLogbook(trainee_logbook $trainee_logbook)       //Retreive the logbook
+    public function showLogbook($logbookId, request $request, trainee_logbook $trainee_logbook)       //Retreive the logbook
     {
-        $trainee = Auth::guard('trainee')->user();
-        $logbook = Trainee_logbook::where('trainee_id', $trainee->id)->first();
+            $traineeId = $request->input('trainee_id');
 
-        return response()->json(['logbook' => $logbook], 200);
+             // Retrieve the logbook associated with the trainee
+            $logbook = Logbook::where('trainee_id', $traineeId)->first();
+
+            if ($logbook) {
+            // Retrieve the tasks associated with the logbook
+            $tasks = trainee_logbook::where('logbook_id', $logbook->logbook_id)
+                     ->where('trainee_id', $traineeId)
+                     ->get();
+
+            return response()->json(['logbook' => $logbook, 'tasks' => $tasks], 200);
+            } else {
+                return response()->json(['message' => 'Logbook not found for the given trainee'], 404);
+                }
     }
 
     public function saveLogbook(Request $request)

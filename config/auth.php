@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\Admin_login;
+use app\Models\Instructor_details;
+use app\Models\Trainee_details;
+
 return [
 
     /*
@@ -17,6 +21,7 @@ return [
         'guard' => 'web',
         'passwords' => 'users',
     ],
+
 
     /*
     |--------------------------------------------------------------------------
@@ -39,6 +44,26 @@ return [
         'web' => [
             'driver' => 'session',
             'provider' => 'users',
+        ],
+
+        'api' => [
+            'driver' => 'token',
+            'provider' => 'users',
+            'hash' => false,
+        ],
+
+        'trainee' => [
+            'driver' => 'session',
+            'provider' => 'trainees',
+        ],
+        'instructor' => [
+            'driver' => 'eloquent',
+            'model' => 'instructors',
+        ],
+
+        'admin' => [
+            'driver' => 'eloquent',
+            'model' => 'admins',
         ],
     ],
 
@@ -64,12 +89,26 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+        'trainees' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Trainee_login::class,
+            ],
+
+            'admins' => [
+                'driver' => 'eloquent',
+                'model' => App\Models\Admin_login::class,
+            ],
+
+            'instructors' => [
+                'driver' => 'eloquent',
+                'model' => App\Models\Instructor_details::class,
+            ],
+        ],
 
         // 'users' => [
         //     'driver' => 'database',
         //     'table' => 'users',
         // ],
-    ],
 
     /*
     |--------------------------------------------------------------------------

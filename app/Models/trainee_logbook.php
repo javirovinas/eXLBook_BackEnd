@@ -10,9 +10,14 @@ class trainee_logbook extends Model
 {
     use HasFactory;
     //use Archivable;
+<<<<<<< HEAD
 
+=======
+    protected $table = 'tasks';
+>>>>>>> 323e160fdf9316438836163e76cb88cf7dc28ede
     protected $fillable = ['log_name', 'work_order_no', 'task_detail', 'category', 'ATA', 'TEE_SO', 'INS_SO'];
 
+    
     public function logbook()
     {
         return $this->belongsTo(Logbook::class);
