@@ -49,19 +49,20 @@ return [
             'hash' => true,
         ],
 
-       /* 'trainee' => [
+        'trainee' => [
             'driver' => 'session',
             'provider' => 'trainees',
         ],
-        'instructor' => [
+        /*'instructor' => [
             'driver' => 'session',
             'model' => 'instructors',
-        ],
+        ],*/
 
         'admin' => [
-            'driver' => 'session',
+            'driver' => 'token',
             'provider' => 'admins',
-        ],*/
+            'hash' => false,
+        ],
     ],
 
     /*
@@ -86,16 +87,18 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
-    ],
-       /* 'trainees' => [
+        
+        'admins' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Trainee_login::class,
+            'model' => App\Models\Admin_login::class,
+        ],
+        'trainees' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Trainee_details::class,
             ],
+    ],
+       /* 
 
-            'admins' => [
-                'driver' => 'eloquent',
-                'model' => App\Models\Admin_login::class,
-            ],
 
             'instructors' => [
                 'driver' => 'eloquent',

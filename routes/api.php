@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\InstructorDetailsController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\InstructorLoginController;
+use App\Http\Controllers\TraineeDetailsController;
 use App\Http\Controllers\TraineeLoginController;
 use GuzzleHttp\Middleware;
 
@@ -25,13 +26,15 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+//Admin Create
+Route::post('admin/register', [AdminAuthController::class, 'createAdmin']);
 
 // Admin Login route
 Route::post('admin/login', [AdminAuthController::class, 'login']);
 
 // Routes for creating new accounts
 Route::post('admin/instructors', [AdminController::class, 'createinstructor']);
-Route::post('admin/trainees', [AdminController::class, 'createtrainee']);
+Route::post('admin/trainees', [AdminController::class, 'createTrainee']);
 
 //Routes for assigning logbooks
 Route::post('admin/login/logbooks', [LogbookController::class, 'assignLogbook']);

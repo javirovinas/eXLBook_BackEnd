@@ -13,46 +13,6 @@ use Illuminate\Support\Facades\Hash;
 
 class TraineeDetailsController extends Controller
 {
-    public function login(Request $request)
-    {
-    $credentials = $request->only('username', 'password');
-
-    // Validate the credentials
-    $validator = Validator::make($credentials, [
-        'username' => 'required',
-        'password' => 'required',
-    ]);
-
-    if ($validator->fails()) {
-        return response()->json(['message' => 'Invalid credentials'], 401);
-    }
-
-    // Authenticate the trainee
-    $trainee = Trainee_details::where('t_username', $credentials['username'])->first();
-
-    if (!$trainee) {
-        return response()->json(['message' => 'Authentication failed'], 401);
-    }
-
-    if ($credentials['password'] !== $trainee->t_password) {
-        return response()->json(['message' => 'Authentication failed'], 401);
-    }
-
-    // Retrieve the trainee's logbook and tasks
-    $logbook = logbook::where('trainee_id', $trainee->trainee_id)->first();
-
-    if (!$logbook) {
-        return response()->json(['message' => 'Logbook not found for the given trainee'], 404);
-    }
-
-    $tasks = trainee_logbook::where('logbook_id', $logbook->logbook_id)->get();
-
-    return response()->json(['logbook' => $logbook, 'tasks' => $tasks], 200);
-    }
-
-
-
-
     /**
      * Display a listing of the resource.
      */
@@ -74,7 +34,7 @@ class TraineeDetailsController extends Controller
      */
     public function store(Storetrainee_detailsRequest $request)
     {
-        //
+       
     }
 
     /**

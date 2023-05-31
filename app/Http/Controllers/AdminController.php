@@ -14,7 +14,7 @@ class AdminController extends Controller
 {
     
     public function createInstructor(Request $request)
-{
+    {
     $data = $request->validate([
         'uid' => 'required',
         'first_name' => 'required',
@@ -39,8 +39,8 @@ class AdminController extends Controller
     return response()->json([
         'message' => 'Instructor created successfully',
         'instructor' => $instructor,
-    ]);
-}
+        ]);
+    }
 
     public function createTrainee(Request $request)
     {
@@ -52,23 +52,22 @@ class AdminController extends Controller
             'username' => 'required',
             'password' => 'required',
         ]);
-
         $traineeData = [
             'UID' => $data['uid'],
             'first_name' => $data['first_name'],
             'family_name' => $data['family_name'],
             't_username' => $data['username'],
-            't_password' => Hash::make($data['password']),
+            't_password' => $data['password'],
             'email' => $data['email'],
-        ];
+             ];
 
-        $trainee = Trainee_details::create($traineeData);
-
-        return response()->json([
+            $trainee = Trainee_details::create($traineeData);
+            return response()->json([
             'message' => 'Trainee created successfully',
             'trainee' => $trainee,
-        ]);
+            ]);
     }
+
     
     /**
      * Display a listing of the resource.
