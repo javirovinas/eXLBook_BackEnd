@@ -2,36 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\Trainee_details;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\Admin_login;
-
-class AdminAuthController extends Controller    
+use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
+class AdminAuthController extends Controller
 {
-    public function login(Request $request)
+    public function createAdmin(Request $request)
     {
-    $credentials = $request->only('username', 'password');
+        $data = $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
 
-    // Validate the login credentials
-    $validatedData = $request->validate([
-        'username' => 'required',
-        'password' => 'required',
-    ]);
+        $admin = Admin_login::create([
+            'username' => $data['username'],
+            'password' => $data['password'],
+            'api_token' => Str::random(60), // Generate a random token
+        ]);
 
-    // Check if the provided credentials match any entry in the `admin_login` table
-    $admin = Admin_login::where('username', $credentials['username'])
-        ->where('password', $credentials['password'])
-        ->first();
-
-    if ($admin) {
-        // Authentication successful
-        $admin->api_token = Str::random(60);
-        $admin->save();
-
-        return response()->json(['token' => $admin->api_token], 200);
+        return response()->json([
+            'message' => 'Admin created successfully',
+            'admin' => $admin,
+        ]);
     }
 
-    // Authentication failed
-    return response()->json(['error' => 'Invalid credentials'], 401);
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+        $admin = Admin_login::where('username', $credentials['username'])->first();
+
+        if ($admin && $admin->password === $credentials['password']) {
+            $token = $admin->createToken('admin-token')->plainTextToken;
+            return response()->json(['token' => $token], 200);
+        }
+
+        throw ValidationException::withMessages(['username' => 'Invalid credentials']);
     }
 }

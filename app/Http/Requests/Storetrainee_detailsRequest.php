@@ -22,7 +22,7 @@ class Storetrainee_detailsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+        //
         ];
     }
 }

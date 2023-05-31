@@ -1,8 +1,5 @@
 <?php
 
-use App\Models\Admin_login;
-use app\Models\Instructor_details;
-use app\Models\Trainee_details;
 
 return [
 
@@ -49,21 +46,22 @@ return [
         'api' => [
             'driver' => 'token',
             'provider' => 'users',
-            'hash' => false,
+            'hash' => true,
         ],
 
         'trainee' => [
             'driver' => 'session',
             'provider' => 'trainees',
         ],
-        'instructor' => [
-            'driver' => 'eloquent',
+        /*'instructor' => [
+            'driver' => 'session',
             'model' => 'instructors',
-        ],
+        ],*/
 
         'admin' => [
-            'driver' => 'eloquent',
-            'model' => 'admins',
+            'driver' => 'token',
+            'provider' => 'admins',
+            'hash' => false,
         ],
     ],
 
@@ -89,15 +87,18 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\User::class,
         ],
+        
+        'admins' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Admin_login::class,
+        ],
         'trainees' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Trainee_login::class,
+            'model' => App\Models\Trainee_details::class,
             ],
+    ],
+       /* 
 
-            'admins' => [
-                'driver' => 'eloquent',
-                'model' => App\Models\Admin_login::class,
-            ],
 
             'instructors' => [
                 'driver' => 'eloquent',
@@ -105,10 +106,10 @@ return [
             ],
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
+        'users' => [
+            'driver' => 'database',
+            'table' => 'users',
+        ],*/
 
     /*
     |--------------------------------------------------------------------------

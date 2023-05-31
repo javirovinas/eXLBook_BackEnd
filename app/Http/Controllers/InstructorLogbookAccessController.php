@@ -5,9 +5,55 @@ namespace App\Http\Controllers;
 use App\Models\Instructor_logbook_access;
 use App\Http\Requests\StoreInstructor_logbook_accessRequest;
 use App\Http\Requests\UpdateInstructor_logbook_accessRequest;
+use App\Models\logbook;
+use App\Models\Trainee_details;
+use App\Models\trainee_logbook;
 
 class InstructorLogbookAccessController extends Controller
 {
+    
+    public function getLogbooks($instructorId, $logbookId)
+    {
+        $logbooks = logbook::where('logbook_id', $logbookId) -> where('instructor_id', $instructorId)->first();
+
+        if ($logbooks->isEmpty()) {
+            return response()->json(['message' => 'No logbooks found for the instructor'], 404);
+        }
+
+        $traineeLogbooks = [];
+        foreach ($logbooks as $logbook) {
+        $trainee = Trainee_details::find($logbook->trainee_id);
+        $traineeName = $trainee->first_name . ' ' . $trainee->family_name;
+        $traineeLogbooks[] = [
+            'logbook_id' => $logbook->logbook_id,
+            'trainee_id' => $trainee->trainee_id,
+            'trainee_name' => $traineeName,
+        ];
+        }
+        return response()->json(['trainee_logbooks' => $traineeLogbooks], 200);
+    }
+
+    public function getTasks($logbookId)
+    {
+        $tasks = trainee_logbook::where('logbook_id', $logbookId)->get();
+
+        if ($tasks->isEmpty()) {
+            return response()->json(['message' => 'No tasks found for the logbook'], 404);
+        }
+
+        return response()->json(['tasks' => $tasks], 200);
+    }
+
+
+    public function getLogbooksAssigned() {
+
+    }
+
+
+    public function getTasksAssigned() {
+        
+    }
+
     /**
      * Display a listing of the resource.
      */

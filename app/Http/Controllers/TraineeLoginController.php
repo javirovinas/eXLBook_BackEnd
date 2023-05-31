@@ -2,12 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\trainee_login;
-use App\Http\Requests\Storetrainee_loginRequest;
-use App\Http\Requests\Updatetrainee_loginRequest;
+use App\http\Requests\Storetrainee_loginRequest;
+use App\http\Requests\Updatetrainee_loginRequest;
+use App\Models\Trainee_details;
+use App\Models\Trainee_login;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class TraineeLoginController extends Controller
 {
+    public function login(Request $request)
+    {
+        $credentials = $request->only('username', 'password');
+
+        $trainee = Trainee_details::where('t_username', $credentials['username'])->first();
+
+        if ($trainee && Hash::check($credentials['password'], $trainee->t_password)) {
+            // Login successful
+            return response()->json(['message' => 'Login successful', 'trainee' => $trainee], 200);
+        }else {
+        // Invalid credentials
+        return response()->json(['message' => 'Invalid credentials'], 401);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      */

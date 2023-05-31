@@ -22,6 +22,7 @@ class Trainee_details extends Model
 
     protected $primaryKey = 'trainee_id';
 
+
     public function logbook()
     {
         return $this->hasOne(Logbook::class, 'trainee_id');

@@ -4,20 +4,18 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
-use app\model\trainee_details;
+use Illuminate\Support\Facades\Hash;
 
-
-class trainee_login extends Model
+class Trainee_login extends Model
 {
-    public static function login($username, $password)
+    protected $table = 'trainees';
+    protected $fillable = ['username', 'password'];
+
+    public $timestamps = false;
+    protected $hidden = ['password', 'api_token'];
+
+    public function setpasswordAttribute($password)
     {
-        $credentials = [
-            'username' => $username,
-            'password' => $password,
-        ];
-
-        return Auth::guard('trainee')->attempt($credentials);
+        $this->attributes['password'] = Hash::make($password);
     }
-
 }

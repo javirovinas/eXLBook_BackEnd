@@ -2,25 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Models\Trainee_details;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\HasApiTokens;
 
 class Admin_login extends Authenticatable
 {
-    // Define the table name if different from 'admin_login'
-    protected $table = 'admin_login';
-    
-    // Define the fillable fields
-    protected $fillable = ['username', 'password', 'api_token'];
+    use HasApiTokens;
 
-    // Exclude the timestamps for this model
+    protected $table = 'admin_login';
+    protected $fillable = ['username', 'password', 'api_token'];
     public $timestamps = false;
+    protected $hidden = ['password'];
 
     public function createTrainee($data)
     {
-        return trainee_details::createTrainee($data);
+        return Trainee_details::createTrainee($data);
     }
 
     public function createInstructor($data)
@@ -28,4 +27,3 @@ class Admin_login extends Authenticatable
         return Instructor_details::createInstructor($data);
     }
 }
-
