@@ -6,7 +6,7 @@ use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\InstructorDetailsController;
 use App\Http\Controllers\LogbookController;
-use App\Http\Controllers\TraineeDetailsController;
+use App\Http\Controllers\InstructorLoginController;
 use App\Http\Controllers\TraineeLoginController;
 use GuzzleHttp\Middleware;
 
@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::post('admin/login', [AdminAuthController::class, 'login']);
 
 // Routes for creating new accounts
-Route::post('admin/login/instructors', [AdminController::class, 'createinstructor']);
+Route::post('admin/instructors', [AdminController::class, 'createinstructor']);
 Route::post('admin/trainees', [AdminController::class, 'createtrainee']);
 
 //Routes for assigning logbooks
@@ -54,10 +54,10 @@ Route::post('/trainee/{trainee_id}', [TraineeLogbookController::class, 'storeLog
 
 
 //Routes for instructor login
-Route::post('/instructors/login', [InstructorDetailsController::class, 'login']);
+Route::post('/instructors/login', [InstructorLoginController::class, 'login']);
 
 //Route for Instructor to view list of logbooks
-Route::get('/instructor/login/{instructor_id}/logbooks', [InstructorDetailsController::class, 'getLogbooks']);
+Route::get('/instructor/{instructor_id}/logbooks', [InstructorDetailsController::class, 'getLogbooks']);
 
 //Route for Instructor accessing logbooks
-Route::get('/instructor/login/{instructor_id}/logbooks/{logbookId}', [InstructorDetailsController::class, 'getTasks']);
+Route::get('/instructor/{instructor_id}/logbooks/{logbookId}', [InstructorDetailsController::class, 'getTasks']);

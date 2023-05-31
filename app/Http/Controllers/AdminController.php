@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Admin_login;
 use App\Models\Trainee_details;
 use App\Models\Instructor_details;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -29,7 +30,7 @@ class AdminController extends Controller
         'first_name' => $data['first_name'],
         'family_name' => $data['family_name'],
         'i_username' => $data['username'],
-        'i_password' => $data['password'],
+        'i_password' => Hash::make($data['password']),
         'email' => $data['email']
     ];
 
@@ -57,7 +58,7 @@ class AdminController extends Controller
             'first_name' => $data['first_name'],
             'family_name' => $data['family_name'],
             't_username' => $data['username'],
-            't_password' => $data['password'],
+            't_password' => Hash::make($data['password']),
             'email' => $data['email'],
         ];
 
