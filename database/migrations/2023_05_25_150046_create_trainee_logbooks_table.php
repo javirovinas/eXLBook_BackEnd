@@ -15,13 +15,11 @@ return new class extends Migration
             $table->id('task_id');
             $table->unsignedBigInteger('logbook_id');
             $table->unsignedInteger('work_order_no');
-            $table->string('log_name');
             $table->text('task_detail')->nullable();
             $table->string('category')->nullable();            
-            $table->string('ATA')->nullable();
+            $table->unsignedInteger('ATA')->nullable();
             $table->timestamp('TEE_SO')->nullable();
             $table->timestamp('INS_SO')->nullable();
-            $table->boolean('archived')->default(false);
 
             // Create foreign keys
             $table->foreign('logbook_id')->references('logbook_id')->on('logbooks');

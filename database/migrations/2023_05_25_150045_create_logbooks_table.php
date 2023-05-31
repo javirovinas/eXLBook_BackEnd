@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('logbook_name');
             $table->unsignedBigInteger('trainee_id');
             $table->unsignedBigInteger('instructor_id');
+            $table->boolean('archived')->default(false);
             
             // Foreign keys
             $table->foreign('trainee_id')->references('trainee_id')->on('trainees')->onDelete('cascade');

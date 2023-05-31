@@ -36,7 +36,6 @@ class TraineeLogbookController extends Controller
         $data = $request->validate([
             'logbook_id' => 'required',
             'work_order_no' => 'required',
-            'log_name' => 'required',
             'task_detail' => 'nullable',
             'category' => 'nullable',
             'ATA' => 'nullable',
@@ -102,7 +101,6 @@ class TraineeLogbookController extends Controller
         $data = $request->validate([
             'logbook_id' => 'required',
             'work_order_no' => 'required',
-            'log_name' => 'required',
             'task_detail' => 'nullable',
             'category' => 'nullable',
             'ATA' => 'nullable',
@@ -123,7 +121,6 @@ class TraineeLogbookController extends Controller
             $logbook = logbook::update([
                 'logbook_id' => $request -> logbook_id,
                 'work_order_no' => $request -> work_order_no,
-                'log_name' => $request -> log_name,
                 'task_detail' => $request -> task_detail,
                 'category' => $request -> category,
                 'ATA' => $request -> ATA,
