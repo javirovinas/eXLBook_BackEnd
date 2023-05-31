@@ -2,35 +2,30 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\trainee_login;
-use App\Http\Requests\Storetrainee_loginRequest;
-use App\Http\Requests\Updatetrainee_loginRequest;
-
+use App\http\Requests\Storetrainee_loginRequest;
+use App\http\Requests\Updatetrainee_loginRequest;
+use App\Models\Trainee_details;
+use App\Models\Trainee_login;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Support\Facades\Hash;
-use App\Http\Middleware\AdminAuth;
-use Illuminate\Support\Str;
-
 
 class TraineeLoginController extends Controller
 {
     public function login(Request $request)
     {
-        $isAuthenticated = Trainee_login::login($request->username, $request->password);
+        $credentials = $request->only('username', 'password');
 
-        if ($isAuthenticated) {
-            $trainee = Auth::guard('trainee')->user();
-            $trainee->api_token = Str::random(60);
-            $trainee->save();
+        $trainee = Trainee_details::where('t_username', $credentials['username'])->first();
 
-            return response()->json(['token' => $trainee->api_token], 200);
+        if ($trainee && Hash::check($credentials['password'], $trainee->t_password)) {
+            // Login successful
+            return response()->json(['message' => 'Login successful', 'trainee' => $trainee], 200);
+        }else {
+        // Invalid credentials
+        return response()->json(['message' => 'Invalid credentials'], 401);
         }
-
-        return response()->json(['error' => 'Invalid credentials'], 401);
     }
+
     /**
      * Display a listing of the resource.
      */
