@@ -151,60 +151,58 @@ class LogbookController extends Controller
      * Update the specified resource in storage.
      */
     public function update(UpdatelogbookRequest $request, int $logbookId)
-    {
-        $validator = Validator::make($request -> all(), [
-            'name' => 'required|max:20',
-            'trainee_id' => 'required|integer',
-            'instructor_id' => 'required|integer'
-        ]);
+{
+    $validator = Validator::make($request->all(), [
+        'name' => 'required|max:20',
+        'trainee_id' => 'required|integer',
+        'instructor_id' => 'required|integer'
+    ]);
 
-        if ($validator -> fails()) {
-            return response() -> json([
-                'status' => 422,
-                'errors' => $validator -> messages()
-            ], 422);
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => 422,
+            'errors' => $validator->messages()
+        ], 422);
+    } else {
+        $logbook = logbook::find($logbookId);
+
+        if ($logbook) {
+            $logbook->name = $request->name;
+            $logbook->trainee_id = $request->trainee_id;
+            $logbook->instructor_id = $request->instructor_id;
+            $logbook->save();
+
+            return response()->json([
+                'status' => 200,
+                'message' => 'The logbook has been updated successfully'
+            ], 200);
         } else {
-
-            $logbook = logbook::find($logbookId);
-
-            if ($logbook) {
-                $logbook = logbook::update([
-                    'name' => $request -> name,
-                    'trainee_id' => $request -> trainee_id,
-                    'instructor_id' => $request -> instructor_id
-                ]);
-                return response() -> json([
-                    'status' => 200,
-                    'message' => 'The logbook has been updated successfully'
-                ], 200);
-            } else {
-                return response() -> json([
-                    'status' => 404,
-                    'message' => "The ID doesn't matches with any logbook"
-                ], 404);
-            }
+            return response()->json([
+                'status' => 404,
+                'message' => "The ID doesn't match with any logbook"
+            ], 404);
         }
     }
-
+}
     /**
      * Remove the specified resource from storage.
      */
     public function destroy($logbookId)
     {
-        $logbook = logbook::find($logbookId);
+    $logbook = logbook::find($logbookId);
 
-        if ($logbook) {
+    if ($logbook) {
+        $logbook->delete();
 
-            $logbook = logbook::delete($logbookId);
-            return response() -> json([
-                'status' => 200,
-                'message' => 'Logbook deleted successfully'
-            ], 200);
-        } else {
-            return response() -> json([
-                'status' => 404,
-                'message' => "The ID doesn't match with any logbook registered."
-            ], 404);
-        }
+        return response()->json([
+            'status' => 200,
+            'message' => 'Logbook deleted successfully'
+        ], 200);
+    } else {
+        return response()->json([
+            'status' => 404,
+            'message' => "The ID doesn't match with any logbook registered."
+        ], 404);
+    }
     }
 }
