@@ -6,16 +6,25 @@ use App\Models\Admin_login;
 use Closure;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class AdminAuth
 {
-    /*public function handle(Request $request, Closure $next)
+    public function handle($request, Closure $next)
     {
-        if (Auth::guard('admin')->check()) {
-            return $next($request);
+        $apiToken = $request->header('api_token');
+
+        if ($apiToken) {
+            // Check if the current user is an admin
+            $admin = Admin_login::where('api_token', $apiToken)->first();
+
+            if ($admin && Hash::check($apiToken, $admin->api_token)) {
+                // Admin is authenticated, proceed with the request
+                return $next($request);
+            }
         }
-        else{
-        return response()->json(['message' => 'Unauthorized'], 401);
-        }
-    }  */ 
+
+        // Admin authentication failed, return an unauthorized response
+        return response()->json(['error' => 'Unauthenticated'], 401);
+    }
 }

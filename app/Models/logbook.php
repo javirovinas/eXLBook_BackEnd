@@ -13,6 +13,7 @@ class logbook extends Model
                             'instructor_id', 
                             'trainee_id'
                           ];
+    protected $primaryKey = 'logbook_id';
 
     public function instructor()
     {

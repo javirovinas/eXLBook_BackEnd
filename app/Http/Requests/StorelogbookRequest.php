@@ -22,7 +22,14 @@ class StorelogbookRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'logbook_id' => 'required',
+            'work_order_no' => 'required',
+            'task_detail' => 'nullable',
+            'category' => 'nullable',
+            'ATA' => 'nullable',
+            'TEE_SO' => 'nullable',
+            'INS_SO' => 'nullable',
+            'archived' => 'boolean',
         ];
     }
 }

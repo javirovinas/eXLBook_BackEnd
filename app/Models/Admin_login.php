@@ -17,6 +17,11 @@ class Admin_login extends Authenticatable
     public $timestamps = false;
     protected $hidden = ['password'];
 
+    public function isAdmin()
+    {
+        return session()->has('admin_logged_in');
+    }
+
     public function createTrainee($data)
     {
         return Trainee_details::createTrainee($data);

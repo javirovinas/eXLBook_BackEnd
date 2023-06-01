@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id('task_id');
+            $table->unsignedBigInteger('trainee_id');
             $table->unsignedBigInteger('logbook_id');
             $table->unsignedInteger('work_order_no');
-            $table->string('log_name');
             $table->text('task_detail')->nullable();
             $table->string('category')->nullable();            
             $table->string('ATA')->nullable();
@@ -25,6 +25,7 @@ return new class extends Migration
 
             // Create foreign keys
             $table->foreign('logbook_id')->references('logbook_id')->on('logbooks');
+            $table->foreign('trainee_id')->references('trainee_id')->on('trainees');
 
             $table->timestamps();
         });

@@ -18,7 +18,9 @@ class TraineeDetailsController extends Controller
      */
     public function index()
     {
-        //
+        $trainees = Trainee_details::all();
+
+        return response()->json(['trainees' => $trainees]);
     }
 
     /**
@@ -40,9 +42,15 @@ class TraineeDetailsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(trainee_details $trainee_details)
+    public function show(trainee_details $trainee_details, $trainee_id)
     {
-        //
+        $trainee = Trainee_details::find($trainee_id);
+
+        if (!$trainee) {
+            return response()->json(['message' => 'Trainee not found'], 404);
+        }
+    
+        return response()->json(['trainee' => $trainee]);
     }
 
     /**
@@ -56,9 +64,27 @@ class TraineeDetailsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Updatetrainee_detailsRequest $request, trainee_details $trainee_details)
+    public function update(Updatetrainee_detailsRequest $request, trainee_details $trainee_details, $trainee_id)
     {
-        //
+        $trainee = Trainee_details::find($trainee_id);
+
+        if (!$trainee) {
+            return response()->json(['message' => 'Trainee not found'], 404);
+        }
+
+        $data = $request->validate([
+            'uid' => 'required',
+            'first_name' => 'required',
+            'family_name' => 'required',
+            'email' => 'required|email',
+            'username' => 'required',
+            'password' => 'required',
+            // Add other validation rules for the fields you want to update
+        ]);
+
+        $trainee->update($data);
+
+        return response()->json(['message' => 'Trainee updated successfully']);
     }
 
     /**

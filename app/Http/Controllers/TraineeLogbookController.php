@@ -8,7 +8,7 @@ use App\Http\Requests\Storetrainee_logbookRequest;
 use App\Http\Requests\Updatetrainee_logbookRequest;
 use Illuminate\Http\Request;
 use App\Models\logbook;
-
+use App\Models\Trainee_details;
 
 class TraineeLogbookController extends Controller
 {
@@ -31,12 +31,11 @@ class TraineeLogbookController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function storeLogbookEntry(Storetrainee_logbookRequest $request)     //Add an entry to the logbook
+    public function storeLogbookEntry(Storetrainee_logbookRequest $request)
     {
         $data = $request->validate([
             'logbook_id' => 'required',
             'work_order_no' => 'required',
-            'log_name' => 'required',
             'task_detail' => 'nullable',
             'category' => 'nullable',
             'ATA' => 'nullable',
@@ -45,19 +44,24 @@ class TraineeLogbookController extends Controller
             'archived' => 'boolean',
         ]);
 
-        $trainee = Auth::guard('trainee')->user();
-        $logbook = $trainee->logbook;
+        $traineeId = $request->route('trainee_id'); // Get the trainee_id from the route parameter
+        $trainee = Trainee_details::findOrFail($traineeId);
+        $logbookId = $request->input('logbook_id');
+
+        $logbook = Logbook::findOrFail($logbookId); 
 
         $logbookEntry = new trainee_logbook($data);
-        $logbook->logbookEntries()->save($logbookEntry);
+        $logbookEntry->logbook_id = $logbookId;
+        $logbookEntry->trainee_id = $trainee->trainee_id;
+        $logbookEntry->save();
 
         return response()->json(['message' => 'Logbook entry added successfully'], 201);
-        }
+    }
 
     /**
      * Display the specified resource.
      */
-    public function showLogbook($logbookId, request $request, trainee_logbook $trainee_logbook)       //Retreive the logbook
+    public function showLogbookEntry($logbookId, request $request, trainee_logbook $trainee_logbook)       //Retreive the logbook
     {
             $traineeId = $request->input('trainee_id');
 
@@ -99,45 +103,33 @@ class TraineeLogbookController extends Controller
      */
     public function update(Updatetrainee_logbookRequest $request, trainee_logbook $trainee_logbook)
     {
-        $data = $request->validate([
-            'logbook_id' => 'required',
-            'work_order_no' => 'required',
-            'log_name' => 'required',
-            'task_detail' => 'nullable',
-            'category' => 'nullable',
-            'ATA' => 'nullable',
-            'TEE_SO' => 'nullable',
-            'INS_SO' => 'nullable',
-            'archived' => 'boolean',
+    $data = $request->validated();
+
+    $traineeId = $request->input('trainee_id');
+
+    $logbook = Logbook::where('trainee_id', $traineeId)->first();
+
+    if ($logbook) {
+        $logbook->fill([
+            'logbook_id' => $request->logbook_id,
+            'work_order_no' => $request->work_order_no,
+            'log_name' => $request->log_name,
+            'task_detail' => $request->task_detail,
+            'category' => $request->category,
+            'ATA' => $request->ATA,
+            'TEE_SO' => $request->TEE_SO,
+            'INS_SO' => $request->INS_SO,
+            'archived' => $request->archived
         ]);
 
-        $traineeId = $request->input('trainee_id');
+        $logbook->save();
 
-        $logbook = Logbook::where('trainee_id', $traineeId)->first();
-
-        $tasks = trainee_logbook::where('logbook_id', $logbook->logbook_id)
-                     ->where('trainee_id', $traineeId)
-                     ->get();
-
-        if ($logbook) {
-            $logbook = logbook::update([
-                'logbook_id' => $request -> logbook_id,
-                'work_order_no' => $request -> work_order_no,
-                'log_name' => $request -> log_name,
-                'task_detail' => $request -> task_detail,
-                'category' => $request -> category,
-                'ATA' => $request -> ATA,
-                'TEE_SO' => $request -> TEE_SO,
-                'INS_SO' => $request -> INS_SO,
-                'archived' => $request -> archived
-            ]);
-
-            return response()->json(['message' => 'Logbook successfully updated'], 200); 
-
+        return response()->json(['message' => 'Logbook successfully updated'], 200);
         } else {
-            return response()->json(['message' => "Logbook doesn't exist"], 404);
-        };
+        return response()->json(['message' => "Logbook doesn't exist"], 404);
+        }
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -145,16 +137,16 @@ class TraineeLogbookController extends Controller
     public function destroy(Request $request, trainee_logbook $trainee_logbook)
     {
         $traineeId = $request->input('trainee_id');
-
+    
         $logbook = Logbook::where('trainee_id', $traineeId)->first();
-
+    
         if ($logbook) {
-
-            $logbook = logbook::delete($logbook);
-
+            $logbook->delete();
+    
             return response()->json(['message' => 'Logbook successfully deleted'], 200);
         } else {
             return response()->json(['message' => 'Logbook not found'], 404);
         }
     }
+    
 }

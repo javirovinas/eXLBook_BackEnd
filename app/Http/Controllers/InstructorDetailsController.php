@@ -21,7 +21,11 @@ class InstructorDetailsController extends Controller
      */
     public function index()
     {
-        //
+        $instructors = Instructor_details::all();
+
+        return response()->json([
+        'instructors' => $instructors,
+        ]);
     }
 
     /**
@@ -43,9 +47,15 @@ class InstructorDetailsController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Instructor_details $instructor_details)
+    public function show(Instructor_details $instructor_details, $instructor_id)
     {
-        //
+        $instructor = Instructor_details::find($instructor_id);
+
+    if (!$instructor) {
+        return response()->json(['message' => 'Instructor not found'], 404);
+    }
+
+    return response()->json(['instructor' => $instructor]);
     }
 
     /**
@@ -59,9 +69,26 @@ class InstructorDetailsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateInstructor_detailsRequest $request, Instructor_details $instructor_details)
+    public function update(UpdateInstructor_detailsRequest $request, Instructor_details $instructor_details, $instructor_id)
     {
-        //
+        $instructor = Instructor_details::find($instructor_id);
+
+    if (!$instructor) {
+        return response()->json(['message' => 'Instructor not found'], 404);
+        }
+
+        $data = $request->validate([
+            'uid' => 'required',
+            'first_name' => 'required',
+            'family_name' => 'required',
+            'email' => 'required|email',
+            'username' => 'required',
+            'password' => 'required',
+        ]);
+
+    $instructor->update($data);
+
+    return response()->json(['message' => 'Instructor updated successfully']);
     }
 
     /**
