@@ -71,7 +71,7 @@ Route::post('admin/login', [AdminAuthController::class, 'login']);
 Route::post('/trainees/login', [TraineeLoginController::class, 'login']);
 
 //Routes for accessing the logbooks by trainee
-Route::get('/logbooks/{trainee_id}', [TraineeLogbookController::class, 'showLogbookEntry']);
+Route::get('/tasks/{trainee_id}', [TraineeLogbookController::class, 'showLogbookEntry']);
 
 //Route for logbook entry by trainee
 Route::post('/logbooks/{trainee_id}', [TraineeLogbookController::class, 'storeLogbookEntry']);
@@ -93,3 +93,6 @@ Route::get('/instructor/{instructor_id}/logbooks', [InstructorDetailsController:
 //Route for Instructor accessing logbooks
 Route::get('/instructor/{instructor_id}/logbooks/{logbookId}', [InstructorDetailsController::class, 'getTasks']);
 
+
+//Tasks
+//Add route for retrieving the tasks.
