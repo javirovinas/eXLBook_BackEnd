@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -17,6 +16,7 @@ return new class extends Migration
             $table->string('logbook_name');
             $table->unsignedBigInteger('trainee_id');
             $table->unsignedBigInteger('instructor_id');
+            $table->boolean('archived')->default(false);
             
             // Foreign keys
             $table->foreign('trainee_id')->references('trainee_id')->on('trainees')->onDelete('cascade');
@@ -25,7 +25,6 @@ return new class extends Migration
             $table->timestamps();
             
         });
-        DB::statement('ALTER TABLE logbooks AUTO_INCREMENT = 10000;');
     }
 
     /**

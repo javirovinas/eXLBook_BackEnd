@@ -1,11 +1,8 @@
-/** 
 <?php
-
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\DB;
-
 return new class extends Migration
 {
     /**
@@ -13,107 +10,75 @@ return new class extends Migration
      */
     public function up(): void
     {
-        /*$store_procedure = "
+        $store_procedure = "
             DROP PROCEDURE IF EXISTS `Insert_into_instructors`;
-
             CREATE PROCEDURE `Insert_into_instructors`(IN UID VARCHAR(255), IN first_name VARCHAR(255), IN family_name VARCHAR(255), IN i_username VARCHAR(255), IN i_password VARCHAR(255), IN email VARCHAR(255))
             BEGIN
                 INSERT INTO instructors (UID, first_name, family_name, i_username, i_password, email)
                 VALUES  
-                ('105', 'Rory', 'McCarthy', 'rorymcc', 'owefh23', 'rorymcc@gmail.com'),
-                ('110', 'John', 'Doe', 'j.doe', 'oethwe34', 'jdoe@gmail.com'),
-                ('200', 'Emily', 'Swift', 'em.swift', 'reoghiro54', 'eswift@gmail.com'),
-                ('103', 'Kate', 'Maher', 'kat.maher1', 'sfjsohi92', 'kmaher@gmail.com');
+                ('105857', 'Rory', 'McCarthy', 'rorymcc', 'owefh23', 'rorymcc@gmail.com');
             END;
 
             DROP PROCEDURE IF EXISTS `Insert_into_logbooks`;
-
             CREATE PROCEDURE `Insert_into_logbooks`(IN logbook_name VARCHAR(255), IN trainee_id BIGINT(20) UNSIGNED, IN instructor_id BIGINT(20) UNSIGNED)
             BEGIN
                 INSERT INTO logbooks (logbook_name, trainee_id, instructor_id)
                 VALUES  
-                ('logbook1', 1003, 102),
-                ('logbook2', 1000, 101),
-                ('logbook3', 1002, 100),
-                ('logbook4', 1001, 103);
+                ('logbook1', 3, 2);
             END;
 
             DROP PROCEDURE IF EXISTS `Insert_into_tasks`;
-
-            CREATE PROCEDURE `Insert_into_tasks`(IN logbook_id BIGINT(20) UNSIGNED, IN work_order_no INT(10) UNSIGNED, IN logbook_name VARCHAR(255), IN task_detail VARCHAR(255), IN category VARCHAR(255), IN ATA VARCHAR(255), IN archived TINYINT(1))
+            CREATE PROCEDURE `Insert_into_tasks`(IN logbook_id BIGINT(20) UNSIGNED, IN work_order_no INT(10) UNSIGNED, IN task_detail VARCHAR(255), IN category VARCHAR(255), IN ATA VARCHAR(255), IN archived TINYINT(1))
             BEGIN
-                INSERT INTO tasks (logbook_id, work_order_no, logbook_name, task_detail, category, ATA, archived)
+                INSERT INTO tasks (logbook_id, work_order_no, task_detail, category, ATA, archived)
                 VALUES  
-                ('10001', '1', 'logbook_1', 'This is task number 1', 'B', '21', '0'),
-                ('10001', '2', 'logbook_1', 'This is task number 2 (archived)', 'B', '21', '1'),
-                ('10001', '3', 'logbook_1', 'This is task number 2 re-entered', 'B', '21', '0'),
-                ('10001', '4', 'logbook_1', 'This is task number 3', 'B', '23', '0'),
-                ('10001', '5', 'logbook_1', 'This is task number 4', 'B', '23', '0'),
-                ('10002', '1', 'logbook_2', 'Entering a task here', 'A1', '13', '0'),
-                ('10002', '2', 'logbook_2', 'Entering a task for task 2 here', 'A1', '13', '0'),
-                ('10002', '3', 'logbook_2', 'Entering a task for task 3 here', 'A1', '14', '0'),
-                ('10003', '1', 'logbook_3', 'Student filled task 1', 'C2', '07', '0'),
-                ('10003', '2', 'logbook_3', 'Student filled task 2', 'C2', '07', '0'),
-                ('10003', '3', 'logbook_3', 'Student filled task 3', 'C2', '07', '0'),
-                ('10003', '4', 'logbook_3', 'Student filled task 3 (archived)', 'C2', '07', '1'),
-                ('10003', '5', 'logbook_3', 'Student filled task 3 again', 'C2', '07', '0');
+                ('1', '1', 'Maintenance_Logbook', 'Completed all transit checks', 'B', '21', '0');
             END;
-
+            
             DROP PROCEDURE IF EXISTS `Insert_into_trainees`;
-
             CREATE PROCEDURE `Insert_into_trainees`(IN UID varchar(255), IN first_name VARCHAR(255), IN family_name VARCHAR(255), IN t_username VARCHAR(255), IN t_password VARCHAR(255), IN email VARCHAR(255))
             BEGIN
             INSERT INTO trainees (UID, first_name, family_name, t_username, t_password, email)
             VALUES  
-                ('1050', 'Terry', 'Miller', 't.miller1', 'jsgeey159', 'tmiller@gmail.com'),
-                ('1234', 'Jane', 'Ryan', 'j.ryan', 'wywooev739', 'jdoe@gmail.com'), 
-                ('2345', 'Barry', 'Sweeney', 'b.sweeney12', 'oiwqwwehqy98', 'bsweeney@gmail.com'),
-                ('1879', 'Lisa', 'Brennan', 'liz.brenn1', 'hewaiu09', 'lbrennan@gmail.com');
+                ('1050739', 'Terry', 'Miller', 't.miller1', 'jsgeey159', 'tmiller@gmail.com');
             END;
         ";
-
         DB::unprepared($store_procedure);
+        // Insert data into tables
+        DB::table('instructors')->insert([
+            ['UID' => '105840', 'first_name' => 'Rory', 'family_name' => 'McCarthy', 'i_username' => 'rorymcc', 'i_password' => 'owefh23', 'email' => 'rorymcc@gmail.com'],
+            ['UID' => '110254', 'first_name' => 'John', 'family_name' => 'Doe', 'i_username' => 'j.doe', 'i_password' => 'oethwe34', 'email' => 'jdoe@gmail.com'],
+            ['UID' => '200227', 'first_name' => 'Emily', 'family_name' => 'Swift', 'i_username' => 'em.swift', 'i_password' => 'reoghiro54', 'email' => 'eswift@gmail.com'],
+            ['UID' => '203735', 'first_name' => 'Kate', 'family_name' => 'Maher', 'i_username' => 'kat.maher1', 'i_password' => 'sfjsohi92', 'email' => 'kmaher@gmail.com'],
+        ]);
+        
+        DB::table('trainees')->insert([
+            ['UID' => '105085', 'first_name' => 'Terry', 'family_name' => 'Miller', 't_username' => 't.miller1', 't_password' => 'jsgeey159', 'email' => 'tmiller@gmail.com'],
+            ['UID' => '123495', 'first_name' => 'Jane', 'family_name' => 'Ryan', 't_username' => 'j.ryan', 't_password' => 'wywooev739', 'email' => 'jdoe@gmail.com'],
+            ['UID' => '234534', 'first_name' => 'Barry', 'family_name' => 'Sweeney', 't_username' => 'b.sweeney12', 't_password' => 'oiwqwwehqy98', 'email' => 'bsweeney@gmail.com'],
+            ['UID' => '187962', 'first_name' => 'Lisa', 'family_name' => 'Brennan', 't_username' => 'liz.brenn1', 't_password' => 'hewaiu09', 'email' => 'lbrennan@gmail.com'],
+        ]);
 
-    //     // Insert data into tables
-
-    //     DB::table('instructors')->insert([
-    //         ['UID' => '105', 'first_name' => 'Rory', 'family_name' => 'McCarthy', 'i_username' => 'rorymcc', 'i_password' => 'owefh23', 'email' => 'rorymcc@gmail.com'],
-    //         ['UID' => '110', 'first_name' => 'John', 'family_name' => 'Doe', 'i_username' => 'j.doe', 'i_password' => 'oethwe34', 'email' => 'jdoe@gmail.com'],
-    //         ['UID' => '200', 'first_name' => 'Emily', 'family_name' => 'Swift', 'i_username' => 'em.swift', 'i_password' => 'reoghiro54', 'email' => 'eswift@gmail.com'],
-    //         ['UID' => '103', 'first_name' => 'Kate', 'family_name' => 'Maher', 'i_username' => 'kat.maher1', 'i_password' => 'sfjsohi92', 'email' => 'kmaher@gmail.com'],
-    //     ]);
-
-    //     DB::table('trainees')->insert([
-    //         ['UID' => '1050', 'first_name' => 'Terry', 'family_name' => 'Miller', 't_username' => 't.miller1', 't_password' => 'jsgeey159', 'email' => 'tmiller@gmail.com'],
-    //         ['UID' => '1234', 'first_name' => 'Jane', 'family_name' => 'Ryan', 't_username' => 'j.ryan', 't_password' => 'wywooev739', 'email' => 'jdoe@gmail.com'],
-    //         ['UID' => '2345', 'first_name' => 'Barry', 'family_name' => 'Sweeney', 't_username' => 'b.sweeney12', 't_password' => 'oiwqwwehqy98', 'email' => 'bsweeney@gmail.com'],
-    //         ['UID' => '1879', 'first_name' => 'Lisa', 'family_name' => 'Brennan', 't_username' => 'liz.brenn1', 't_password' => 'hewaiu09', 'email' => 'lbrennan@gmail.com'],
-    //     ]);
-
-    //     DB::table('logbooks')->insert([
-    //         ['logbook_name' => 'logbook1', 'trainee_id' => 1003, 'instructor_id' => 102],
-    //         ['logbook_name' => 'logbook2', 'trainee_id' => 1000, 'instructor_id' => 101],
-    //         ['logbook_name' => 'logbook3', 'trainee_id' => 1002, 'instructor_id' => 100],
-    //         ['logbook_name' => 'logbook4', 'trainee_id' => 1001, 'instructor_id' => 103],
-    //     ]);
+        DB::table('logbooks')->insert([
+            ['logbook_name' => 'Maintenance_Logbook', 'trainee_id' => 4, 'instructor_id' => 3],
+            ['logbook_name' => 'Communications_Logbook', 'trainee_id' => 1, 'instructor_id' => 2],
+            ['logbook_name' => 'Physics_Logbook', 'trainee_id' => 3, 'instructor_id' => 1],
+            ['logbook_name' => 'Technologies_Logbook', 'trainee_id' => 2, 'instructor_id' => 4],
+        ]);
 
         DB::table('tasks')->insert([
-            ['logbook_id' => 10001, 'work_order_no' => 1, 'logbook_name' => 'logbook_1', 'task_detail' => 'This is task number 1', 'category' => 'B', 'ATA' => '21', 'archived' => 0],
-            ['logbook_id' => 10001, 'work_order_no' => 2, 'logbook_name' => 'logbook_1', 'task_detail' => 'This is task number 2 (archived)', 'category' => 'B', 'ATA' => '21', 'archived' => 1],
-            ['logbook_id' => 10001, 'work_order_no' => 3, 'logbook_name' => 'logbook_1', 'task_detail' => 'This is task number 2 re-entered', 'category' => 'B', 'ATA' => '21', 'archived' => 0],
-            ['logbook_id' => 10001, 'work_order_no' => 4, 'logbook_name' => 'logbook_1', 'task_detail' => 'This is task number 3', 'category' => 'B', 'ATA' => '23', 'archived' => 0],
-            ['logbook_id' => 10001, 'work_order_no' => 5, 'logbook_name' => 'logbook_1', 'task_detail' => 'This is task number 4', 'category' => 'B', 'ATA' => '23', 'archived' => 0],
-            ['logbook_id' => 10002, 'work_order_no' => 1, 'logbook_name' => 'logbook_2', 'task_detail' => 'Entering a task here', 'category' => 'A1', 'ATA' => '13', 'archived' => 0],
-            ['logbook_id' => 10002, 'work_order_no' => 2, 'logbook_name' => 'logbook_2', 'task_detail' => 'Entering a task for task 2 here', 'category' => 'A1', 'ATA' => '13', 'archived' => 0],
-            ['logbook_id' => 10002, 'work_order_no' => 3, 'logbook_name' => 'logbook_2', 'task_detail' => 'Entering a task for task 3 here', 'category' => 'A1', 'ATA' => '14', 'archived' => 0],
-            ['logbook_id' => 10003, 'work_order_no' => 1, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 1', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
-            ['logbook_id' => 10003, 'work_order_no' => 2, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 2', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
-            ['logbook_id' => 10003, 'work_order_no' => 3, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 3', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
-            ['logbook_id' => 10003, 'work_order_no' => 4, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 3 (archived)', 'category' => 'C2', 'ATA' => '07', 'archived' => 1],
-            ['logbook_id' => 10003, 'work_order_no' => 5, 'logbook_name' => 'logbook_3', 'task_detail' => 'Student filled task 3 again', 'category' => 'C2', 'ATA' => '07', 'archived' => 0],
-        ]);*/
+            ['logbook_id' => 1, 'work_order_no' => 500234, 'task_detail' => 'Completed all transit checks', 'category' => 'B', 'ATA' => '21'],
+            ['logbook_id' => 1, 'work_order_no' => 500236,'task_detail' => 'Maintenance pre-flight checks completed', 'category' => 'B', 'ATA' => '21'],
+            ['logbook_id' => 2, 'work_order_no' => 637951, 'task_detail' => 'Tested aeronautical radio systems', 'category' => 'A1', 'ATA' => '13'],
+            ['logbook_id' => 2, 'work_order_no' => 637952, 'task_detail' => 'Fixed VHF radios', 'category' => 'A1', 'ATA' => '13',],
+            ['logbook_id' => 2, 'work_order_no' => 637953, 'task_detail' => 'Evaluated range performance of communication technologies', 'category' => 'A1', 'ATA' => '13'],
+            ['logbook_id' => 3, 'work_order_no' => 712008, 'task_detail' => 'Calculated aerodynamic questions', 'category' => 'C2', 'ATA' => '07'],
+            ['logbook_id' => 3, 'work_order_no' => 712009, 'task_detail' => 'Experimented with different aircraft lifts', 'category' => 'C2', 'ATA' => '07'],
+            ['logbook_id' => 3, 'work_order_no' => 712010, 'task_detail' => 'Studied how drag affects flight', 'category' => 'C2', 'ATA' => '07'],
+            ['logbook_id' => 3, 'work_order_no' => 712011, 'task_detail' => 'Explored physics concepts involved in aviation', 'category' => 'C2', 'ATA' => '07'],
+            ['logbook_id' => 4, 'work_order_no' => 854209, 'task_detail' => 'Fixed some in-flight connectivity issues', 'category' => 'A', 'ATA' => '19'],
+        ]);
     }
-
     /**
      * Reverse the migrations.
      */
@@ -124,11 +89,9 @@ return new class extends Migration
         DB::unprepared("DROP PROCEDURE IF EXISTS `Insert_into_tasks`;");
         DB::unprepared("DROP PROCEDURE IF EXISTS `Insert_into_trainees`;");
 
-        Schema::dropIfExists('tasks');
         Schema::dropIfExists('logbooks');
         Schema::dropIfExists('trainees');
         Schema::dropIfExists('instructors');
+        Schema::dropIfExists('tasks');
     }
 };
-
-
