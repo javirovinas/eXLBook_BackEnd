@@ -23,6 +23,7 @@ use GuzzleHttp\Middleware;
 |
 */
 
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
@@ -40,7 +41,7 @@ Route::post('admin/login', [AdminAuthController::class, 'login']);
     // Routes for creating new  trainee accounts
     Route::post('/trainees', [AdminController::class, 'createTrainee']);
     //Route for GET trainees
-    Route::get('/trainees', [TraineeDetailsController::class, 'index']);
+    Route::get('/5trainees', [TraineeDetailsController::class, 'index']);
     Route::get('/trainees/{trainee_id}', [TraineeDetailsController::class, 'show']);
     //Route for PUT requests - Trainees
     Route::put('/trainees/{trainee_id}', [TraineeDetailsController::class, 'update']);
