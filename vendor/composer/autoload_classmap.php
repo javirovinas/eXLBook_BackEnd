@@ -53,6 +53,7 @@ return array(
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Models\\instructor_login' => $baseDir . '/app/Models/instructor_login.php',
     'App\\Models\\logbook' => $baseDir . '/app/Models/logbook.php',
+    'App\\Models\\trainee_details' => $baseDir . '/app/Models/trainee_details.php',
     'App\\Models\\trainee_logbook' => $baseDir . '/app/Models/trainee_logbook.php',
     'App\\Policies\\AdminCreatePolicy' => $baseDir . '/app/Policies/AdminCreatePolicy.php',
     'App\\Policies\\AdminLoginPolicy' => $baseDir . '/app/Policies/AdminLoginPolicy.php',
