@@ -10,8 +10,7 @@ use App\Http\Controllers\InstructorLoginController;
 use App\Http\Controllers\TraineeDetailsController;
 use App\Http\Controllers\TraineeLoginController;
 use App\Http\Controllers\TraineeLogbookController;
-use GuzzleHttp\Middleware;
-
+use App\Http\Middleware\CorsMiddleware;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -23,29 +22,29 @@ use GuzzleHttp\Middleware;
 |
 */
 
-
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
 //Admin Create
 Route::post('/register', [AdminAuthController::class, 'createAdmin']);
-
-// Admin Login route
+//admin login
+Route::middleware(['cors'])->group(function () {
 Route::post('/adminlogin', [AdminAuthController::class, 'login']);
-
+});
 
 //Admin authentication required routes 
-//Route::group(['middleware' => 'auth.admin'], function () {
     
+
     // Routes for creating new  trainee accounts
+    Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('/trainees', [AdminController::class, 'createTrainee']);
+    });
     //Route for GET trainees
     Route::get('/trainees', [TraineeDetailsController::class, 'index']);
     Route::get('/trainees/{trainee_id}', [TraineeDetailsController::class, 'show']);
     //Route for PUT requests - Trainees
     Route::put('/trainees/{trainee_id}', [TraineeDetailsController::class, 'update']);
-    
     
     // Routes for creating new instructor accounts
     Route::post('/instructors', [AdminController::class, 'createinstructor']);
