@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Admin_login;
 use App\Models\Trainee_details;
 use App\Models\Instructor_details;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
@@ -56,6 +57,10 @@ class AdminController extends Controller
         if (!$this->authenticateAdmin($adminToken)) {
             return response()->json(['message' => 'Invalid token'], 401);
         }*/
+        $admin = Auth::guard('sanctum')->user();
+        if (!$admin) {
+        return response()->json(['message' => 'Unauthorized'], 401);
+        }
     
         $data = $request->validate([
             'uid' => 'required',

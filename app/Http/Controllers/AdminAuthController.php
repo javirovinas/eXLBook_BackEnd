@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use App\Models\Admin_login;
 use Illuminate\Http\Request;
@@ -13,6 +14,7 @@ use Illuminate\Http\Response;
 use App\Traits\ApiResponser;
 class AdminAuthController extends Controller
 {
+    
     use ApiResponser;
     public function createAdmin(Request $request)
     {
@@ -35,7 +37,7 @@ class AdminAuthController extends Controller
 
     public function login(Request $request, Response $response)
     {
-        $data = $request->validate([
+            $data = $request->validate([
             'username' => 'required',
             'password' => 'required'
         ]);
@@ -46,8 +48,12 @@ class AdminAuthController extends Controller
             return $this->error('Credentials not match', 401);
         }
     
+        $token = $admin->createToken('api_token')->plainTextToken;
+        $admin->api_token = $token; // Assign the token to the `api_token` attribute
+        $admin->save(); // Save the model with the updated token
+    
         return $this->success([
-            'token' => $admin->createToken('api_token')->plainTextToken
+            'token' => $token
         ]);
     }
 }
