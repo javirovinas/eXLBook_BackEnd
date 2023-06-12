@@ -13,7 +13,6 @@ class InstructorDetailsSeeder extends Seeder
      */
     public function run(): void
     {
-        //
         DB::table('instructors')->insert([
             ['UID' => '105840', 'first_name' => 'Rory', 'family_name' => 'McCarthy', 'i_username' => 'rorymcc', 'i_password' => 'owefh23', 'email' => 'rorymcc@gmail.com'],
             ['UID' => '110254', 'first_name' => 'John', 'family_name' => 'Doe', 'i_username' => 'j.doe', 'i_password' => 'oethwe34', 'email' => 'jdoe@gmail.com'],

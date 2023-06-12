@@ -17,7 +17,10 @@ class TraineeLogbookController extends Controller
      */
     public function index()
     {
-        //
+        {
+            $tasks = trainee_logbook::all();
+            return response()->json($tasks);
+        }
     }
 
     /**

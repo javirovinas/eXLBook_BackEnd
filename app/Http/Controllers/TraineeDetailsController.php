@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Trainee_details;
+use App\Models\trainee_details;
 use App\Models\trainee_logbook;
 use App\Models\logbook;
 use App\Http\Requests\Storetrainee_detailsRequest;
@@ -18,6 +18,7 @@ class TraineeDetailsController extends Controller
      */
     public function index()
     {
+        
         $trainees = Trainee_details::all();
 
         return response()->json(['trainees' => $trainees]);

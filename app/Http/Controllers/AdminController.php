@@ -8,13 +8,20 @@ use Illuminate\Http\Request;
 use App\Models\Admin_login;
 use App\Models\Trainee_details;
 use App\Models\Instructor_details;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\ValidationException;
 
 class AdminController extends Controller
 {
     
     public function createInstructor(Request $request)
     {
+
+        $token = $request->header('Authorization');
+        if (!$this->authenticateAdmin($token)) {
+            throw ValidationException::withMessages(['token' => 'Invalid token']);
+        }
     $data = $request->validate([
         'uid' => 'required',
         'first_name' => 'required',
@@ -44,6 +51,17 @@ class AdminController extends Controller
 
     public function createTrainee(Request $request)
     {
+
+        /*$adminToken = $request->header('Authorization');
+    
+        if (!$this->authenticateAdmin($adminToken)) {
+            return response()->json(['message' => 'Invalid token'], 401);
+        }*/
+        $admin = Auth::guard('sanctum')->user();
+        if (!$admin) {
+        return response()->json(['message' => 'Unauthorized'], 401);
+        }
+    
         $data = $request->validate([
             'uid' => 'required',
             'first_name' => 'required',
@@ -52,6 +70,7 @@ class AdminController extends Controller
             'username' => 'required',
             'password' => 'required',
         ]);
+    
         $traineeData = [
             'UID' => $data['uid'],
             'first_name' => $data['first_name'],
@@ -59,14 +78,20 @@ class AdminController extends Controller
             't_username' => $data['username'],
             't_password' => $data['password'],
             'email' => $data['email'],
-             ];
-
-            $trainee = Trainee_details::create($traineeData);
-            return response()->json([
-            'message' => 'Trainee created successfully',
-            'trainee' => $trainee,
-            ]);
+        ];
+    
+        $trainee = Trainee_details::create($traineeData);
+        return response()->json(['success' => true, 'message' => 'Trainee created successfully', 'trainee' => $trainee], 200);
     }
+    
+    /*private function authenticateAdmin($token)
+    {
+        
+        $admin = Admin_login::where('api_token', $token)->first();
+
+        return $admin !== null;
+    }*/
+
 
     
     /**
