@@ -18,6 +18,7 @@ class TraineeDetailsController extends Controller
      */
     public function index()
     {
+        
         $trainees = Trainee_details::all();
 
         return response()->json(['trainees' => $trainees]);
