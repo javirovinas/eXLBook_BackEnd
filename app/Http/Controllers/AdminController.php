@@ -18,10 +18,11 @@ class AdminController extends Controller
     public function createInstructor(Request $request)
     {
 
-        $token = $request->header('Authorization');
-        if (!$this->authenticateAdmin($token)) {
-            throw ValidationException::withMessages(['token' => 'Invalid token']);
+        $admin = Auth::guard('sanctum')->user();
+        if (!$admin) {
+        return response()->json(['message' => 'Unauthorized'], 401);
         }
+    
     $data = $request->validate([
         'uid' => 'required',
         'first_name' => 'required',

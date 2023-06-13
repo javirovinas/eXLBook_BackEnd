@@ -9,9 +9,12 @@ use App\Models\Instructor_details;
 class logbook extends Model
 {
     protected $fillable = [ 'logbook_id', 
-                            'logbook_name', 
+                            'logbook_name',
+                            'date', 
                             'instructor_id', 
-                            'trainee_id'
+                            'trainee_id',
+                            'instructor_name',
+                            'trainee_name',
                           ];
     protected $primaryKey = 'logbook_id';
 
