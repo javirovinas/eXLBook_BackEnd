@@ -21,10 +21,7 @@ use function restore_error_handler;
 use function set_error_handler;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\NoTestCaseObjectOnCallStackException;
-<<<<<<< HEAD
 use PHPUnit\Util\ExcludeList;
-=======
->>>>>>> ae7529c761cb603e1032bf9382ea4e3a2c0c9405
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -46,13 +43,10 @@ final class ErrorHandler
     {
         $suppressed = !($errorNumber & error_reporting());
 
-<<<<<<< HEAD
         if ($suppressed && (new ExcludeList)->isExcluded($errorFile)) {
             return false;
         }
 
-=======
->>>>>>> ae7529c761cb603e1032bf9382ea4e3a2c0c9405
         switch ($errorNumber) {
             case E_NOTICE:
             case E_STRICT:
