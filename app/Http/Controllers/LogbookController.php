@@ -7,36 +7,46 @@ use App\Models\Instructor_details;
 use App\Models\Trainee_details;
 use App\Http\Requests\StorelogbookRequest;
 use App\Http\Requests\UpdatelogbookRequest;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 
 class LogbookController extends Controller
 {
     public function assignLogbook(Request $request)
-        {
-            $data = $request->validate([
-                'logbook_name' => 'required',
-                'instructor_id' => 'required',
-                'trainee_id' => 'required',
-            ]);
-    
-            // Retrieve the instructor and trainee by their IDs
-            $instructor = Instructor_details::findOrFail($data['instructor_id']);
-            $trainee = Trainee_details::findOrFail($data['trainee_id']);
+    {
+    $admin = Auth::guard('sanctum')->user();
+    if (!$admin) {
+        return response()->json(['message' => 'Unauthorized'], 401);
+    }
 
-             // Check if the trainee is already assigned to a different instructor
-            if ($trainee->logbook && $trainee->logbook->instructor_id !== $instructor->instructor_id) {
-            return response()->json(['message' => 'Trainee is already assigned to a different instructor'], 400);
-            }
-    
-            // Create a new logbook record and associate it with the instructor and trainee
-            $logbook = new Logbook($data);
-            $logbook->instructor_id = $instructor->instructor_id;
-            $logbook->trainee_id = $trainee->trainee_id;
-            $logbook->save();
-    
-            return response()->json(['message' => 'Logbook assigned successfully'], 201);
-        }
+    $data = $request->validate([
+        'logbook_name' => 'required',
+        'date' => 'date|required',
+        'instructor_id' => 'required',
+        'trainee_id' => 'required',
+    ]);
+
+    // Retrieve the instructor and trainee by their IDs
+    $instructor = Instructor_details::findOrFail($data['instructor_id']);
+    $trainee = Trainee_details::findOrFail($data['trainee_id']);
+
+    // Check if the trainee is already assigned to a different instructor
+    if ($trainee->logbook && $trainee->logbook->instructor_id !== $instructor->instructor_id) {
+        return response()->json(['message' => 'Trainee is already assigned to a different instructor'], 400);
+    }
+
+    // Create a new logbook record and associate it with the instructor and trainee
+    $logbook = new Logbook($data);
+    $logbook->instructor_id = $instructor->instructor_id;
+    $logbook->trainee_id = $trainee->trainee_id;
+    $logbook->instructor_name = $instructor->full_name; // Save instructor name
+    $logbook->trainee_name = $trainee->full_name; // Save trainee name
+    $logbook->save();
+
+    return response()->json(['message' => 'Logbook assigned successfully'], 201);
+    }
+
     /**
      * Display a listing of the resource.
      */
