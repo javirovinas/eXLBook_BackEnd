@@ -6,6 +6,7 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'App\\Auth\\TokenGuard' => $baseDir . '/app/Auth/TokenGuard.php',
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
     'App\\Http\\Controllers\\AdminAuthController' => $baseDir . '/app/Http/Controllers/AdminAuthController.php',
@@ -71,6 +72,7 @@ return array(
     'App\\Providers\\BroadcastServiceProvider' => $baseDir . '/app/Providers/BroadcastServiceProvider.php',
     'App\\Providers\\EventServiceProvider' => $baseDir . '/app/Providers/EventServiceProvider.php',
     'App\\Providers\\RouteServiceProvider' => $baseDir . '/app/Providers/RouteServiceProvider.php',
+    'App\\Traits\\ApiResponser' => $baseDir . '/app/Traits/ApiResponser.php',
     'Attribute' => $vendorDir . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
     'Brick\\Math\\BigDecimal' => $vendorDir . '/brick/math/src/BigDecimal.php',
     'Brick\\Math\\BigInteger' => $vendorDir . '/brick/math/src/BigInteger.php',
@@ -796,6 +798,7 @@ return array(
     'Faker\\Provider\\nl_NL\\PhoneNumber' => $vendorDir . '/fakerphp/faker/src/Faker/Provider/nl_NL/PhoneNumber.php',
     'Faker\\Provider\\nl_NL\\Text' => $vendorDir . '/fakerphp/faker/src/Faker/Provider/nl_NL/Text.php',
     'Faker\\Provider\\pl_PL\\Address' => $vendorDir . '/fakerphp/faker/src/Faker/Provider/pl_PL/Address.php',
+    'Faker\\Provider\\pl_PL\\Color' => $vendorDir . '/fakerphp/faker/src/Faker/Provider/pl_PL/Color.php',
     'Faker\\Provider\\pl_PL\\Company' => $vendorDir . '/fakerphp/faker/src/Faker/Provider/pl_PL/Company.php',
     'Faker\\Provider\\pl_PL\\Internet' => $vendorDir . '/fakerphp/faker/src/Faker/Provider/pl_PL/Internet.php',
     'Faker\\Provider\\pl_PL\\LicensePlate' => $vendorDir . '/fakerphp/faker/src/Faker/Provider/pl_PL/LicensePlate.php',
@@ -2745,6 +2748,8 @@ return array(
     'Mockery\\Matcher\\Ducktype' => $vendorDir . '/mockery/mockery/library/Mockery/Matcher/Ducktype.php',
     'Mockery\\Matcher\\HasKey' => $vendorDir . '/mockery/mockery/library/Mockery/Matcher/HasKey.php',
     'Mockery\\Matcher\\HasValue' => $vendorDir . '/mockery/mockery/library/Mockery/Matcher/HasValue.php',
+    'Mockery\\Matcher\\IsEqual' => $vendorDir . '/mockery/mockery/library/Mockery/Matcher/IsEqual.php',
+    'Mockery\\Matcher\\IsSame' => $vendorDir . '/mockery/mockery/library/Mockery/Matcher/IsSame.php',
     'Mockery\\Matcher\\MatcherAbstract' => $vendorDir . '/mockery/mockery/library/Mockery/Matcher/MatcherAbstract.php',
     'Mockery\\Matcher\\MultiArgumentClosure' => $vendorDir . '/mockery/mockery/library/Mockery/Matcher/MultiArgumentClosure.php',
     'Mockery\\Matcher\\MustBe' => $vendorDir . '/mockery/mockery/library/Mockery/Matcher/MustBe.php',
@@ -3527,10 +3532,7 @@ return array(
     'PHPUnit\\Metadata\\Version\\ConstraintRequirement' => $vendorDir . '/phpunit/phpunit/src/Metadata/Version/ConstraintRequirement.php',
     'PHPUnit\\Metadata\\Version\\Requirement' => $vendorDir . '/phpunit/phpunit/src/Metadata/Version/Requirement.php',
     'PHPUnit\\Runner\\ClassCannotBeFoundException' => $vendorDir . '/phpunit/phpunit/src/Runner/Exception/ClassCannotBeFoundException.php',
-<<<<<<< HEAD
     'PHPUnit\\Runner\\ClassDoesNotExtendTestCaseException' => $vendorDir . '/phpunit/phpunit/src/Runner/Exception/ClassDoesNotExtendTestCaseException.php',
-=======
->>>>>>> ae7529c761cb603e1032bf9382ea4e3a2c0c9405
     'PHPUnit\\Runner\\ClassIsAbstractException' => $vendorDir . '/phpunit/phpunit/src/Runner/Exception/ClassIsAbstractException.php',
     'PHPUnit\\Runner\\CodeCoverage' => $vendorDir . '/phpunit/phpunit/src/Runner/CodeCoverage.php',
     'PHPUnit\\Runner\\DirectoryCannotBeCreatedException' => $vendorDir . '/phpunit/phpunit/src/Runner/Exception/DirectoryCannotBeCreatedException.php',
@@ -3757,8 +3759,8 @@ return array(
     'PHPUnit\\TextUI\\XmlConfiguration\\MoveAttributesFromFilterWhitelistToCoverage' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/MoveAttributesFromFilterWhitelistToCoverage.php',
     'PHPUnit\\TextUI\\XmlConfiguration\\MoveAttributesFromRootToCoverage' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/MoveAttributesFromRootToCoverage.php',
     'PHPUnit\\TextUI\\XmlConfiguration\\MoveCoverageDirectoriesToSource' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/MoveCoverageDirectoriesToSource.php',
-    'PHPUnit\\TextUI\\XmlConfiguration\\MoveWhitelistDirectoriesToCoverage' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/MoveWhitelistDirectoriesToCoverage.php',
     'PHPUnit\\TextUI\\XmlConfiguration\\MoveWhitelistExcludesToCoverage' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/MoveWhitelistExcludesToCoverage.php',
+    'PHPUnit\\TextUI\\XmlConfiguration\\MoveWhitelistIncludesToCoverage' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/MoveWhitelistIncludesToCoverage.php',
     'PHPUnit\\TextUI\\XmlConfiguration\\PHPUnit' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/PHPUnit.php',
     'PHPUnit\\TextUI\\XmlConfiguration\\RemoveBeStrictAboutResourceUsageDuringSmallTestsAttribute' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveBeStrictAboutResourceUsageDuringSmallTestsAttribute.php',
     'PHPUnit\\TextUI\\XmlConfiguration\\RemoveBeStrictAboutTodoAnnotatedTestsAttribute' => $vendorDir . '/phpunit/phpunit/src/TextUI/Configuration/Xml/Migration/Migrations/RemoveBeStrictAboutTodoAnnotatedTestsAttribute.php',
@@ -5571,7 +5573,6 @@ return array(
     'Symfony\\Component\\String\\Inflector\\FrenchInflector' => $vendorDir . '/symfony/string/Inflector/FrenchInflector.php',
     'Symfony\\Component\\String\\Inflector\\InflectorInterface' => $vendorDir . '/symfony/string/Inflector/InflectorInterface.php',
     'Symfony\\Component\\String\\LazyString' => $vendorDir . '/symfony/string/LazyString.php',
-    'Symfony\\Component\\String\\Resources\\WcswidthDataGenerator' => $vendorDir . '/symfony/string/Resources/WcswidthDataGenerator.php',
     'Symfony\\Component\\String\\Slugger\\AsciiSlugger' => $vendorDir . '/symfony/string/Slugger/AsciiSlugger.php',
     'Symfony\\Component\\String\\Slugger\\SluggerInterface' => $vendorDir . '/symfony/string/Slugger/SluggerInterface.php',
     'Symfony\\Component\\String\\UnicodeString' => $vendorDir . '/symfony/string/UnicodeString.php',

@@ -13,7 +13,7 @@ class trainee_logbook extends Model
 
 
     protected $table = 'tasks';
-    protected $fillable = ['logbook_id', 'work_order_no', 'task_detail', 'category', 'ATA', 'TEE_SO', 'INS_SO'];
+    protected $fillable = ['trainee_id', 'logbook_id', 'work_order_no', 'task_detail', 'category', 'ATA', 'TEE_SO', 'INS_SO'];
     public function logbook()
     {
         return $this->belongsTo(Logbook::class);
