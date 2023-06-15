@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Storetrainee_logbookRequest;
 use App\Http\Requests\Updatetrainee_logbookRequest;
 use Illuminate\Http\Request;
-use App\Models\logbook;
+use App\Models\Logbook;
 use App\Models\Trainee_details;
 
 class TraineeLogbookController extends Controller
@@ -37,7 +37,6 @@ class TraineeLogbookController extends Controller
     public function storeLogbookEntry(Storetrainee_logbookRequest $request)
     {
         $data = $request->validate([
-            'logbook_id' => 'required',
             'work_order_no' => 'required',
             'task_detail' => 'nullable',
             'category' => 'nullable',
@@ -46,42 +45,48 @@ class TraineeLogbookController extends Controller
             'INS_SO' => 'nullable',
             'archived' => 'boolean',
         ]);
-
-        $traineeId = $request->route('trainee_id'); // Get the trainee_id from the route parameter
+    
+         $traineeId = $request->route('trainee_id'); // Get the trainee_id from the route parameter
         $trainee = Trainee_details::findOrFail($traineeId);
-        $logbookId = $request->input('logbook_id');
 
-        $logbook = Logbook::findOrFail($logbookId); 
+        // Retrieve the logbook associated with the trainee
+        $logbook = Logbook::where('trainee_id', $traineeId)->first();
 
-        $logbookEntry = new trainee_logbook($data);
-        $logbookEntry->logbook_id = $logbookId;
-        $logbookEntry->trainee_id = $trainee->trainee_id;
-        $logbookEntry->save();
+        if ($logbook) {
+            $logbookEntry = new trainee_logbook($data);
+            $logbookEntry->logbook_id = $logbook->logbook_id;
+            $logbookEntry->trainee_id = $trainee->trainee_id;
+            $logbookEntry->save();
 
         return response()->json(['message' => 'Logbook entry added successfully'], 201);
-    }
+        } else {
+            return response()->json(['message' => 'Logbook not found for the given trainee'], 404);
+            }
+    }        
 
     /**
      * Display the specified resource.
      */
-    public function showLogbookEntry($logbookId, request $request, trainee_logbook $trainee_logbook)       //Retreive the logbook
+    public function showLogbookEntry($traineeId, Request $request)
     {
-            $traineeId = $request->input('trainee_id');
+        $logbook =Logbook::find($traineeId);
+    /*$logbook = Logbook::where('trainee_id', $traineeId)->first();
+*/
 
-             // Retrieve the logbook associated with the trainee
-            $logbook = Logbook::where('trainee_id', $traineeId)->first();
+    if ($logbook) {
+        // Retrieve the tasks associated with the logbook
+        $tasks = Trainee_logbook::where('trainee_id', $traineeId)
+        ->get();
 
-            if ($logbook) {
-            // Retrieve the tasks associated with the logbook
-            $tasks = trainee_logbook::where('logbook_id', $logbook->logbook_id)
-                     ->where('trainee_id', $traineeId)
-                     ->get();
-
-            return response()->json(['logbook' => $logbook, 'tasks' => $tasks], 200);
-            } else {
-                return response()->json(['message' => 'Logbook not found for the given trainee'], 404);
-                }
+        if ($tasks->isNotEmpty()) {
+            return response()->json(['tasks' => $tasks], 200);
+        } else {
+            return response()->json(['message' => 'Tasks not found for the given trainee'], 404);
+        }
+    } else {
+        return response()->json(['message' => 'Logbook not found for the given trainee'], 404);
     }
+}
 
     public function saveLogbook(Request $request)
     {

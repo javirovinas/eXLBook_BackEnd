@@ -77,7 +77,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::get('/tasks/{trainee_id}', [TraineeLogbookController::class, 'showLogbookEntry']);
 
 //Route for logbook entry by trainee
-Route::post('/logbooks/{trainee_id}', [TraineeLogbookController::class, 'storeLogbookEntry']);
+Route::post('/tasks/{trainee_id}', [TraineeLogbookController::class, 'storeLogbookEntry']);
 
 });
 
