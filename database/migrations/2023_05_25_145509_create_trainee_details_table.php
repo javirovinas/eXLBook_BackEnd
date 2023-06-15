@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('t_username');
             $table->string('t_password');
             $table->string('email')->unique();
+            $table->string('api_token', 80)->unique()->nullable();
             $table->timestamps();
         });
     }

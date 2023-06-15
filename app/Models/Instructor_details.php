@@ -4,26 +4,25 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\logbook;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
-class Instructor_details extends Model
+class Instructor_details extends Authenticatable
 {
+    use HasApiTokens;
+
     protected $table = 'instructors';
 
     protected $fillable = [
         'instructor_id',
-        'UID',
+        'uid',
         'first_name',
         'family_name',
         'i_username',
         'i_password',
         'email',
+        'api_token', // Include 'api_token' in the fillable array
     ];
 
     protected $primaryKey = 'instructor_id';
-
-    public function logbook()
-    {
-        return $this->hasMany(Logbook::class, 'instructor_id');
-    }
 }

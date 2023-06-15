@@ -3,12 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\trainee_details;
-use App\Models\trainee_logbook;
-use App\Models\logbook;
 use App\Http\Requests\Storetrainee_detailsRequest;
 use App\Http\Requests\Updatetrainee_detailsRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 
 class TraineeDetailsController extends Controller
@@ -22,6 +19,27 @@ class TraineeDetailsController extends Controller
         $trainees = Trainee_details::all();
 
         return response()->json(['trainees' => $trainees]);
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->only('username', 'password');
+
+        $trainee = Trainee_details::where('t_username', $credentials['username'])->first();
+
+        if ($trainee && Hash::check($credentials['password'], $trainee->t_password)) {
+            // Login successful
+            $token = $trainee->createToken('api_token', [$trainee->id])->plainTextToken;
+            $trainee->api_token = $token; // Assign the token to the `api_token` attribute
+            $trainee->save(); // Save the model with the updated token
+        
+            return response()->json([
+                'token' => $token,
+            ]);
+        }else {
+        // Invalid credentials
+        return response()->json(['message' => 'Invalid credentials'], 401);
+        }
     }
 
     /**

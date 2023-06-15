@@ -25,6 +25,8 @@ class LogbookController extends Controller
         'date' => 'date|required',
         'instructor_id' => 'required',
         'trainee_id' => 'required',
+        'instructor_name' => 'required',
+        'trainee_name' => 'required',
     ]);
 
     // Retrieve the instructor and trainee by their IDs

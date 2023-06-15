@@ -10,8 +10,7 @@ use App\Models\Trainee_details;
 use App\Models\Instructor_details;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
-
+use App\Traits\ApiResponser;
 class AdminController extends Controller
 {
     
@@ -28,62 +27,58 @@ class AdminController extends Controller
         'first_name' => 'required',
         'family_name' => 'required',
         'email' => 'required|email',
-        'username' => 'required',
-        'password' => 'required',
+        'i_username' => 'required',
+        'i_password' => 'required',
     ]);
 
 
     $instructorData = [
-        'UID' => $data['uid'],
+        'uid' => $data['uid'],
         'first_name' => $data['first_name'],
         'family_name' => $data['family_name'],
-        'i_username' => $data['username'],
-        'i_password' => Hash::make($data['password']),
+        'i_username' => $data['i_username'],
+        'i_password' => Hash::make($data['i_password']),
         'email' => $data['email']
     ];
 
     $instructor = Instructor_details::create($instructorData);
 
     return response()->json([
-        'message' => 'Instructor created successfully',
-        'instructor' => $instructor,
-        ]);
+        'token' => $instructor->createToken('api_token')->plainTextToken
+    ], 200);
     }
 
     public function createTrainee(Request $request)
     {
-
-        /*$adminToken = $request->header('Authorization');
-    
-        if (!$this->authenticateAdmin($adminToken)) {
-            return response()->json(['message' => 'Invalid token'], 401);
-        }*/
-        $admin = Auth::guard('sanctum')->user();
-        if (!$admin) {
+    $admin = Auth::guard('sanctum')->user();
+    if (!$admin) {
         return response()->json(['message' => 'Unauthorized'], 401);
-        }
-    
-        $data = $request->validate([
-            'uid' => 'required',
-            'first_name' => 'required',
-            'family_name' => 'required',
-            'email' => 'required|email',
-            'username' => 'required',
-            'password' => 'required',
-        ]);
-    
-        $traineeData = [
-            'UID' => $data['uid'],
-            'first_name' => $data['first_name'],
-            'family_name' => $data['family_name'],
-            't_username' => $data['username'],
-            't_password' => $data['password'],
-            'email' => $data['email'],
-        ];
-    
-        $trainee = Trainee_details::create($traineeData);
-        return response()->json(['success' => true, 'message' => 'Trainee created successfully', 'trainee' => $trainee], 200);
     }
+
+    $data = $request->validate([
+        'uid' => 'required',
+        'first_name' => 'required',
+        'family_name' => 'required',
+        'email' => 'required|email',
+        'username' => 'required',
+        'password' => 'required',
+    ]);
+
+    $trainee = Trainee_details::create([
+        'uid' => $data['uid'],
+        'first_name' => $data['first_name'],
+        'family_name' => $data['family_name'],
+        't_username' => $data['username'],
+        't_password' => bcrypt($data['password']),
+        'email' => $data['email'],
+    ]);
+
+    return response()->json([
+        'trainee' => $trainee,
+        'token' => $trainee->createToken('api_token')->plainTextToken
+    ], 200);
+}
+
     
     /*private function authenticateAdmin($token)
     {

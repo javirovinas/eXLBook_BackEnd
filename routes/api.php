@@ -34,10 +34,10 @@ Route::post('/adminlogin', [AdminAuthController::class, 'login']);
 //});
 
 //Admin authentication required routes 
-    
+Route::group(['middleware' => ['auth:sanctum']], function () {
 
     // Routes for creating new  trainee accounts
-    Route::group(['middleware' => ['auth:sanctum']], function () {
+    
     Route::post('/trainees', [AdminController::class, 'createTrainee']);
   
     //Route for GET trainees
@@ -71,15 +71,15 @@ Route::post('/adminlogin', [AdminAuthController::class, 'login']);
 
 
 //Routes for Trainee login
-Route::post('/trainees/login', [TraineeLoginController::class, 'login']);
-
+Route::post('/trainees/login', [TraineeDetailsController::class, 'login']);
+Route::group(['middleware' => ['auth:sanctum']], function () {
 //Routes for accessing the logbooks by trainee
 Route::get('/tasks/{trainee_id}', [TraineeLogbookController::class, 'showLogbookEntry']);
 
 //Route for logbook entry by trainee
 Route::post('/logbooks/{trainee_id}', [TraineeLogbookController::class, 'storeLogbookEntry']);
 
-
+});
 
 
 
@@ -87,11 +87,11 @@ Route::post('/logbooks/{trainee_id}', [TraineeLogbookController::class, 'storeLo
 
 //Routes for instructor login
 Route::post('/instructors/login', [InstructorLoginController::class, 'login']);
-
+Route::group(['middleware' => ['auth:sanctum']], function () {
 //Route for Instructor to view list of logbooks
 Route::get('/instructor/{instructor_id}/logbooks', [InstructorDetailsController::class, 'getLogbooks']);
 
 //Route for Instructor accessing logbooks
 Route::get('/instructor/{instructor_id}/logbooks/{logbookId}', [InstructorDetailsController::class, 'getTasks']);
-
+});
 
