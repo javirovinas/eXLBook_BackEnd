@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Instructor_details;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -14,6 +15,8 @@ class InstructorDetailsFactory extends Factory
      *
      * @return array<string, mixed>
      */
+    protected $model = Instructor_details::class;
+    
     public function definition(): array
     {
         return [

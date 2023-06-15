@@ -2,18 +2,16 @@
 
 namespace App\Models;
 
-use App\Traits\Archivable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class trainee_logbook extends Model
 {
     use HasFactory;
-    //use Archivable;
 
 
     protected $table = 'tasks';
-    protected $fillable = ['logbook_id', 'work_order_no', 'task_detail', 'category', 'ATA', 'TEE_SO', 'INS_SO'];
+    protected $fillable = ['trainee_id', 'logbook_id', 'work_order_no', 'task_detail', 'category', 'ATA', 'TEE_SO', 'INS_SO'];
     public function logbook()
     {
         return $this->belongsTo(Logbook::class);

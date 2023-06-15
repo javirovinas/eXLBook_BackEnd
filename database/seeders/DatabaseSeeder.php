@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,11 +13,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        DB::table('instructors')->delete();
+        DB::table('trainees')->delete();
+        DB::table('logbooks')->delete();
+        DB::table('tasks')->delete();
+        
         $this->call([
             InstructorDetailsSeeder::class,
+            TraineeDetailsSeeder::class,
             LogbookSeeder::class,
             TaskSeeder::class,
-            TraineeDetailsSeeder::class,
         ]);
     }
 }
