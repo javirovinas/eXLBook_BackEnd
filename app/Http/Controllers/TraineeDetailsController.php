@@ -75,9 +75,24 @@ class TraineeDetailsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(trainee_details $trainee_details)
+    public function edit(trainee_details $trainee_details, $trainee_id)
     {
-        //
+        $trainee = trainee_details::find($trainee_id);
+        if($trainee)
+        {
+            return response()->json([
+                'status'=> 200,
+                'trainee' => $trainee,
+
+            ], 200);
+        }
+        else
+        {
+            return response()->json([
+                'status'=> 404,
+                'message'=> 'No Student ID found',
+            ], 404);
+        }
     }
 
     /**
