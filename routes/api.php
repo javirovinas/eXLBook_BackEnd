@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\InstructorDetailsController;
+use App\Http\Controllers\InstructorLogbookAccessController;
 use App\Http\Controllers\LogbookController;
 use App\Http\Controllers\InstructorLoginController;
 use App\Http\Controllers\TraineeDetailsController;
@@ -76,7 +77,7 @@ Route::group(['middleware' => ['auth:sanctum-trainee']], function () {
 //Routes for accessing the logbooks by trainee
 Route::get('/tasks/{trainee_id}', [TraineeLogbookController::class, 'showLogbookEntry']);
 //Route::get('/tlogbooks/{trainee_id}', [TraineeLogbookController::class, 'showTraineeLogbook']);
-Route::get('/strainees/logbooks', [TraineeLogbookController::class, 'showTraineeLogbook']);
+Route::get('/trainee/logbooks', [TraineeLogbookController::class, 'showTraineeLogbook']);
 //Route for logbook entry by trainee
 Route::post('/tasks/{trainee_id}', [TraineeLogbookController::class, 'storeLogbookEntry']);
 
@@ -87,12 +88,12 @@ Route::post('/tasks/{trainee_id}', [TraineeLogbookController::class, 'storeLogbo
 //instructors
 
 //Routes for instructor login
-Route::post('/instructors/login', [InstructorLoginController::class, 'login']);
-Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::post('/instructors/login', [InstructorDetailsController::class, 'login']);
+Route::group(['middleware' => ['auth:sanctum-instructor']], function () {
 //Route for Instructor to view list of logbooks
-Route::get('/instructor/{instructor_id}/logbooks', [InstructorDetailsController::class, 'getLogbooks']);
+Route::get('/instructor/logbooks', [InstructorLogbookAccessController::class, 'getLogbooks']);
 
 //Route for Instructor accessing logbooks
-Route::get('/instructor/{instructor_id}/logbooks/{logbookId}', [InstructorDetailsController::class, 'getTasks']);
+Route::get('/instructor/logbooks/{traineeId}', [InstructorLogbookAccessController::class, 'getTasks']);
 });
 

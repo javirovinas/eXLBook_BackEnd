@@ -7,9 +7,11 @@ use App\Http\Requests\Storetrainee_detailsRequest;
 use App\Http\Requests\Updatetrainee_detailsRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use App\Traits\ApiResponser;
 
 class TraineeDetailsController extends Controller
 {
+    use ApiResponser;
     /**
      * Display a listing of the resource.
      */
@@ -33,7 +35,7 @@ class TraineeDetailsController extends Controller
             $trainee->api_token = $token; // Assign the token to the `api_token` attribute
             $trainee->save(); // Save the model with the updated token
         
-            return response()->json([
+            return $this->success([
                 'token' => $token,
             ]);
         }else {

@@ -8,20 +8,25 @@ use App\Http\Requests\UpdateInstructor_logbook_accessRequest;
 use App\Models\logbook;
 use App\Models\Trainee_details;
 use App\Models\trainee_logbook;
+use Illuminate\Support\Facades\Auth;
 
 class InstructorLogbookAccessController extends Controller
 {
-    
-    public function getLogbooks($instructorId, $logbookId)
-    {
-        $logbooks = logbook::where('logbook_id', $logbookId) -> where('instructor_id', $instructorId)->first();
+    public function getLogbooks()
+{
+    $instructor = Auth::guard('sanctum-instructor')->user();
+    if (!$instructor) {
+        return response()->json(['message' => 'Unauthorized'], 401);
+    }
 
-        if ($logbooks->isEmpty()) {
-            return response()->json(['message' => 'No logbooks found for the instructor'], 404);
-        }
+    $logbooks = Logbook::where('instructor_id', $instructor->instructor_id)->get();
 
-        $traineeLogbooks = [];
-        foreach ($logbooks as $logbook) {
+    if ($logbooks->isEmpty()) {
+        return response()->json(['message' => 'No logbooks found for the instructor'], 404);
+    }
+
+    $traineeLogbooks = [];
+    foreach ($logbooks as $logbook) {
         $trainee = Trainee_details::find($logbook->trainee_id);
         $traineeName = $trainee->first_name . ' ' . $trainee->family_name;
         $traineeLogbooks[] = [
@@ -29,13 +34,16 @@ class InstructorLogbookAccessController extends Controller
             'trainee_id' => $trainee->trainee_id,
             'trainee_name' => $traineeName,
         ];
-        }
-        return response()->json(['trainee_logbooks' => $traineeLogbooks], 200);
     }
 
-    public function getTasks($logbookId)
+    return response()->json(['trainee_logbooks' => $traineeLogbooks], 200);
+}
+
+
+
+    public function getTasks($traineeId)
     {
-        $tasks = trainee_logbook::where('logbook_id', $logbookId)->get();
+        $tasks = trainee_logbook::where('trainee_id', $traineeId)->get();
 
         if ($tasks->isEmpty()) {
             return response()->json(['message' => 'No tasks found for the logbook'], 404);

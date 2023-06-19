@@ -5,30 +5,35 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreInstructor_detailsRequest;
 use App\Http\Requests\UpdateInstructor_detailsRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
-
+use App\Traits\ApiResponser;
 use App\Models\Instructor_details;
-use App\Models\trainee_logbook;
-use App\Models\logbook;
-use App\Models\Trainee_details;
 
 class InstructorDetailsController extends Controller
 {
+    use ApiResponser;
     public function login(Request $request)
-    {
-        $credentials = $request->only('username', 'password');
+{
+    $credentials = $request->only('username', 'password');
 
-        $instructor = Instructor_details::where('i_username', $credentials['username'])->first();
+    $instructor = Instructor_details::where('i_username', $credentials['username'])->first();
 
-        if ($instructor && Hash::check($credentials['password'], $instructor->i_password)) {
-            // Login successful
-            return response()->json(['message' => 'Login successful', 'instructor' => $instructor], 200);
-        } else {
-            // Invalid credentials
-            return response()->json(['message' => 'Invalid credentials'], 401);
-        }
+    if ($instructor && Hash::check($credentials['password'], $instructor->i_password)) {
+        // Login successful
+        $token = $instructor->createToken('api_token', [$instructor->id])->plainTextToken;
+        $instructor->api_token = $token; // Assign the token to the `api_token` attribute
+        $instructor->save(); // Save the model with the updated token
+
+        return $this->success([
+            'token' => $token
+        ]);
+    } else {
+        // Invalid credentials
+        return response()->json(['message' => 'Invalid credentials'], 401);
     }
+}
+
     /**
      * Display a listing of the resource.
      */
