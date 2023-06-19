@@ -49,9 +49,10 @@ return [
             'hash' => false,
         ],
 
-        'trainee' => [
-            'driver' => 'session',
+        'sanctum-trainee' => [
+            'driver' => 'sanctum',
             'provider' => 'trainees',
+            'hash' => false,    
         ],
         /*'instructor' => [
             'driver' => 'session',

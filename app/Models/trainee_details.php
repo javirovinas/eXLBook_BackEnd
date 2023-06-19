@@ -25,6 +25,10 @@ class Trainee_details extends Authenticatable
     ];
 
     protected $primaryKey = 'trainee_id';
+    public function isTrainee()
+    {
+        return session()->has('trainee_logged_in');
+    }
     
 public function logbook()
 {

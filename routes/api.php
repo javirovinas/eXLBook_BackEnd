@@ -72,10 +72,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 
 //Routes for Trainee login
 Route::post('/trainees/login', [TraineeDetailsController::class, 'login']);
-Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:sanctum-trainee']], function () {
 //Routes for accessing the logbooks by trainee
 Route::get('/tasks/{trainee_id}', [TraineeLogbookController::class, 'showLogbookEntry']);
-
+//Route::get('/tlogbooks/{trainee_id}', [TraineeLogbookController::class, 'showTraineeLogbook']);
+Route::get('/strainees/logbooks', [TraineeLogbookController::class, 'showTraineeLogbook']);
 //Route for logbook entry by trainee
 Route::post('/tasks/{trainee_id}', [TraineeLogbookController::class, 'storeLogbookEntry']);
 

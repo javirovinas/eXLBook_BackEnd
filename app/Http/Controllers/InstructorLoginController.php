@@ -11,20 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class InstructorLoginController extends Controller
 {
-    public function login(Request $request)
-    {
-        $credentials = $request->only('username', 'password');
-
-        $instructor = Instructor_details::where('i_username', $credentials['username'])->first();
-
-        if ($instructor && Hash::check($credentials['password'], $instructor->i_password)) {
-            // Login successful
-            return response()->json(['message' => 'Login successful', 'instructor' => $instructor], 200);
-        } else {
-            // Invalid credentials
-            return response()->json(['message' => 'Invalid credentials'], 401);
-        }
-    }
+    
     /**
      * Display a listing of the resource.
      */

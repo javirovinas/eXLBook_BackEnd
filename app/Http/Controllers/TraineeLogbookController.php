@@ -87,6 +87,18 @@ class TraineeLogbookController extends Controller
         return response()->json(['message' => 'Logbook not found for the given trainee'], 404);
     }
 }
+public function showTraineeLogbook(Request $request)
+{
+    $trainee = Auth::guard('sanctum-trainee')->user();
+    if (!$trainee) {
+        return response()->json(['message' => 'Unauthorized'], 401);
+    }
+
+    $logbooks = Logbook::where('trainee_id', $trainee->trainee_id)->get();
+
+    return response()->json(['logbooks' => $logbooks], 200);
+}
+
 
     public function saveLogbook(Request $request)
     {
