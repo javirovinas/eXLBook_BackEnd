@@ -49,14 +49,16 @@ return [
             'hash' => false,
         ],
 
-        'trainee' => [
-            'driver' => 'session',
+        'sanctum-trainee' => [
+            'driver' => 'sanctum',
             'provider' => 'trainees',
+            'hash' => false,    
         ],
-        /*'instructor' => [
-            'driver' => 'session',
-            'model' => 'instructors',
-        ],*/
+        'sanctum-instructor' => [
+            'driver' => 'sanctum',
+            'provider' => 'instructors',
+            'hash' => false, 
+        ],
 
         'admin' => [
             'driver' => 'token',
@@ -96,20 +98,18 @@ return [
             'driver' => 'eloquent',
             'model' => App\Models\Trainee_details::class,
             ],
-    ],
-       /* 
 
-
-            'instructors' => [
-                'driver' => 'eloquent',
-                'model' => App\Models\Instructor_details::class,
-            ],
+       'instructors' => [
+           'driver' => 'eloquent',
+           'model' => App\Models\Instructor_details::class,
         ],
+    ],
 
         'users' => [
             'driver' => 'database',
             'table' => 'users',
-        ],*/
+        ],
+        
 
     /*
     |--------------------------------------------------------------------------
