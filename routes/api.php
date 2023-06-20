@@ -45,6 +45,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/trainees', [TraineeDetailsController::class, 'index']);
     Route::get('/trainees/{trainee_id}', [TraineeDetailsController::class, 'show']);
     //Route for PUT requests - Trainees
+    Route::get('/trainees/{trainee_id}', [TraineeDetailsController::class, 'edit']); //new
     Route::put('/trainees/{trainee_id}', [TraineeDetailsController::class, 'update']);
     
     // Routes for creating new instructor accounts
@@ -53,6 +54,7 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('/instructors', [InstructorDetailsController::class, 'index']);
     Route::get('/instructors/{instructor_id}', [InstructorDetailsController::class, 'show']);
     //Route for PUT requests - Instructors
+    Route::get('/instructors/{instructor_id}', [InstructorDetailsController::class, 'edit']); //new
     Route::put('/instrucotrs/{instructor_id}', [InstructorDetailsController::class, 'update']);
 
     //Routes for assigning logbooks

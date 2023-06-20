@@ -79,9 +79,24 @@ class InstructorDetailsController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Instructor_details $instructor_details)
+    public function edit(Instructor_details $instructor_details, $instructor_id)
     {
-        //
+        $instructor = Instructor_details::find($instructor_id);
+        if($instructor)
+        {
+            return response()->json([
+                'status'=> 200,
+                'instructor' => $instructor,
+
+            ], 200);
+        }
+        else
+        {
+            return response()->json([
+                'status'=> 404,
+                'message'=> 'No Student ID found',
+            ], 404);
+        }
     }
 
     /**
