@@ -31,6 +31,8 @@ class InstructorLogbookAccessController extends Controller
         $traineeName = $trainee->first_name . ' ' . $trainee->family_name;
         $traineeLogbooks[] = [
             'logbook_id' => $logbook->logbook_id,
+            'logbook_name' => $logbook->logbook_name,
+            'instructor_id' => $logbook->instructor_id,
             'trainee_id' => $trainee->trainee_id,
             'trainee_name' => $traineeName,
         ];

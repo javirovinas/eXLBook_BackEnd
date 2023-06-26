@@ -35,7 +35,7 @@ Route::post('/adminlogin', [AdminAuthController::class, 'login']);
 //});
 
 //Admin authentication required routes 
-Route::group(['middleware' => ['auth:sanctum']], function () {
+Route::group(['middleware' => ['auth:sanctum-admin']], function () {
 
     // Routes for creating new  trainee accounts
     
@@ -77,11 +77,11 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 Route::post('/trainees/login', [TraineeDetailsController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum-trainee']], function () {
 //Routes for accessing the logbooks by trainee
-Route::get('/tasks/{trainee_id}', [TraineeLogbookController::class, 'showLogbookEntry']);
+Route::get('/trainee/tasks', [TraineeLogbookController::class, 'showTraineeTasks']);
 //Route::get('/tlogbooks/{trainee_id}', [TraineeLogbookController::class, 'showTraineeLogbook']);
 Route::get('/trainee/logbooks', [TraineeLogbookController::class, 'showTraineeLogbook']);
 //Route for logbook entry by trainee
-Route::post('/tasks/{trainee_id}', [TraineeLogbookController::class, 'storeLogbookEntry']);
+Route::post('/trainee/taskentry', [TraineeLogbookController::class, 'storeLogbookEntry']);
 
 });
 

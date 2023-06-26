@@ -17,7 +17,7 @@ class AdminController extends Controller
     public function createInstructor(Request $request)
     {
 
-        $admin = Auth::guard('sanctum')->user();
+        $admin = Auth::guard('sanctum-admin')->user();
         if (!$admin) {
         return response()->json(['message' => 'Unauthorized'], 401);
         }
@@ -50,7 +50,7 @@ class AdminController extends Controller
 
     public function createTrainee(Request $request)
     {
-    $admin = Auth::guard('sanctum')->user();
+    $admin = Auth::guard('sanctum-admin')->user();
     if (!$admin) {
         return response()->json(['message' => 'Unauthorized'], 401);
     }

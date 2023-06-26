@@ -60,8 +60,8 @@ return [
             'hash' => false, 
         ],
 
-        'admin' => [
-            'driver' => 'token',
+        'sanctum-admin' => [
+            'driver' => 'sanctum',
             'provider' => 'admins',
             'hash' => false,
         ],
