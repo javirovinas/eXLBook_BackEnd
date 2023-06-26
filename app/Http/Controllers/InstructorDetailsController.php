@@ -111,12 +111,12 @@ class InstructorDetailsController extends Controller
         }
 
         $data = $request->validate([
-            'uid' => 'required',
+            'UID' => 'required',
             'first_name' => 'required',
             'family_name' => 'required',
             'email' => 'required|email',
-            'username' => 'required',
-            'password' => 'required',
+            'i_username' => 'required',
+            'i_password' => 'required',
         ]);
 
     $instructor->update($data);

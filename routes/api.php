@@ -55,7 +55,7 @@ Route::group(['middleware' => ['auth:sanctum-admin']], function () {
     Route::get('/instructors/{instructor_id}', [InstructorDetailsController::class, 'show']);
     //Route for PUT requests - Instructors
     Route::get('/instructors/{instructor_id}', [InstructorDetailsController::class, 'edit']); //new
-    Route::put('/instrucotrs/{instructor_id}', [InstructorDetailsController::class, 'update']);
+    Route::put('/instructors/{instructor_id}', [InstructorDetailsController::class, 'update']);
 
     //Routes for assigning logbooks
     Route::post('/assignlogbooks', [LogbookController::class, 'assignLogbook']);

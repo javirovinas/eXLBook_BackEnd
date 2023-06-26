@@ -109,12 +109,12 @@ class TraineeDetailsController extends Controller
         }
 
         $data = $request->validate([
-            'uid' => 'required',
+            'UID' => 'required',
             'first_name' => 'required',
             'family_name' => 'required',
             'email' => 'required|email',
-            'username' => 'required',
-            'password' => 'required',
+            't_username' => 'required',
+            't_password' => 'required',
             // Add other validation rules for the fields you want to update
         ]);
 

@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('trainees', function (Blueprint $table) {
             $table->id('trainee_id')->autoIncrement();
-            $table->string('UID')->unique();
+            $table->unsignedInteger('UID')->unique()->digits(6);
             $table->string('first_name');
             $table->string('family_name');
-            $table->string('t_username');
+            $table->string('t_username')->unique();
             $table->string('t_password');
             $table->string('email')->unique();
             $table->string('api_token', 80)->unique()->nullable();

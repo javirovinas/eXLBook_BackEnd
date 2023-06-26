@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Admin_login;
 use App\Models\Trainee_details;
 use App\Models\Instructor_details;
+use App\Http\Requests\Updatetrainee_detailsRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\ApiResponser;
@@ -77,18 +78,39 @@ class AdminController extends Controller
         'trainee' => $trainee,
         'token' => $trainee->createToken('api_token')->plainTextToken
     ], 200);
+    }
+
+    public function updateTrainee(Updatetrainee_detailsRequest $request, trainee_details $trainee_details, $trainee_id)
+{
+    $admin = Auth::guard('sanctum')->user();
+    if (!$admin) {
+        return response()->json(['message' => 'Unauthorized'], 401);
+    }
+
+    $data = $request->validate([
+        'uid' => 'required',
+        'first_name' => 'required',
+        'family_name' => 'required',
+        'email' => 'required|email',
+        'username' => 'required',
+        'password' => 'required',
+    ]);
+
+    $trainee = Trainee_details::findOrFail($trainee_id);
+
+    $trainee->update([
+        'uid' => $data['uid'],
+        'first_name' => $data['first_name'],
+        'family_name' => $data['family_name'],
+        't_username' => $data['username'],
+        't_password' => bcrypt($data['password']),
+        'email' => $data['email'],
+    ]);
+
+    return response()->json([
+        'trainee' => $trainee,
+    ], 200);
 }
-
-    
-    /*private function authenticateAdmin($token)
-    {
-        
-        $admin = Admin_login::where('api_token', $token)->first();
-
-        return $admin !== null;
-    }*/
-
-
     
     /**
      * Display a listing of the resource.
