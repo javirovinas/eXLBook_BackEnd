@@ -25,4 +25,8 @@ class Instructor_details extends Authenticatable
     ];
 
     protected $primaryKey = 'instructor_id';
+    public function isInstructor()
+    {
+        return session()->has('instructor_logged_in');
+    }
 }

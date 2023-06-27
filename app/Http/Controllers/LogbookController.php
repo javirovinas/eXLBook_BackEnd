@@ -16,7 +16,7 @@ class LogbookController extends Controller
 {
     public function assignLogbook(Request $request)
     {
-    $admin = Auth::guard('sanctum')->user();
+    $admin = Auth::guard('sanctum-admin')->user();
     if (!$admin) {
         return response()->json(['message' => 'Unauthorized'], 401);
     }
