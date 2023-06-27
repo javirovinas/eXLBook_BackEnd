@@ -39,7 +39,7 @@ class TraineeDetailsController extends Controller
                 $trainee->api_token = $token; // Assign the token to the `api_token` attribute
                 $trainee->save(); // Save the model with the updated token
                 
-                return response()->json([
+                return $this->success([
                     'token' => $token,
                 ]);
             }

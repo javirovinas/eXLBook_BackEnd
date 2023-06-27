@@ -28,7 +28,7 @@ class InstructorDetailsController extends Controller
                 $instructor->api_token = $token; // Assign the token to the `api_token` attribute
                 $instructor->save(); // Save the model with the updated token
     
-                return response()->json([
+                return $this->success([
                     'token' => $token
                 ]);
             }
