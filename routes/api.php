@@ -63,10 +63,12 @@ Route::group(['middleware' => ['auth:sanctum-admin']], function () {
     Route::post('/assignlogbooks', [LogbookController::class, 'assignLogbook']);
     //Routes to GET logbooks
     Route::get('/logbooks', [LogbookController::class, 'index']);
-    Route::put('/logbooks/{logbook_id}', [LogbookController::class, 'show']);
+    Route::put('/logbooks/{logbook_id}', [LogbookController::class, 'update']);
 
     //Tasks
+    //retrieving tasks
     Route::get('/tasks', [TraineeLogbookController::class, 'index']);
+
 });
 
 //End of auth
@@ -98,5 +100,10 @@ Route::get('/instructor/logbooks', [InstructorLogbookAccessController::class, 'g
 
 //Route for Instructor accessing logbooks
 Route::get('/instructor/logbooks/{traineeId}', [InstructorLogbookAccessController::class, 'getTasks']);
+
+//updating tasks after instructor singoff
+Route::put('/instructor/tasks/{trainee_id}', [InstructorLogbookAccessController::class, 'update']);
+
+
 });
 
