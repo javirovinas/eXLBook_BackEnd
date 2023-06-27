@@ -47,7 +47,7 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             throw $e;
         }
-            return $this->success([
+            return response()->json([
                 'token' => $instructor->createToken('api_token')->plainTextToken
             ], 200);
 
@@ -79,7 +79,7 @@ class AdminController extends Controller
                 'email' => $data['email'],
             ]);
 
-            return $this->success([
+            return response()->json([
                 'trainee' => $trainee,
                 'token' => $trainee->createToken('api_token')->plainTextToken
             ], 200);
@@ -109,7 +109,7 @@ class AdminController extends Controller
                 'email' => $data['email'],
             ]);
 
-            return $this->success([
+            return response()->json([
                 'trainee' => $trainee,
             ], 200);
         } catch (\Exception $e) {
