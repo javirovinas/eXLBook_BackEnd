@@ -27,7 +27,7 @@ class AdminAuthController extends Controller
                 'username' => $data['username'],
                 'password' => bcrypt($data['password']),
             ]);
-        return $this->success([
+        return response()->json([
             'token' => $admin->createToken('api_token')->plainTextToken
         ]);
     } catch (\Exception $e) {
@@ -56,7 +56,7 @@ class AdminAuthController extends Controller
         } catch (\Exception $e) {
             throw $e;
         }
-            return $this->success([
+            return response()->json([
                 'token' => $token
             ]);
     }
