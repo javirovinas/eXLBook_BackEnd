@@ -9,105 +9,91 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\ApiResponser;
 use App\Models\Instructor_details;
+use Illuminate\Database\QueryException;
 
 class InstructorDetailsController extends Controller
 {
     use ApiResponser;
+    
     public function login(Request $request)
-{
-    $credentials = $request->only('username', 'password');
-
-    $instructor = Instructor_details::where('i_username', $credentials['username'])->first();
-
-    if ($instructor && Hash::check($credentials['password'], $instructor->i_password)) {
-        // Login successful
-        $token = $instructor->createToken('api_token', [$instructor->id])->plainTextToken;
-        $instructor->api_token = $token; // Assign the token to the `api_token` attribute
-        $instructor->save(); // Save the model with the updated token
-
-        return $this->success([
-            'token' => $token
-        ]);
-    } else {
-        // Invalid credentials
-        return response()->json(['message' => 'Invalid credentials'], 401);
+    {
+        try {
+            $credentials = $request->only('username', 'password');
+    
+            $instructor = Instructor_details::where('i_username', $credentials['username'])->first();
+    
+            if ($instructor && Hash::check($credentials['password'], $instructor->i_password)) {
+                // Login successful
+                $token = $instructor->createToken('api_token', [$instructor->id])->plainTextToken;
+                $instructor->api_token = $token; // Assign the token to the `api_token` attribute
+                $instructor->save(); // Save the model with the updated token
+    
+                return $this->success([
+                    'token' => $token
+                ]);
+            } else {
+                // Invalid credentials
+                return $this->error('Invalid credentials', 401);
+            }
+        } catch (\Exception $e) {
+            return $this->error('An error occurred while logging in', 500);
+        }
     }
-}
 
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        $instructors = Instructor_details::all();
-
-        return response()->json([
-        'instructors' => $instructors,
-        ]);
+        try {
+            $instructors = Instructor_details::all();
+    
+            return $this->success([
+                'instructors' => $instructors,
+            ]);
+        } catch (\Exception $e) {
+            return $this->error('An error occurred while fetching instructors', 500);
+        }
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreInstructor_detailsRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
     public function show(Instructor_details $instructor_details, $instructor_id)
     {
-        $instructor = Instructor_details::find($instructor_id);
-
-    if (!$instructor) {
-        return response()->json(['message' => 'Instructor not found'], 404);
+        try {
+            $instructor = Instructor_details::find($instructor_id);
+    
+            if (!$instructor) {
+                return $this->error('Instructor not found', 404);
+            }
+    
+            return $this->success([
+                'instructor' => $instructor,
+            ]);
+        } catch (\Exception $e) {
+            return $this->error('An error occurred while fetching the instructor', 500);
+        }
     }
 
-    return response()->json(['instructor' => $instructor]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Instructor_details $instructor_details, $instructor_id)
     {
-        $instructor = Instructor_details::find($instructor_id);
-        if($instructor)
-        {
-            return response()->json([
-                'status'=> 200,
-                'instructor' => $instructor,
-
-            ], 200);
-        }
-        else
-        {
-            return response()->json([
-                'status'=> 404,
-                'message'=> 'No Student ID found',
-            ], 404);
+        try {
+            $instructor = Instructor_details::find($instructor_id);
+    
+            if ($instructor) {
+                return $this->success([
+                    'status' => 200,
+                    'instructor' => $instructor,
+                ], 200);
+            } else {
+                return $this->error('No Instructor ID found', 404);
+            }
+        } catch (\Exception $e) {
+            return $this->error('An error occurred while editing the instructor', 500);
         }
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateInstructor_detailsRequest $request, Instructor_details $instructor_details, $instructor_id)
+    public function update(UpdateInstructor_detailsRequest $request, instructor_details $instructor_details, $instructor_id)
     {
         $instructor = Instructor_details::find($instructor_id);
 
-    if (!$instructor) {
-        return response()->json(['message' => 'Instructor not found'], 404);
+        if (!$instructor) {
+            return response()->json(['message' => 'Instructor not found'], 404);
         }
 
         $data = $request->validate([
@@ -117,18 +103,39 @@ class InstructorDetailsController extends Controller
             'email' => 'required|email',
             'i_username' => 'required',
             'i_password' => 'required',
+            // Add other validation rules for the fields you want to update
         ]);
 
-    $instructor->update($data);
+        try {
+            // Check if the updated uid (instructor_id) exists for any other instructor
+            $existingInstructorUID = instructor_details::where('UID', $data['UID'])
+                ->where('instructor_id', '!=', $instructor->instructor_id)
+                ->first();
+            
+            $existingInstructorUsername = instructor_details::where('i_username', $data['i_username'])
+                ->where('instructor_id', '!=', $instructor->instructor_id)
+                ->first();
 
-    return response()->json(['message' => 'Instructor updated successfully']);
-    }
+            $existingInstructorEmail = instructor_details::where('email', $data['email'])
+                ->where('instructor_id', '!=', $instructor->instructor_id)
+                ->first();
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Instructor_details $instructor_details)
-    {
-        //
+            if ($existingInstructorUID) {
+                return response()->json(['error' => 'The UID is already assigned to another instructor'], 400);
+            }
+            if ($existingInstructorUsername) {
+                return response()->json(['error' => 'The Username is already assigned to another instructor'], 400);
+            }
+            if ($existingInstructorEmail) {
+                return response()->json(['error' => 'The Email is already assigned to another instructor'], 400);
+            }
+        } catch (QueryException $e) {
+            // Handle database connection or query exception
+            return response()->json(['error' => 'Failed to update instructor.'], 500);
+        }
+        return response()->json(['message' => 'Instructor updated successfully']);
+
+        $instructor->update($data);
     }
+    
 }

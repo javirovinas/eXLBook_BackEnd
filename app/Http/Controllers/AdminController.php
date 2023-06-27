@@ -12,159 +12,108 @@ use App\Http\Requests\Updatetrainee_detailsRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\ApiResponser;
+
 class AdminController extends Controller
 {
+    use ApiResponser;
     
     public function createInstructor(Request $request)
     {
+        try {
+            $admin = Auth::guard('sanctum')->user();
+            if (!$admin) {
+                return $this->error('Unauthorized', 401);
+            }
+        
+            $data = $request->validate([
+                'uid' => 'required',
+                'first_name' => 'required',
+                'family_name' => 'required',
+                'email' => 'required|email',
+                'username' => 'required',
+                'password' => 'required',
+            ]);
 
-        $admin = Auth::guard('sanctum')->user();
-        if (!$admin) {
-        return response()->json(['message' => 'Unauthorized'], 401);
+            $instructorData = [
+                'uid' => $data['uid'],
+                'first_name' => $data['first_name'],
+                'family_name' => $data['family_name'],
+                'i_username' => $data['username'],
+                'i_password' => Hash::make($data['password']),
+                'email' => $data['email']
+            ];
+
+            $instructor = Instructor_details::create($instructorData);
+        } catch (\Exception $e) {
+            throw $e;
         }
-    
-    $data = $request->validate([
-        'uid' => 'required',
-        'first_name' => 'required',
-        'family_name' => 'required',
-        'email' => 'required|email',
-        'i_username' => 'required',
-        'i_password' => 'required',
-    ]);
+            return $this->success([
+                'token' => $instructor->createToken('api_token')->plainTextToken
+            ], 200);
 
-
-    $instructorData = [
-        'uid' => $data['uid'],
-        'first_name' => $data['first_name'],
-        'family_name' => $data['family_name'],
-        'i_username' => $data['i_username'],
-        'i_password' => Hash::make($data['i_password']),
-        'email' => $data['email']
-    ];
-
-    $instructor = Instructor_details::create($instructorData);
-
-    return response()->json([
-        'token' => $instructor->createToken('api_token')->plainTextToken
-    ], 200);
     }
 
     public function createTrainee(Request $request)
     {
-    $admin = Auth::guard('sanctum')->user();
-    if (!$admin) {
-        return response()->json(['message' => 'Unauthorized'], 401);
+        try {
+            $admin = Auth::guard('sanctum')->user();
+            if (!$admin) {
+                return $this->error('Unauthorized', 401);
+            }
+
+            $data = $request->validate([
+                'uid' => 'required',
+                'first_name' => 'required',
+                'family_name' => 'required',
+                'email' => 'required|email',
+                'username' => 'required',
+                'password' => 'required',
+            ]);
+
+            $trainee = Trainee_details::create([
+                'uid' => $data['uid'],
+                'first_name' => $data['first_name'],
+                'family_name' => $data['family_name'],
+                't_username' => $data['username'],
+                't_password' => bcrypt($data['password']),
+                'email' => $data['email'],
+            ]);
+
+            return $this->success([
+                'trainee' => $trainee,
+                'token' => $trainee->createToken('api_token')->plainTextToken
+            ], 200);
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
-    $data = $request->validate([
-        'uid' => 'required',
-        'first_name' => 'required',
-        'family_name' => 'required',
-        'email' => 'required|email',
-        'username' => 'required',
-        'password' => 'required',
-    ]);
-
-    $trainee = Trainee_details::create([
-        'uid' => $data['uid'],
-        'first_name' => $data['first_name'],
-        'family_name' => $data['family_name'],
-        't_username' => $data['username'],
-        't_password' => bcrypt($data['password']),
-        'email' => $data['email'],
-    ]);
-
-    return response()->json([
-        'trainee' => $trainee,
-        'token' => $trainee->createToken('api_token')->plainTextToken
-    ], 200);
-    }
-
-    public function updateTrainee(Updatetrainee_detailsRequest $request, trainee_details $trainee_details, $trainee_id)
-{
-    $admin = Auth::guard('sanctum')->user();
-    if (!$admin) {
-        return response()->json(['message' => 'Unauthorized'], 401);
-    }
-
-    $data = $request->validate([
-        'uid' => 'required',
-        'first_name' => 'required',
-        'family_name' => 'required',
-        'email' => 'required|email',
-        'username' => 'required',
-        'password' => 'required',
-    ]);
-
-    $trainee = Trainee_details::findOrFail($trainee_id);
-
-    $trainee->update([
-        'uid' => $data['uid'],
-        'first_name' => $data['first_name'],
-        'family_name' => $data['family_name'],
-        't_username' => $data['username'],
-        't_password' => bcrypt($data['password']),
-        'email' => $data['email'],
-    ]);
-
-    return response()->json([
-        'trainee' => $trainee,
-    ], 200);
-}
-    
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function updateTrainee(Updatetrainee_detailsRequest $request, Trainee_details $trainee_details, $trainee_id)
     {
-        //
-    }
+        try {
+            $admin = Auth::guard('sanctum')->user();
+            if (!$admin) {
+                return $this->error('Unauthorized', 401);
+            }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
+            $data = $request->validated();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreAdmin_loginRequest $request)
-    {
-        //
-    }
+            $trainee = Trainee_details::findOrFail($trainee_id);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Admin_login $admin_login)
-    {
-        //
-    }
+            $trainee->update([
+                'uid' => $data['uid'],
+                'first_name' => $data['first_name'],
+                'family_name' => $data['family_name'],
+                't_username' => $data['username'],
+                't_password' => bcrypt($data['password']),
+                'email' => $data['email'],
+            ]);
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Admin_login $admin_login)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateAdmin_loginRequest $request, Admin_login $admin_login)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Admin_login $admin_login)
-    {
-        //
+            return $this->success([
+                'trainee' => $trainee,
+            ], 200);
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 }

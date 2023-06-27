@@ -8,6 +8,10 @@ use App\Http\Requests\Updatetrainee_detailsRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\ApiResponser;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
+
+
 
 class TraineeDetailsController extends Controller
 {
@@ -17,32 +21,38 @@ class TraineeDetailsController extends Controller
      */
     public function index()
     {
-        
-        $trainees = Trainee_details::all();
-
-        return response()->json(['trainees' => $trainees]);
+        try {
+            $trainees = Trainee_details::all();
+            return $this->success(['trainees' => $trainees]);
+            
+        } catch (\Exception $e) {
+            throw $e;
+        }
     }
 
     public function login(Request $request)
     {
-        $credentials = $request->only('username', 'password');
+        try{
+            $credentials = $request->only('username', 'password');
 
-        $trainee = Trainee_details::where('t_username', $credentials['username'])->first();
+            $trainee = Trainee_details::where('t_username', $credentials['username'])->first();
+    
+            if ($trainee && Hash::check($credentials['password'], $trainee->t_password)) {
+                // Login successful
+                $token = $trainee->createToken('api_token', [$trainee->id])->plainTextToken;
+                $trainee->api_token = $token; // Assign the token to the `api_token` attribute
+                $trainee->save(); // Save the model with the updated token
+                
+                return $this->success([
+                    'token' => $token,
+                ]);
+            }
 
-        if ($trainee && Hash::check($credentials['password'], $trainee->t_password)) {
-            // Login successful
-            $token = $trainee->createToken('api_token', [$trainee->id])->plainTextToken;
-            $trainee->api_token = $token; // Assign the token to the `api_token` attribute
-            $trainee->save(); // Save the model with the updated token
-        
-            return $this->success([
-                'token' => $token,
-            ]);
-        }else {
-        // Invalid credentials
-        return response()->json(['message' => 'Invalid credentials'], 401);
+            } catch (\Exception $e) {
+                throw $e;
+            }
+            return response()->json(['error' => 'Credentials do not match'], 401);
         }
-    }
 
     /**
      * Show the form for creating a new resource.
@@ -92,7 +102,7 @@ class TraineeDetailsController extends Controller
         {
             return response()->json([
                 'status'=> 404,
-                'message'=> 'No Student ID found',
+                'message'=> 'Trainee not found',
             ], 404);
         }
     }
@@ -118,11 +128,37 @@ class TraineeDetailsController extends Controller
             // Add other validation rules for the fields you want to update
         ]);
 
-        $trainee->update($data);
+        try {
+            // Check if the updated uid (trainee_id) exists for any other trainee
+            $existingTraineeUID = trainee_details::where('UID', $data['UID'])
+                ->where('trainee_id', '!=', $trainee->trainee_id)
+                ->first();
+            
+            $existingTraineeUsername = trainee_details::where('t_username', $data['t_username'])
+                ->where('trainee_id', '!=', $trainee->trainee_id)
+                ->first();
 
+            $existingTraineeEmail = trainee_details::where('email', $data['email'])
+                ->where('trainee_id', '!=', $trainee->trainee_id)
+                ->first();
+
+            if ($existingTraineeUID) {
+                return response()->json(['error' => 'The UID is already assigned to another trainee'], 400);
+            }
+            if ($existingTraineeUsername) {
+                return response()->json(['error' => 'The Username is already assigned to another trainee'], 400);
+            }
+            if ($existingTraineeEmail) {
+                return response()->json(['error' => 'The Email is already assigned to another trainee'], 400);
+            }
+        } catch (QueryException $e) {
+            // Handle database connection or query exception
+            return response()->json(['error' => 'Failed to update trainee.'], 500);
+        }
         return response()->json(['message' => 'Trainee updated successfully']);
-    }
 
+        $trainee->update($data);
+    }
     /**
      * Remove the specified resource from storage.
      */
