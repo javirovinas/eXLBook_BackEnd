@@ -42,7 +42,7 @@ class InstructorDetailsController extends Controller
 
     public function index()
     {
-        $admin = Auth::guard('sanctum')->user();
+        $admin = Auth::guard('sanctum-admin')->user();
         if (!$admin) {
             return $this->error('Unauthorized', 401);
         }
@@ -55,7 +55,7 @@ class InstructorDetailsController extends Controller
     public function show(Instructor_details $instructor_details, $instructor_id)
     {
         try {
-            $admin = Auth::guard('sanctum')->user();
+            $admin = Auth::guard('sanctum-admin')->user();
             if (!$admin) {
                 return $this->error('Unauthorized', 401);
             }
@@ -98,7 +98,7 @@ class InstructorDetailsController extends Controller
 
     public function update(UpdateInstructor_detailsRequest $request, instructor_details $instructor_details, $instructor_id)
     {
-        $admin = Auth::guard('sanctum')->user();
+        $admin = Auth::guard('sanctum-admin')->user();
         if (!$admin) {
             return $this->error('Unauthorized', 401);
         }

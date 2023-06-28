@@ -20,7 +20,7 @@ class AdminController extends Controller
     public function createInstructor(Request $request)
     {
         try {
-            $admin = Auth::guard('sanctum')->user();
+            $admin = Auth::guard('sanctum-admin')->user();
             if (!$admin) {
                 return $this->error('Unauthorized', 401);
             }
@@ -56,7 +56,7 @@ class AdminController extends Controller
     public function createTrainee(Request $request)
     {
         try {
-            $admin = Auth::guard('sanctum')->user();
+            $admin = Auth::guard('sanctum-admin')->user();
             if (!$admin) {
                 return $this->error('Unauthorized', 401);
             }
@@ -91,7 +91,7 @@ class AdminController extends Controller
     public function updateTrainee(Updatetrainee_detailsRequest $request, Trainee_details $trainee_details, $trainee_id)
     {
         try {
-            $admin = Auth::guard('sanctum')->user();
+            $admin = Auth::guard('sanctum-admin')->user();
             if (!$admin) {
                 return $this->error('Unauthorized', 401);
             }
