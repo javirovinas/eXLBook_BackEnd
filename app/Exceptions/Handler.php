@@ -41,6 +41,33 @@ class Handler extends ExceptionHandler
         return response()->json(['error' => $exception->validator->errors()->first()], 400);
     }
 
+    if ($request->isMethod('post') && $request->route()->uri() === 'assignlogbooks') {
+        $logbook_name = $request->input('logbook_name');
+        $date = $request->input('date');
+        $trainee_id = $request->input('trainee_id');
+        $instructor_id = $request->input('instructor_id');
+        $dateRegex = '/^\d{4}-\d{2}-\d{2}$/';
+
+        if (!preg_match($dateRegex, $date)) {
+            return response()->json(['error' => 'Invalid date format. The date must be in YYYY-MM-DD format.'], 400);
+        }
+
+        if (empty($logbook_name)) {
+            return response()->json(['error' => 'Logbook name is required.'], 400);
+        }
+        if (empty($date)) {
+            return response()->json(['error' => 'Date is required.'], 400);
+        }
+        if (empty($trainee_id)) {
+            return response()->json(['error' => 'Trainee ID is required.'], 400);
+        }
+        if (empty($instructor_id)) {
+            return response()->json(['error' => 'Instructor ID is required.'], 400);
+        }
+
+
+    }
+
     if ($request->isMethod('post')) {
         // Retrieve the input data
         $username = $request->input('username');

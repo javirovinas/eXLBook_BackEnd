@@ -1,5 +1,7 @@
 <?php
 
+namespace routes\api;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminAuthController;
@@ -73,7 +75,6 @@ Route::group(['middleware' => ['auth:sanctum-admin']], function () {
 
 
 //trainees
-
 
 //Routes for Trainee login
 Route::post('/trainees/login', [TraineeDetailsController::class, 'login']);

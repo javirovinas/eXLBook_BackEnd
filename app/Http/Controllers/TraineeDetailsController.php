@@ -21,13 +21,9 @@ class TraineeDetailsController extends Controller
      */
     public function index()
     {
-        try {
             $trainees = Trainee_details::all();
-            return $this->success(['trainees' => $trainees]);
-            
-        } catch (\Exception $e) {
-            throw $e;
-        }
+            return response()->json(['trainees' => $trainees]);
+
     }
 
     public function login(Request $request)
@@ -51,7 +47,7 @@ class TraineeDetailsController extends Controller
             } catch (\Exception $e) {
                 throw $e;
             }
-            return response()->json(['error' => 'Credentials do not match'], 401);
+            return response()->json(['error' => 'Incorrect username or password'], 401);
         }
 
     /**

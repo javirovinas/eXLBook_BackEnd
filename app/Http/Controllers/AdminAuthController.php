@@ -27,7 +27,7 @@ class AdminAuthController extends Controller
                 'username' => $data['username'],
                 'password' => bcrypt($data['password']),
             ]);
-        return $this->success([
+        return response()->json([
             'token' => $admin->createToken('api_token')->plainTextToken
         ]);
     } catch (\Exception $e) {
@@ -46,7 +46,7 @@ class AdminAuthController extends Controller
             $admin = Admin_login::where('username', $data['username'])->first();
 
             if (!$admin || !Hash::check($data['password'], $admin->password)) {
-                return response()->json(['error' => 'Credentials do not match'], 401);
+                return $this->success(['error' => 'Credentials do not match'], 401);
             }
 
             $token = $admin->createToken('api_token')->plainTextToken;

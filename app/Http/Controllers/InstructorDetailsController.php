@@ -31,26 +31,19 @@ class InstructorDetailsController extends Controller
                 return $this->success([
                     'token' => $token
                 ]);
-            } else {
-                // Invalid credentials
-                return $this->error('Invalid credentials', 401);
             }
-        } catch (\Exception $e) {
-            return $this->error('An error occurred while logging in', 500);
+        
+            } catch (\Exception $e) {
+            throw $e;
         }
+        return response()->json(['error' => 'Incorrect username or password'], 401);
     }
 
     public function index()
     {
-        try {
-            $instructors = Instructor_details::all();
-    
-            return $this->success([
-                'instructors' => $instructors,
-            ]);
-        } catch (\Exception $e) {
-            return $this->error('An error occurred while fetching instructors', 500);
-        }
+        $instructors = Instructor_details::all();
+        return response()->json(['instructors' => $instructors]);
+            
     }
 
     public function show(Instructor_details $instructor_details, $instructor_id)
@@ -62,7 +55,7 @@ class InstructorDetailsController extends Controller
                 return $this->error('Instructor not found', 404);
             }
     
-            return $this->success([
+            return response()->json([
                 'instructor' => $instructor,
             ]);
         } catch (\Exception $e) {
@@ -76,7 +69,7 @@ class InstructorDetailsController extends Controller
             $instructor = Instructor_details::find($instructor_id);
     
             if ($instructor) {
-                return $this->success([
+                return response()->json([
                     'status' => 200,
                     'instructor' => $instructor,
                 ], 200);
