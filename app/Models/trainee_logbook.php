@@ -21,4 +21,9 @@ class trainee_logbook extends Model
     {
     return $this->hasMany(trainee_logbook::class);
     }
+
+    public function trainee()
+    {
+        return $this->belongsTo(Trainee::class);
+    }
 }

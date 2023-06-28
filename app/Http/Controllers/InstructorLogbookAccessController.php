@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateInstructor_logbook_accessRequest;
 use App\Models\logbook;
 use App\Models\Trainee_details;
 use App\Models\trainee_logbook;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 class InstructorLogbookAccessController extends Controller
@@ -111,7 +112,7 @@ class InstructorLogbookAccessController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateInstructor_logbook_accessRequest $request, $trainee_id)
+    public function update(UpdateInstructor_logbook_accessRequest $request, $work_order_no)
     {
         $instructor = Auth::guard('sanctum-instructor')->user();
         if (!$instructor) {
@@ -119,23 +120,15 @@ class InstructorLogbookAccessController extends Controller
         }
 
         try {
-            $tasks = $request->input('tasks');
+            $insSo = $request->input('ins_so');
+            Trainee_logbook::where('work_order_no', $work_order_no)
+                ->update(['INS_SO' => $insSo]);
 
-            foreach ($tasks as $task) {
-                $workOrderNo = $task['work_order_no'];
-                $insSo = $task['INS_SO'];
-
-                trainee_logbook::where('work_order_no', $workOrderNo)
-                    ->where('trainee_id', $trainee_id) // Include the trainee_id in the update condition
-                    ->update(['INS_SO' => $insSo]);
-            }
-
-            return response()->json(['message' => 'Tasks updated successfully']);
+            return response()->json(['message' => 'Task updated successfully']);
         } catch (\Exception $e) {
-            return response()->json(['error' => 'An error occurred while updating tasks'], 500);
+            return response()->json(['error' => 'An error occurred while updating the task'], 500);
         }
     }
-
 
     /**
      * Remove the specified resource from storage.
