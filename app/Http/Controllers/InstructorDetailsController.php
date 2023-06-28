@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Traits\ApiResponser;
 use App\Models\Instructor_details;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Auth;
 
 class InstructorDetailsController extends Controller
 {
@@ -42,6 +43,11 @@ class InstructorDetailsController extends Controller
 
     public function index()
     {
+        $admin = Auth::guard('sanctum')->user();
+        if (!$admin) {
+            return $this->error('Unauthorized', 401);
+        }
+
         $instructors = Instructor_details::all();
         return response()->json(['instructors' => $instructors]);
             
@@ -50,6 +56,10 @@ class InstructorDetailsController extends Controller
     public function show(Instructor_details $instructor_details, $instructor_id)
     {
         try {
+            $admin = Auth::guard('sanctum')->user();
+            if (!$admin) {
+                return $this->error('Unauthorized', 401);
+            }
             $instructor = Instructor_details::find($instructor_id);
     
             if (!$instructor) {
@@ -67,6 +77,11 @@ class InstructorDetailsController extends Controller
     public function edit(Instructor_details $instructor_details, $instructor_id)
     {
         try {
+            $admin = Auth::guard('sanctum')->user();
+            if (!$admin) {
+                return $this->error('Unauthorized', 401);
+            }
+
             $instructor = Instructor_details::find($instructor_id);
     
             if ($instructor) {
@@ -85,9 +100,9 @@ class InstructorDetailsController extends Controller
     public function update(UpdateInstructor_detailsRequest $request, instructor_details $instructor_details, $instructor_id)
     {
         $admin = Auth::guard('sanctum')->user();
-            if (!$admin) {
-                return $this->error('Unauthorized', 401);
-            }
+        if (!$admin) {
+            return $this->error('Unauthorized', 401);
+        }
         $instructor = Instructor_details::find($instructor_id);
 
         if (!$instructor) {

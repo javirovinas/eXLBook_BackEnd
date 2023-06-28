@@ -17,8 +17,8 @@ return new class extends Migration
             $table->date('date')->nullable();
             $table->unsignedBigInteger('trainee_id');
             $table->unsignedBigInteger('instructor_id');
-            $table->string('instructor_name')->nullable(); // Add instructor name column
             $table->string('trainee_name')->nullable(); // Add trainee name column
+            $table->string('instructor_name')->nullable(); // Add instructor name column
             $table->boolean('archived')->default(false);
             
             // Foreign keys

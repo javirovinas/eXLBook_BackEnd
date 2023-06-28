@@ -36,6 +36,11 @@ class TraineeLogbookController extends Controller
      */
     public function storeLogbookEntry(Storetrainee_logbookRequest $request)
     {
+        $trainee = Auth::guard('sanctum-trainee')->user();
+        if (!$trainee) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
         $data = $request->validate([
             'work_order_no' => 'required',
             'task_detail' => 'nullable',
@@ -128,6 +133,11 @@ class TraineeLogbookController extends Controller
      */
     public function update(Updatetrainee_logbookRequest $request, trainee_logbook $trainee_logbook)
     {
+        $trainee = Auth::guard('sanctum-trainee')->user();
+        if (!$trainee) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
         $data = $request->validated();
 
         $traineeId = $request->input('trainee_id');
