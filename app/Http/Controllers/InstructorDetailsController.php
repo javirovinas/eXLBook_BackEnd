@@ -11,7 +11,6 @@ use Illuminate\Support\Facades\Hash;
 use App\Traits\ApiResponser;
 use App\Models\Instructor_details;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Auth;
 
 class InstructorDetailsController extends Controller
 {
