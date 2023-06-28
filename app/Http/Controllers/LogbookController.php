@@ -34,13 +34,13 @@ class LogbookController extends Controller
         $instructor = Instructor_details::findOrFail($data['instructor_id']);
         $trainee = Trainee_details::findOrFail($data['trainee_id']);
 
-        // Fetch the instructor name from the instructors table
-        $instructorModel = Instructor_details::findOrFail($instructor->instructor_id);
-        $instructorName = $instructorModel->first_name . ' ' . $instructorModel->family_name;
-
         // Fetch the trainee name from the trainees table
         $traineeModel = Trainee_details::findOrFail($trainee->trainee_id);
         $traineeName = $traineeModel->first_name . ' ' . $traineeModel->family_name;
+
+        // Fetch the instructor name from the instructors table
+        $instructorModel = Instructor_details::findOrFail($instructor->instructor_id);
+        $instructorName = $instructorModel->first_name . ' ' . $instructorModel->family_name;
 
         // Check if the trainee is already assigned to a different instructor
         if ($trainee->logbook && $trainee->logbook->instructor_id !== $instructor->instructor_id) {

@@ -183,7 +183,7 @@ class Handler extends ExceptionHandler
     
     }
     if ($exception instanceof RouteNotFoundException) {
-        return response()->json(['error' => 'API token not found.'], 404);
+        return response()->json(['error' => 'Missing or incorrect API token.'], 404);
     }
 
     if ($exception instanceof AuthenticationException) {
