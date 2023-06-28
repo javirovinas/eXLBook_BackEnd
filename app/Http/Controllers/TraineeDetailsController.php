@@ -21,6 +21,11 @@ class TraineeDetailsController extends Controller
      */
     public function index()
     {
+        $admin = Auth::guard('sanctum')->user();
+        if (!$admin) {
+            return $this->error('Unauthorized', 401);
+        }
+
             $trainees = Trainee_details::all();
             return response()->json(['trainees' => $trainees]);
 
@@ -71,6 +76,11 @@ class TraineeDetailsController extends Controller
      */
     public function show(trainee_details $trainee_details, $trainee_id)
     {
+        $admin = Auth::guard('sanctum')->user();
+        if (!$admin) {
+            return $this->error('Unauthorized', 401);
+        }
+
         $trainee = Trainee_details::find($trainee_id);
 
         if (!$trainee) {
@@ -85,6 +95,11 @@ class TraineeDetailsController extends Controller
      */
     public function edit(trainee_details $trainee_details, $trainee_id)
     {
+        $admin = Auth::guard('sanctum')->user();
+        if (!$admin) {
+            return $this->error('Unauthorized', 401);
+        }
+
         $trainee = trainee_details::find($trainee_id);
         if($trainee)
         {
@@ -108,6 +123,11 @@ class TraineeDetailsController extends Controller
      */
     public function update(Updatetrainee_detailsRequest $request, trainee_details $trainee_details, $trainee_id)
     {
+        $trainee = Auth::guard('sanctum-trainee')->user();
+        if (!$trainee) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
         $trainee = Trainee_details::find($trainee_id);
 
         if (!$trainee) {

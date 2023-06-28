@@ -99,6 +99,11 @@ class LogbookController extends Controller
      */
     public function store(StorelogbookRequest $request)
     {
+        $admin = Auth::guard('sanctum-admin')->user();
+        if (!$admin) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
         $validator = Validator::make($request -> all(), [
             'name' => 'required|max:20',
             'trainee_id' => 'required|integer',
@@ -184,6 +189,11 @@ class LogbookController extends Controller
      */
     public function update(UpdatelogbookRequest $request, int $logbookId)
 {
+    $admin = Auth::guard('sanctum-admin')->user();
+    if (!$admin) {
+        return response()->json(['message' => 'Unauthorized'], 401);
+    }
+    
     $validator = Validator::make($request->all(), [
         'name' => 'required|max:20',
         'trainee_id' => 'required|integer',
