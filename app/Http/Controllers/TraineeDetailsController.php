@@ -123,7 +123,7 @@ class TraineeDetailsController extends Controller
      */
     public function update(Updatetrainee_detailsRequest $request, trainee_details $trainee_details, $trainee_id)
     {
-        $trainee = Auth::guard('sanctum-trainee')->user();
+        $trainee = Auth::guard('sanctum-admin')->user();
         if (!$trainee) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
@@ -135,7 +135,7 @@ class TraineeDetailsController extends Controller
         }
 
         $data = $request->validate([
-            'UID' => 'required',
+            'uid' => 'required',
             'first_name' => 'required',
             'family_name' => 'required',
             'email' => 'required|email',
@@ -146,7 +146,7 @@ class TraineeDetailsController extends Controller
 
         try {
             // Check if the updated uid (trainee_id) exists for any other trainee
-            $existingTraineeUID = trainee_details::where('UID', $data['UID'])
+            $existingTraineeUID = trainee_details::where('uid', $data['uid'])
                 ->where('trainee_id', '!=', $trainee->trainee_id)
                 ->first();
             
@@ -171,6 +171,12 @@ class TraineeDetailsController extends Controller
             // Handle database connection or query exception
             return response()->json(['error' => 'Failed to update trainee.'], 500);
         }
+
+        if (isset($data['t_password'])) {
+            // Hash the updated password
+            $data['t_password'] = Hash::make($data['t_password']);
+        }
+    
         $trainee->update($data);
         return response()->json(['message' => 'Trainee updated successfully']);
 

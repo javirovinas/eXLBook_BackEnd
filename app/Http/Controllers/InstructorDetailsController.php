@@ -76,7 +76,7 @@ class InstructorDetailsController extends Controller
     public function edit(Instructor_details $instructor_details, $instructor_id)
     {
         try {
-            $admin = Auth::guard('sanctum')->user();
+            $admin = Auth::guard('sanctum-admin')->user();
             if (!$admin) {
                 return $this->error('Unauthorized', 401);
             }
@@ -145,6 +145,12 @@ class InstructorDetailsController extends Controller
             // Handle database connection or query exception
             return response()->json(['error' => 'Failed to update instructor.'], 500);
         }
+
+        if (isset($data['i_password'])) {
+            // Hash the updated password
+            $data['i_password'] = Hash::make($data['i_password']);
+        }
+    
         $instructor->update($data);
         return response()->json(['message' => 'Instructor updated successfully']);
 
