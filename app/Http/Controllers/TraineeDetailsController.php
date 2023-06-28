@@ -99,7 +99,6 @@ class TraineeDetailsController extends Controller
         if (!$admin) {
             return $this->error('Unauthorized', 401);
         }
-
         $trainee = trainee_details::find($trainee_id);
         if($trainee)
         {

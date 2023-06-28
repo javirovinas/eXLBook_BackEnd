@@ -6,11 +6,11 @@ use App\Http\Requests\StoreInstructor_detailsRequest;
 use App\Http\Requests\UpdateInstructor_detailsRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Traits\ApiResponser;
 use App\Models\Instructor_details;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\Auth;
 
 class InstructorDetailsController extends Controller
 {
@@ -102,7 +102,6 @@ class InstructorDetailsController extends Controller
         if (!$admin) {
             return $this->error('Unauthorized', 401);
         }
-
         $instructor = Instructor_details::find($instructor_id);
 
         if (!$instructor) {
@@ -110,7 +109,7 @@ class InstructorDetailsController extends Controller
         }
 
         $data = $request->validate([
-            'UID' => 'required',
+            'uid' => 'required',
             'first_name' => 'required',
             'family_name' => 'required',
             'email' => 'required|email',
@@ -121,7 +120,7 @@ class InstructorDetailsController extends Controller
 
         try {
             // Check if the updated uid (instructor_id) exists for any other instructor
-            $existingInstructorUID = instructor_details::where('UID', $data['UID'])
+            $existingInstructorUID = instructor_details::where('uid', $data['uid'])
                 ->where('instructor_id', '!=', $instructor->instructor_id)
                 ->first();
             
