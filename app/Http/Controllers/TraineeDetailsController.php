@@ -155,9 +155,10 @@ class TraineeDetailsController extends Controller
             // Handle database connection or query exception
             return response()->json(['error' => 'Failed to update trainee.'], 500);
         }
+        $trainee->update($data);
         return response()->json(['message' => 'Trainee updated successfully']);
 
-        $trainee->update($data);
+        
     }
     /**
      * Remove the specified resource from storage.

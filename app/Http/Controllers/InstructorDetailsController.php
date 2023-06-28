@@ -133,9 +133,10 @@ class InstructorDetailsController extends Controller
             // Handle database connection or query exception
             return response()->json(['error' => 'Failed to update instructor.'], 500);
         }
+        $instructor->update($data);
         return response()->json(['message' => 'Instructor updated successfully']);
 
-        $instructor->update($data);
+        
     }
     
 }

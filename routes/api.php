@@ -101,8 +101,6 @@ Route::get('/instructor/logbooks', [InstructorLogbookAccessController::class, 'g
 Route::get('/instructor/logbooks/{traineeId}', [InstructorLogbookAccessController::class, 'getTasks']);
 
 //updating tasks after instructor singoff
-Route::put('/instructor/tasks/{trainee_id}', [InstructorLogbookAccessController::class, 'update']);
-
-
+Route::put('/instructor/tasks/{work_order_no}', [InstructorLogbookAccessController::class, 'update']);
 });
 
