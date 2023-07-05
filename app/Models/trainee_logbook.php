@@ -9,7 +9,7 @@ class trainee_logbook extends Model
 {
     use HasFactory;
 
-
+    protected $primaryKey = 'task_id';
     protected $table = 'tasks';
     protected $fillable = ['trainee_id', 'logbook_id', 'work_order_no', 'task_detail', 'category', 'ATA', 'TEE_SO', 'INS_SO'];
     public function logbook()

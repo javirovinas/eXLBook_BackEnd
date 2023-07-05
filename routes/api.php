@@ -85,7 +85,8 @@ Route::get('/trainee/tasks', [TraineeLogbookController::class, 'showTraineeTasks
 Route::get('/trainee/logbooks', [TraineeLogbookController::class, 'showTraineeLogbook']);
 //Route for logbook entry by trainee
 Route::post('/trainee/taskentry', [TraineeLogbookController::class, 'storeLogbookEntry']);
-
+//Route for updating logbook for a trainee
+Route::put('/trainee/taskentry/{taskId}', [TraineeLogbookController::class, 'updateLogbookEntry']);
 });
 
 

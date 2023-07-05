@@ -109,6 +109,40 @@ class TraineeLogbookController extends Controller
         return response()->json(['logbooks' => $logbooks], 200);
     }
 
+    public function updateLogbookEntry(Request $request, $taskId)
+    {
+        $trainee = Auth::guard('sanctum-trainee')->user();
+        if (!$trainee) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        $data = $request->validate([
+            'work_order_no' => 'required',
+            'task_detail' => 'nullable',
+            'category' => 'nullable',
+            'ATA' => 'nullable',
+            'TEE_SO' => 'nullable',
+            'INS_SO' => 'nullable',
+            'archived' => 'boolean',
+        ]);
+
+        // Convert TEE_SO value to valid datetime format
+        if (!empty($data['TEE_SO'])) {
+            $data['TEE_SO'] = Carbon::createFromFormat('m/d/Y, h:i:s A', $data['TEE_SO'])->format('Y-m-d H:i:s');
+        }
+
+        $logbookEntry = trainee_logbook::where('task_id', $taskId)->first();
+
+        // Check if the logbook entry belongs to the trainee
+        $logbook = Logbook::where('trainee_id', $trainee->trainee_id)->where('logbook_id', $logbookEntry->logbook_id)->first();
+        if (!$logbook) {
+            return response()->json(['message' => 'Logbook entry not found for the given trainee'], 404);
+        }
+
+        $logbookEntry->update($data);
+
+        return response()->json(['message' => 'Logbook entry updated successfully'], 200);
+    }
 
     public function saveLogbook(Request $request)
     {

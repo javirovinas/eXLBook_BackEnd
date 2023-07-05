@@ -122,7 +122,7 @@ class TraineeDetailsController extends Controller
      */
     public function update(Updatetrainee_detailsRequest $request, trainee_details $trainee_details, $trainee_id)
     {
-        $trainee = Auth::guard('sanctum-trainee')->user();
+        $trainee = Auth::guard('sanctum-admin')->user();
         if (!$trainee) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
