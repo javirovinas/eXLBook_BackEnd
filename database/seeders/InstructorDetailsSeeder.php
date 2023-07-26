@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Instructor_details;
+use Illuminate\Support\Facades\Hash;
 
 class InstructorDetailsSeeder extends Seeder
 {
@@ -15,7 +16,7 @@ class InstructorDetailsSeeder extends Seeder
     {
 
         $instructors = [
-            ['UID' => '105840', 'first_name' => 'Rory', 'family_name' => 'McCarthy', 'i_username' => 'rorymcc', 'i_password' => 'owefh23', 'email' => 'rorymcc@gmail.com'],
+            ['UID' => '105840', 'first_name' => 'Rory', 'family_name' => 'McCarthy', 'i_username' => 'rorymcc', 'i_password' => 'poreo1', 'email' => 'rorymcc@gmail.com'],
             ['UID' => '110254', 'first_name' => 'John', 'family_name' => 'Doe', 'i_username' => 'jdoe', 'i_password' => 'oethwe34', 'email' => 'jdoe@gmail.com'],
             ['UID' => '100227', 'first_name' => 'Emily', 'family_name' => 'Swift', 'i_username' => 'emswift', 'i_password' => 'reoghiro54', 'email' => 'eswift@gmail.com'],
             ['UID' => '203735', 'first_name' => 'Kate', 'family_name' => 'Maher', 'i_username' => 'katmaher1', 'i_password' => 'sfjsohi92', 'email' => 'kmaher@gmail.com'],
@@ -25,8 +26,12 @@ class InstructorDetailsSeeder extends Seeder
             ['UID' => '103735', 'first_name' => 'Olivia', 'family_name' => 'Thomas', 'i_username' => 'oliviathomas', 'i_password' => 'lkjhgf321', 'email' => 'othomas@gmail.com']
         ];
 
-        foreach ($instructors as $instructor) {
-            Instructor_details::create($instructor);
+        foreach ($instructors as $instructorData) {
+            $instructorData['t_password'] = Hash::make($instructorData['t_password']);
+            $instructor = Instructor_details::create($instructorData);
+            $token = $instructor->createToken('api_token')->plainTextToken;
+            $instructor->api_token = $token;
+            $instructor->save();
         }
     }
 }

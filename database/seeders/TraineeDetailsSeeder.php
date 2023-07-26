@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Illuminate\Support\Str;
 use Illuminate\Database\Seeder;
 use App\Models\trainee_details;
+use Illuminate\Support\Facades\Hash;
 
 
 class TraineeDetailsSeeder extends Seeder
@@ -26,8 +28,12 @@ class TraineeDetailsSeeder extends Seeder
             ['UID' => '287962', 'first_name' => 'Emily', 'family_name' => 'Wilson', 't_username' => 'ewilson1', 't_password' => 'nbvcxzasdf', 'email' => 'ewilson@gmail.com']
         ];
 
-        foreach ($trainees as $trainee) {
-            trainee_details::create($trainee);
+        foreach ($trainees as $traineeData) {
+            $traineeData['t_password'] = Hash::make($traineeData['t_password']); // Hash the password
+            $trainee = Trainee_details::create($traineeData);
+            $token = $trainee->createToken('api_token')->plainTextToken;
+            $trainee->api_token = $token;
+            $trainee->save();
         }
     }
 }

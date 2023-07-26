@@ -19,6 +19,8 @@ class TraineeDetailsController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+     
     public function index()
     {
         $admin = Auth::guard('sanctum-admin')->user();
