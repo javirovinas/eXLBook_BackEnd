@@ -27,7 +27,7 @@ class InstructorDetailsSeeder extends Seeder
         ];
 
         foreach ($instructors as $instructorData) {
-            $instructorData['t_password'] = Hash::make($instructorData['t_password']);
+            $instructorData['i_password'] = Hash::make($instructorData['i_password']);
             $instructor = Instructor_details::create($instructorData);
             $token = $instructor->createToken('api_token')->plainTextToken;
             $instructor->api_token = $token;
