@@ -128,7 +128,7 @@ class TraineeLogbookController extends Controller
 
         // Convert TEE_SO value to valid datetime format
         if (!empty($data['TEE_SO'])) {
-            $data['TEE_SO'] = Carbon::createFromFormat('m/d/Y, h:i:s A', $data['TEE_SO'])->format('Y-m-d H:i:s');
+            $data['TEE_SO'] = Carbon::createFromFormat('m/d/Y, h:i:s', $data['TEE_SO'])->format('Y-m-d H:i:s');
         }
 
         $logbookEntry = trainee_logbook::where('task_id', $taskId)->first();
