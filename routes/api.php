@@ -80,11 +80,13 @@ Route::group(['middleware' => ['auth:sanctum-admin']], function () {
 Route::post('/trainees/login', [TraineeDetailsController::class, 'login']);
 Route::group(['middleware' => ['auth:sanctum-trainee']], function () {
 //Routes for accessing the logbooks by trainee
-Route::get('/trainee/tasks', [TraineeLogbookController::class, 'showTraineeTasks']);
-//Route::get('/tlogbooks/{trainee_id}', [TraineeLogbookController::class, 'showTraineeLogbook']);
-Route::get('/trainee/logbooks', [TraineeLogbookController::class, 'showTraineeLogbook']);
+Route::get('/trainee/logbooks/{logbook_id}/tasks', [TraineeLogbookController::class, 'showTraineeTasks']);
+//Accessing the logbooks by trainee
+Route::get('/trainee/{trainee_id}/logbooks', [TraineeLogbookController::class, 'showTraineeLogbooks']);
+//Get specific logbook
+Route::get('/trainee/{trainee_id}/logbooks/{logbook_id}', [TraineeLogbookController::class, 'showTraineeLogbook']);
 //Route for logbook entry by trainee
-Route::post('/trainee/taskentry', [TraineeLogbookController::class, 'storeLogbookEntry']);
+Route::post('/trainee/{trainee_id}/taskentry/{logbook_id}', [TraineeLogbookController::class, 'storeLogbookEntry']);
 //Route for updating logbook for a trainee
 Route::put('/trainee/taskentry/{taskId}', [TraineeLogbookController::class, 'updateLogbookEntry']);
 });

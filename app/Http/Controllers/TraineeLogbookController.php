@@ -34,7 +34,7 @@ class TraineeLogbookController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function storeLogbookEntry(Storetrainee_logbookRequest $request)
+    public function storeLogbookEntry(Storetrainee_logbookRequest $request, $trainee_id, $logbook_id)
     {
         $trainee = Auth::guard('sanctum-trainee')->user();
         if (!$trainee) {
@@ -58,7 +58,7 @@ class TraineeLogbookController extends Controller
         $trainee = Auth::guard('sanctum-trainee')->user();
 
         // Retrieve the logbook associated with the trainee
-        $logbook = Logbook::where('trainee_id', $trainee->trainee_id)->first();
+        $logbook = Logbook::where('trainee_id', $trainee_id)->where('logbook_id', $logbook_id)->first();
 
         if ($logbook) {
             $logbookEntry = new trainee_logbook($data);
@@ -74,7 +74,7 @@ class TraineeLogbookController extends Controller
     /**
      * Display the specified resource.
      */
-    public function showTraineeTasks(Request $request)
+    public function showTraineeTasks(Request $request, $logbook_id)
     {
         $trainee = Auth::guard('sanctum-trainee')->user();
 
@@ -82,7 +82,10 @@ class TraineeLogbookController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $logbook = Logbook::where('trainee_id', $trainee->trainee_id)->first();
+            // Retrieve the logbook associated with the provided logbook_id
+            $logbook = Logbook::where('trainee_id', $trainee->trainee_id)
+                ->where('logbook_id', $logbook_id)
+                ->first();
 
         if ($logbook) {
             // Retrieve the tasks associated with the logbook
@@ -97,16 +100,36 @@ class TraineeLogbookController extends Controller
             return response()->json(['message' => 'Logbook not found for the given trainee'], 404);
         }
     }
-    public function showTraineeLogbook(Request $request)
+    public function showTraineeLogbooks(Request $request, $trainee_id)
+{
+    // Ensure the authenticated trainee matches the requested trainee_id
+    $authenticatedTrainee = Auth::guard('sanctum-trainee')->user();
+    if (!$authenticatedTrainee || $authenticatedTrainee->trainee_id != $trainee_id) {
+        return response()->json(['message' => 'Unauthorized'], 401);
+    }
+
+    // Fetch all logbooks for the requested trainee_id
+    $logbooks = Logbook::where('trainee_id', $trainee_id)->get();
+
+    return response()->json(['logbooks' => $logbooks], 200);
+}
+
+    public function showTraineeLogbook(Request $request, $trainee_id, $logbook_id)
     {
-        $trainee = Auth::guard('sanctum-trainee')->user();
-        if (!$trainee) {
+        // Ensure the authenticated trainee matches the requested trainee_id
+        $authenticatedTrainee = Auth::guard('sanctum-trainee')->user();
+        if (!$authenticatedTrainee || $authenticatedTrainee->trainee_id != $trainee_id) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-
-        $logbooks = Logbook::where('trainee_id', $trainee->trainee_id)->get();
-
-        return response()->json(['logbooks' => $logbooks], 200);
+    
+        // Fetch the specific logbook for the requested trainee_id and logbook_id
+        $logbook = Logbook::where('trainee_id', $trainee_id)->find($logbook_id);
+    
+        if (!$logbook) {
+            return response()->json(['message' => 'Logbook not found'], 404);
+        }
+    
+        return response()->json(['logbook' => $logbook], 200);
     }
 
     public function updateLogbookEntry(Request $request, $taskId)
@@ -128,7 +151,7 @@ class TraineeLogbookController extends Controller
 
         // Convert TEE_SO value to valid datetime format
         if (!empty($data['TEE_SO'])) {
-            $data['TEE_SO'] = Carbon::createFromFormat('m/d/Y, h:i:s', $data['TEE_SO'])->format('Y-m-d H:i:s');
+            $data['TEE_SO'] = Carbon::createFromFormat('m/d/Y, H:i:s', $data['TEE_SO'])->format('Y-m-d H:i:s');
         }
 
         $logbookEntry = trainee_logbook::where('task_id', $taskId)->first();

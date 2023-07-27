@@ -48,6 +48,7 @@ class TraineeDetailsController extends Controller
                 
                 return $this->success([
                     'token' => $token,
+                    'trainee_id' => $trainee->trainee_id
                 ]);
             }
 
