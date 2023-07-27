@@ -101,10 +101,10 @@ Route::group(['middleware' => ['auth:sanctum-instructor']], function () {
 //Route for Instructor to view list of logbooks
 Route::get('/instructor/logbooks', [InstructorLogbookAccessController::class, 'getLogbooks']);
 
-//Route for Instructor accessing logbooks
-Route::get('/instructor/logbooks/{traineeId}', [InstructorLogbookAccessController::class, 'getTasks']);
+//Route for Instructor accessing tasks for specific logbook
+Route::get('/instructor/logbooks/{traineeId}/{logbookId?}', [InstructorLogbookAccessController::class, 'getTasks']);
 
-//updating tasks after instructor singoff
+//updating tasks after instructor signoff
 Route::put('/instructor/tasks/{work_order_no}', [InstructorLogbookAccessController::class, 'update']);
 });
 

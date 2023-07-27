@@ -18,7 +18,7 @@ class TraineeDetailsSeeder extends Seeder
     {
 
         $trainees = [
-            ['UID' => '105085', 'first_name' => 'Terry', 'family_name' => 'Miller', 't_username' => 'tmiller1', 't_password' => 'jsgeey159', 'email' => 'tmiller@gmail.com'],
+            ['UID' => '105085', 'first_name' => 'Terry', 'family_name' => 'Miller', 't_username' => 'tmiller1', 't_password' => 'miller1', 'email' => 'tmiller@gmail.com'],
             ['UID' => '123495', 'first_name' => 'Jane', 'family_name' => 'Ryan', 't_username' => 'jryan', 't_password' => 'wywooev739', 'email' => 'jdoe@gmail.com'],
             ['UID' => '234534', 'first_name' => 'Barry', 'family_name' => 'Sweeney', 't_username' => 'bsweeney12', 't_password' => 'oiwqwwehqy98', 'email' => 'bsweeney@gmail.com'],
             ['UID' => '187962', 'first_name' => 'Lisa', 'family_name' => 'Brennan', 't_username' => 'lizbrenn1', 't_password' => 'hewaiu09', 'email' => 'lbrennan@gmail.com'],

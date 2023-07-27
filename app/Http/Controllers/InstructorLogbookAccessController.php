@@ -44,13 +44,20 @@ class InstructorLogbookAccessController extends Controller
 
 
 
-    public function getTasks($traineeId)
+    public function getTasks($traineeId, $logbookId = null)
     {
         $instructor = Auth::guard('sanctum-instructor')->user();
         if (!$instructor) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-        $tasks = trainee_logbook::where('trainee_id', $traineeId)->get();
+        $query = Trainee_logbook::where('trainee_id', $traineeId);
+
+            // If a specific logbookId is provided, add it to the query
+        if ($logbookId !== null) {
+            $query->where('logbook_id', $logbookId);
+        }
+
+        $tasks = $query->get();
 
         if ($tasks->isEmpty()) {
             return response()->json(['message' => 'No tasks found for the logbook'], 404);
