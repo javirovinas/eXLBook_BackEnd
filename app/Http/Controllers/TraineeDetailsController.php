@@ -28,7 +28,7 @@ class TraineeDetailsController extends Controller
             return $this->error('Unauthorized', 401);
         }
 
-            $trainees = Trainee_details::all();
+            $trainees = trainee_details::all();
             return response()->json(['trainees' => $trainees]);
 
     }
@@ -38,7 +38,7 @@ class TraineeDetailsController extends Controller
         try{
             $credentials = $request->only('username', 'password');
 
-            $trainee = Trainee_details::where('t_username', $credentials['username'])->first();
+            $trainee = trainee_details::where('t_username', $credentials['username'])->first();
     
             if ($trainee && Hash::check($credentials['password'], $trainee->t_password)) {
                 // Login successful
@@ -84,7 +84,7 @@ class TraineeDetailsController extends Controller
             return $this->error('Unauthorized', 401);
         }
 
-        $trainee = Trainee_details::find($trainee_id);
+        $trainee = trainee_details::find($trainee_id);
 
         if (!$trainee) {
             return response()->json(['message' => 'Trainee not found'], 404);
@@ -130,7 +130,7 @@ class TraineeDetailsController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $trainee = Trainee_details::find($trainee_id);
+        $trainee = trainee_details::find($trainee_id);
 
         if (!$trainee) {
             return response()->json(['message' => 'Trainee not found'], 404);

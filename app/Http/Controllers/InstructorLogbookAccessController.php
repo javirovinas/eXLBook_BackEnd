@@ -6,7 +6,7 @@ use App\Models\Instructor_logbook_access;
 use App\Http\Requests\StoreInstructor_logbook_accessRequest;
 use App\Http\Requests\UpdateInstructor_logbook_accessRequest;
 use App\Models\logbook;
-use App\Models\Trainee_details;
+use App\Models\trainee_details;
 use App\Models\trainee_logbook;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -20,7 +20,7 @@ class InstructorLogbookAccessController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        $logbooks = Logbook::where('instructor_id', $instructor->instructor_id)->get();
+        $logbooks = logbook::where('instructor_id', $instructor->instructor_id)->get();
 
         if ($logbooks->isEmpty()) {
             return response()->json(['message' => 'No logbooks found for the instructor'], 404);
@@ -28,7 +28,7 @@ class InstructorLogbookAccessController extends Controller
 
         $traineeLogbooks = [];
         foreach ($logbooks as $logbook) {
-            $trainee = Trainee_details::find($logbook->trainee_id);
+            $trainee = trainee_details::find($logbook->trainee_id);
             $traineeName = $trainee->first_name . ' ' . $trainee->family_name;
             $traineeLogbooks[] = [
                 'logbook_id' => $logbook->logbook_id,
@@ -119,22 +119,33 @@ class InstructorLogbookAccessController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateInstructor_logbook_accessRequest $request, $work_order_no)
+    public function update(UpdateInstructor_logbook_accessRequest $request, $taskId)
     {
         $instructor = Auth::guard('sanctum-instructor')->user();
         if (!$instructor) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-        try {
-            $insSo = $request->input('ins_so');
-            Trainee_logbook::where('work_order_no', $work_order_no)
-                ->update(['INS_SO' => $insSo]);
+        $data = $request->validate([
+            'INS_SO' => 'nullable',
+        ]);
 
-            return response()->json(['message' => 'Task updated successfully']);
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'An error occurred while updating the task'], 500);
+        // Convert TEE_SO value to valid datetime format
+        if (!empty($data['INS_SO'])) {
+            $data['INS_SO'] = Carbon::createFromFormat('Y-m-d H:i:s', $data['INS_SO'])->format('Y-m-d H:i:s');
         }
+
+        $logbookEntry = trainee_logbook::where('task_id', $taskId)->first();
+
+        // Check if the logbook entry belongs to the instructor
+        $logbook = logbook::where('instructor_id', $instructor->instructor_id)->where('logbook_id', $logbookEntry->logbook_id)->first();
+        if (!$logbook) {
+            return response()->json(['message' => 'Logbook entry not found for the given trainee'], 404);
+        }
+
+        $logbookEntry->update($data);
+
+        return response()->json(['message' => 'Logbook entry updated successfully'], 200);
     }
 
     /**

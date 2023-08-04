@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Storetrainee_logbookRequest;
 use App\Http\Requests\Updatetrainee_logbookRequest;
 use Illuminate\Http\Request;
-use App\Models\Logbook;
-use App\Models\Trainee_details;
+use App\Models\logbook;
+use App\Models\trainee_details;
 
 class TraineeLogbookController extends Controller
 {
@@ -58,7 +58,7 @@ class TraineeLogbookController extends Controller
         $trainee = Auth::guard('sanctum-trainee')->user();
 
         // Retrieve the logbook associated with the trainee
-        $logbook = Logbook::where('trainee_id', $trainee_id)->where('logbook_id', $logbook_id)->first();
+        $logbook = logbook::where('trainee_id', $trainee_id)->where('logbook_id', $logbook_id)->first();
 
         if ($logbook) {
             $logbookEntry = new trainee_logbook($data);
@@ -83,7 +83,7 @@ class TraineeLogbookController extends Controller
         }
 
             // Retrieve the logbook associated with the provided logbook_id
-            $logbook = Logbook::where('trainee_id', $trainee->trainee_id)
+            $logbook = logbook::where('trainee_id', $trainee->trainee_id)
                 ->where('logbook_id', $logbook_id)
                 ->first();
 
@@ -109,7 +109,7 @@ class TraineeLogbookController extends Controller
     }
 
     // Fetch all logbooks for the requested trainee_id
-    $logbooks = Logbook::where('trainee_id', $trainee_id)->get();
+    $logbooks = logbook::where('trainee_id', $trainee_id)->get();
 
     return response()->json(['logbooks' => $logbooks], 200);
 }
@@ -123,7 +123,7 @@ class TraineeLogbookController extends Controller
         }
     
         // Fetch the specific logbook for the requested trainee_id and logbook_id
-        $logbook = Logbook::where('trainee_id', $trainee_id)->find($logbook_id);
+        $logbook = logbook::where('trainee_id', $trainee_id)->find($logbook_id);
     
         if (!$logbook) {
             return response()->json(['message' => 'Logbook not found'], 404);
@@ -151,13 +151,13 @@ class TraineeLogbookController extends Controller
 
         // Convert TEE_SO value to valid datetime format
         if (!empty($data['TEE_SO'])) {
-            $data['TEE_SO'] = Carbon::createFromFormat('m/d/Y, H:i:s', $data['TEE_SO'])->format('Y-m-d H:i:s');
+            $data['TEE_SO'] = Carbon::createFromFormat('Y-m-d, H:i:s', $data['TEE_SO'])->format('Y-m-d H:i:s');
         }
 
         $logbookEntry = trainee_logbook::where('task_id', $taskId)->first();
 
         // Check if the logbook entry belongs to the trainee
-        $logbook = Logbook::where('trainee_id', $trainee->trainee_id)->where('logbook_id', $logbookEntry->logbook_id)->first();
+        $logbook = logbook::where('trainee_id', $trainee->trainee_id)->where('logbook_id', $logbookEntry->logbook_id)->first();
         if (!$logbook) {
             return response()->json(['message' => 'Logbook entry not found for the given trainee'], 404);
         }
@@ -199,7 +199,7 @@ class TraineeLogbookController extends Controller
 
         $traineeId = $request->input('trainee_id');
 
-        $logbook = Logbook::where('trainee_id', $traineeId)->first();
+        $logbook = logbook::where('trainee_id', $traineeId)->first();
 
         if ($logbook) {
             $logbook->fill([
@@ -230,7 +230,7 @@ class TraineeLogbookController extends Controller
     {
         $traineeId = $request->input('trainee_id');
 
-        $logbook = Logbook::where('trainee_id', $traineeId)->first();
+        $logbook = logbook::where('trainee_id', $traineeId)->first();
 
         if ($logbook) {
             $logbook->delete();

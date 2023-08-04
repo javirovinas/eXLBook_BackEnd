@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 
-class Trainee_details extends Authenticatable
+class trainee_details extends Authenticatable
 {
     use HasApiTokens;
 
@@ -32,7 +32,7 @@ class Trainee_details extends Authenticatable
     
 public function logbook()
 {
-    return $this->hasOne(Logbook::class, 'trainee_id');
+    return $this->hasOne(logbook::class, 'trainee_id');
 }
 }
 

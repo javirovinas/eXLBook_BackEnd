@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\logbook;
 use App\Models\Instructor_details;
-use App\Models\Trainee_details;
+use App\Models\trainee_details;
 use App\Http\Requests\StorelogbookRequest;
 use App\Http\Requests\UpdatelogbookRequest;
 use Illuminate\Support\Facades\Auth;
@@ -32,10 +32,10 @@ class LogbookController extends Controller
     try {
         // Retrieve the instructor and trainee by their IDs
         $instructor = Instructor_details::findOrFail($data['instructor_id']);
-        $trainee = Trainee_details::findOrFail($data['trainee_id']);
+        $trainee = trainee_details::findOrFail($data['trainee_id']);
 
         // Fetch the trainee name from the trainees table
-        $traineeModel = Trainee_details::findOrFail($trainee->trainee_id);
+        $traineeModel = trainee_details::findOrFail($trainee->trainee_id);
         $traineeName = $traineeModel->first_name . ' ' . $traineeModel->family_name;
 
         // Fetch the instructor name from the instructors table
@@ -48,7 +48,7 @@ class LogbookController extends Controller
         }
 
         // Create a new logbook record and associate it with the instructor and trainee
-        $logbook = new Logbook($data);
+        $logbook = new logbook($data);
         $logbook->instructor_id = $instructor->instructor_id;
         $logbook->trainee_id = $trainee->trainee_id;
         $logbook->instructor_name = $instructorName; // Save instructor name
@@ -59,7 +59,7 @@ class LogbookController extends Controller
 
     } catch (ModelNotFoundException $exception) {
         // Handle the case when either instructor or trainee is not found
-        if ($exception->getModel() === Trainee_details::class) {
+        if ($exception->getModel() === trainee_details::class) {
             return response()->json(['message' => 'Invalid trainee ID. Matching Trainee ID not found'], 400);
         }
 

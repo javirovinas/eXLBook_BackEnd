@@ -30,7 +30,7 @@ class TraineeDetailsSeeder extends Seeder
 
         foreach ($trainees as $traineeData) {
             $traineeData['t_password'] = Hash::make($traineeData['t_password']); // Hash the password
-            $trainee = Trainee_details::create($traineeData);
+            $trainee = trainee_details::create($traineeData);
             $token = $trainee->createToken('api_token')->plainTextToken;
             $trainee->api_token = $token;
             $trainee->save();

@@ -24,7 +24,7 @@ class Admin_login extends Authenticatable
 
     public function createTrainee($data)
     {
-        return Trainee_details::createTrainee($data);
+        return trainee_details::createTrainee($data);
     }
 
     public function createInstructor($data)

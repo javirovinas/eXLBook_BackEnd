@@ -68,7 +68,7 @@ class Handler extends ExceptionHandler
 
     }
 
-    if ($request->isMethod('post')) {
+    if ($request->isMethod('post' || 'put')) {
         // Retrieve the input data
         $username = $request->input('username');
         $password = $request->input('password');
@@ -149,7 +149,7 @@ class Handler extends ExceptionHandler
         }
 
         try {
-            $trainee = \App\Models\Trainee_details::where('email', $email)->first();
+            $trainee = \App\Models\trainee_details::where('email', $email)->first();
             if ($trainee) {
                 if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
                     return response()->json(['error' => 'Invalid email format.'], 400);

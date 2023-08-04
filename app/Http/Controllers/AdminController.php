@@ -6,7 +6,7 @@ use App\Http\Requests\StoreAdmin_loginRequest;
 use App\Http\Requests\UpdateAdmin_loginRequest;
 use Illuminate\Http\Request;
 use App\Models\Admin_login;
-use App\Models\Trainee_details;
+use App\Models\trainee_details;
 use App\Models\Instructor_details;
 use App\Http\Requests\Updatetrainee_detailsRequest;
 use Illuminate\Support\Facades\Auth;
@@ -70,7 +70,7 @@ class AdminController extends Controller
                 'password' => 'required',
             ]);
 
-            $trainee = Trainee_details::create([
+            $trainee = trainee_details::create([
                 'uid' => $data['uid'],
                 'first_name' => $data['first_name'],
                 'family_name' => $data['family_name'],
@@ -88,7 +88,7 @@ class AdminController extends Controller
         }
     }
 
-    public function updateTrainee(Updatetrainee_detailsRequest $request, Trainee_details $trainee_details, $trainee_id)
+    public function updateTrainee(Updatetrainee_detailsRequest $request, trainee_details $trainee_details, $trainee_id)
     {
         try {
             $admin = Auth::guard('sanctum-admin')->user();
@@ -98,7 +98,7 @@ class AdminController extends Controller
 
             $data = $request->validated();
 
-            $trainee = Trainee_details::findOrFail($trainee_id);
+            $trainee = trainee_details::findOrFail($trainee_id);
 
             $trainee->update([
                 'uid' => $data['uid'],

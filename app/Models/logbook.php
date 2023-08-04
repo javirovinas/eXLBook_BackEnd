@@ -27,7 +27,7 @@ class Logbook extends Model
 
     public function trainee()
     {
-        return $this->belongsTo(Trainee_details::class, 'trainee_id', 'trainee_id');
+        return $this->belongsTo(trainee_details::class, 'trainee_id', 'trainee_id');
     }
     public function tasks()
     {

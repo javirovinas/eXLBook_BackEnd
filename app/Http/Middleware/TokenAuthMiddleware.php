@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\Admin_login;
-use App\Models\Trainee_details;
+use App\Models\trainee_details;
 use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +37,7 @@ class TokenAuthMiddleware
     }
     private function authenticateTrainee($token)
     {
-        $trainee = Trainee_details::where('api_token', $token)->first();
+        $trainee = trainee_details::where('api_token', $token)->first();
 
         return $trainee !== null;
     }

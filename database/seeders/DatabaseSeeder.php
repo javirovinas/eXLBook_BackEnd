@@ -5,7 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-use App\Models\Trainee_details;
+use App\Models\trainee_details;
 use App\Models\Instructor_details;
 
 class DatabaseSeeder extends Seeder
