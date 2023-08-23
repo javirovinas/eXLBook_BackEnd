@@ -14,6 +14,7 @@ use App\Http\Controllers\TraineeDetailsController;
 use App\Http\Controllers\TraineeLoginController;
 use App\Http\Controllers\TraineeLogbookController;
 use App\Http\Middleware\CorsMiddleware;
+use App\Http\Controllers\NoteController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -89,6 +90,11 @@ Route::get('/trainee/{trainee_id}/logbooks/{logbook_id}', [TraineeLogbookControl
 Route::post('/trainee/{trainee_id}/taskentry/{logbook_id}', [TraineeLogbookController::class, 'storeLogbookEntry']);
 //Route for updating logbook for a trainee
 Route::put('/trainee/taskentry/{taskId}', [TraineeLogbookController::class, 'updateLogbookEntry']);
+
+//Notes
+Route::post('/notesentry', [NoteController::class, 'notesEntry']);
+Route::put('/editnotes', [NoteController::class, 'editNotes']);
+Route::get('/trainee/{trainee_id}/{task_id}/notes', [NoteController::class, 'showNotes']);
 });
 
 
@@ -107,4 +113,6 @@ Route::get('/instructor/logbooks/{traineeId}/{logbookId?}', [InstructorLogbookAc
 //updating tasks after instructor signoff
 Route::put('/instructor/tasks/{work_order_no}', [InstructorLogbookAccessController::class, 'update']);
 });
+
+
 

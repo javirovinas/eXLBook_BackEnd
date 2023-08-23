@@ -18,19 +18,19 @@ class LogbookSeeder extends Seeder
     public function run(): void
     {
         $logbooks = [
-            ['logbook_name' => 'Maintenance Logbook', 'date' => '2023-02-23', 'trainee_id' => 4, 'instructor_id' => 2, 'trainee_name' => '', 'instructor_name' => ''],
-            ['logbook_name' => 'Communications Logbook', 'date' => '2023-02-20', 'trainee_id' => 1, 'instructor_id' => 2, 'trainee_name' => '', 'instructor_name' => ''],
-            ['logbook_name' => 'Physics Logbook', 'date' => '2023-02-02', 'trainee_id' => 7, 'instructor_id' => 1, 'trainee_name' => '', 'instructor_name' => ''],
-            ['logbook_name' => 'Technologies Logbook', 'date' => '2023-01-28', 'trainee_id' => 2, 'instructor_id' => 4, 'trainee_name' => '', 'instructor_name' => ''],
-            ['logbook_name' => 'Safety Logbook', 'date' => '2023-03-01', 'trainee_id' => 8, 'instructor_id' => 3, 'trainee_name' => '', 'instructor_name' => ''],
-            ['logbook_name' => 'Navigation Logbook', 'date' => '2023-02-11', 'trainee_id' => 6, 'instructor_id' => 1, 'trainee_name' => '', 'instructor_name' => ''],
-            ['logbook_name' => 'Research Logbook', 'date' => '2023-03-04', 'trainee_id' => 5, 'instructor_id' => 3, 'trainee_name' => '', 'instructor_name' => ''],
-            ['logbook_name' => 'Medical Logbook', 'date' => '2023-01-18', 'trainee_id' => 3, 'instructor_id' => 2, 'trainee_name' => '', 'instructor_name' => ''],
-           // ['logbook_name' => 'Physics Logbook', 'date' => '2023-01-20', 'trainee_id' => 1, 'instructor_id' => 2, 'trainee_name' => '', 'instructor_name' => ''],  
-           // ['logbook_name' => 'Avionics Logbook', 'date' => '2023-03-15', 'trainee_id' => 3, 'instructor_id' => 5, 'trainee_name' => '', 'instructor_name' => ''],
-           // ['logbook_name' => 'Flight Operations Logbook', 'date' => '2023-02-28', 'trainee_id' => 4, 'instructor_id' => 6, 'trainee_name' => '', 'instructor_name' => ''],
-           // ['logbook_name' => 'Meteorology Logbook', 'date' => '2023-03-10', 'trainee_id' => 5, 'instructor_id' => 5, 'trainee_name' => '', 'instructor_name' => ''],
-           // ['logbook_name' => 'Aircraft Structures Logbook', 'date' => '2023-03-05', 'trainee_id' => 6, 'instructor_id' => 1, 'trainee_name' => '', 'instructor_name' => ''],
+            ['logbook_name' => 'lisa_brennan_logbook_one', 'date' => '2023-02-23', 'trainee_id' => 4, 'instructor_id' => 2, 'trainee_name' => '', 'instructor_name' => ''],
+            ['logbook_name' => 'terry_miller_logbook_one', 'date' => '2023-02-20', 'trainee_id' => 1, 'instructor_id' => 2, 'trainee_name' => '', 'instructor_name' => ''],
+            ['logbook_name' => 'andrew_johnson_logbook_one', 'date' => '2023-02-02', 'trainee_id' => 7, 'instructor_id' => 1, 'trainee_name' => '', 'instructor_name' => ''],
+            ['logbook_name' => 'jane_ryan_logbook_one', 'date' => '2023-01-28', 'trainee_id' => 2, 'instructor_id' => 4, 'trainee_name' => '', 'instructor_name' => ''],
+            ['logbook_name' => 'emily_wilson_logbook_one', 'date' => '2023-03-01', 'trainee_id' => 8, 'instructor_id' => 3, 'trainee_name' => '', 'instructor_name' => ''],
+            ['logbook_name' => 'sarah_smith_logbook_one', 'date' => '2023-02-11', 'trainee_id' => 6, 'instructor_id' => 1, 'trainee_name' => '', 'instructor_name' => ''],
+            ['logbook_name' => 'michael_jones_logbook_one', 'date' => '2023-03-04', 'trainee_id' => 5, 'instructor_id' => 3, 'trainee_name' => '', 'instructor_name' => ''],
+            ['logbook_name' => 'barry_sweeney_logbook_one', 'date' => '2023-01-18', 'trainee_id' => 3, 'instructor_id' => 2, 'trainee_name' => '', 'instructor_name' => ''],
+           // ['logbook_name' => 'terry_miller_logbook_two', 'date' => '2023-01-20', 'trainee_id' => 1, 'instructor_id' => 2, 'trainee_name' => '', 'instructor_name' => ''],  
+           // ['logbook_name' => 'barry_sweeney_logbook_two', 'date' => '2023-03-15', 'trainee_id' => 3, 'instructor_id' => 5, 'trainee_name' => '', 'instructor_name' => ''],
+           // ['logbook_name' => 'lisa_brennan_logbook_two', 'date' => '2023-02-28', 'trainee_id' => 4, 'instructor_id' => 6, 'trainee_name' => '', 'instructor_name' => ''],
+           // ['logbook_name' => 'michael_jones_logbook_two', 'date' => '2023-03-10', 'trainee_id' => 5, 'instructor_id' => 5, 'trainee_name' => '', 'instructor_name' => ''],
+           // ['logbook_name' => 'sarah_smith_logbook_two', 'date' => '2023-03-05', 'trainee_id' => 6, 'instructor_id' => 1, 'trainee_name' => '', 'instructor_name' => ''],
         ];
 
         foreach ($logbooks as &$logbook) {

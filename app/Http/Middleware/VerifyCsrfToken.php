@@ -30,7 +30,7 @@ class VerifyCsrfToken extends Middleware
     $response = $next($request);
 
     // Add CORS headers
-    $response->headers->set('Access-Control-Allow-Origin', '*');
+    //$response->headers->set('Access-Control-Allow-Origin', '*');
     $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
     $response->headers->set('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
 
