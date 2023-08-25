@@ -68,7 +68,24 @@ class Handler extends ExceptionHandler
 
     }
 
-    if ($request->isMethod('post' || 'put')) {
+    if ($request->isMethod('post') && $request->route()->uri() === 'notesentry') {
+        // Retrieve the input data for notes entry
+        $data = $request->all();
+        $task_id = $data['task_id'] ?? null;
+        $notes = $data['notes'] ?? null;
+
+        // Validate the input data
+        if (empty($task_id) || empty($notes)) {
+            return response()->json(['error' => 'Task ID and notes are required.'], 400);
+        }
+
+        // Handle other checks or validations specific to notes entry here
+        // For example, you can check if the task ID exists or perform additional checks on the data
+
+        // If everything is fine, you can proceed to save the note and return a success response
+    }
+
+    /*if ($request->isMethod('post')) {
         // Retrieve the input data
         $username = $request->input('username');
         $password = $request->input('password');
@@ -80,20 +97,29 @@ class Handler extends ExceptionHandler
             return response()->json(['error' => 'Username and password are required.'], 400);
         }
 
-        if (!preg_match('/^[a-zA-Z0-9]+$/', $username)) {
-            return response()->json(['error' => 'Invalid username format.'], 400);
-        }
-
-        if (!preg_match('/^[a-zA-Z0-9]+$/', $password)) {
-            return response()->json(['error' => 'Invalid password format.'], 400);
-        }
-
         if (strpos($username, ' ') !== false) {
             return response()->json(['error' => 'Username cannot contain spaces.'], 400);
         }
 
         if (strpos($password, ' ') !== false) {
             return response()->json(['error' => 'Password cannot contain spaces.'], 400);
+        }
+
+        // if (!preg_match('/^[a-zA-Z0-9]+$/', $username)) {
+        //     return response()->json(['error' => 'Invalid username format.'], 400);
+        // }
+
+        // if (!preg_match('/^[a-zA-Z0-9]+$/', $password)) {
+        //     return response()->json(['error' => 'Invalid password format.'], 400);
+        // }
+
+        if (!is_numeric($uid)) {
+            return response()->json(['error' => 'UID must be an integer.'], 400);
+        }
+
+        $uidString = (string) $uid;
+        if (strlen($uidString) !== 6) {
+            return response()->json(['error' => 'UID must be exactly 6 digits long.'], 400);
         }
 
         if (strlen($username) > 54) {
@@ -181,7 +207,10 @@ class Handler extends ExceptionHandler
             return response()->json(['error' => 'Failed to check trainee UID existence.'], 500);
         }
     
-    }
+    }*/
+   
+
+
     if ($exception instanceof RouteNotFoundException) {
         return response()->json(['error' => 'Missing or incorrect API token.'], 404);
     }
@@ -192,6 +221,27 @@ class Handler extends ExceptionHandler
 
     if ($exception instanceof HttpException && $exception->getStatusCode() === 500) {
         return response()->json(['error' => 'Internal server error.'], 500);
+    }
+
+    if ($exception instanceof QueryException) {
+        $errorMessage = $exception->getMessage();
+
+        if (strpos($errorMessage, 'Duplicate entry') !== false) {
+            if (strpos($errorMessage, 'trainees.trainees_uid_unique') !== false) {
+                return response()->json(['error' => 'UID already exists.'], 409);
+            }
+            if (strpos($errorMessage, 'trainees.trainees_t_username_unique') !== false) {
+                return response()->json(['error' => 'Trainee username already exists.'], 409);
+            }
+            if (strpos($errorMessage, 'trainees.trainees_email_unique') !== false) {
+                return response()->json(['error' => 'Email already exists.'], 409);
+            }
+
+            return response()->json(['error' => 'Duplicate entry error.'], 409);
+        }
+
+        // Handle other types of database-related errors
+        //return response()->json(['error' => 'Database error.'], 500);
     }
     
 

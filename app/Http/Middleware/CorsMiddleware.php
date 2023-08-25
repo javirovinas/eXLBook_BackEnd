@@ -17,7 +17,7 @@ class CorsMiddleware
     {
         
         $response = $next($request);
-        $response->headers->set('Access-Control-Allow-Origin', '*');
+        //$response->headers->set('Access-Control-Allow-Origin', 'http://46.101.94.150:443');
         $response->headers->set('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
         $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 

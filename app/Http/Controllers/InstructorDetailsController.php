@@ -141,20 +141,60 @@ class InstructorDetailsController extends Controller
             if ($existingInstructorEmail) {
                 return response()->json(['error' => 'The Email is already assigned to another instructor'], 400);
             }
+
+            // Validate the input data
+            if (empty($data['i_username']) || empty($data['i_password'])) {
+                return response()->json(['error' => 'Username and Password required.'], 400);
+            }
+    
+            if (!is_numeric($data['uid'])) {
+                return response()->json(['error' => 'UID must be an integer.'], 400);
+            }
+    
+            $uidString = (string) $data['uid'];
+            if (strlen($uidString) !== 6) {
+                return response()->json(['error' => 'UID must be exactly 6 digits long.'], 400);
+            }
+
+            if (!is_numeric($data['uid'])) {
+                return response()->json(['error' => 'UID must be an integer.'], 400);
+            }
+    
+            $uidString = (string) $data['uid'];
+            if (strlen($uidString) !== 6) {
+                return response()->json(['error' => 'UID must be exactly 6 digits long.'], 400);
+            }
+
+            if (preg_match('/\s/', $data['i_username'])) {
+                return response()->json(['error' => 'Username cannot contain spaces.'], 400);
+            }     
+    
+            if (strlen($data['i_username']) > 54) {
+                return response()->json(['error' => 'Username is too long.'], 400);
+            }
+
         } catch (QueryException $e) {
             // Handle database connection or query exception
             return response()->json(['error' => 'Failed to update instructor.'], 500);
         }
-
+        
+        
         if (isset($data['i_password'])) {
-            // Hash the updated password
-            $data['i_password'] = Hash::make($data['i_password']);
+            if ($data['i_password'] == $instructor->i_password) {
+                unset($data['i_password']); // Remove password from data if it's the same as the old hash
+            } else {
+                if (strlen($data['i_password']) < 6) {
+                    return response()->json(['error' => 'Password must be at least 6 characters long.'], 400);
+                }
+                if (preg_match('/\s/', $data['i_password'])) {
+                    return response()->json(['error' => 'Password cannot contain spaces.'], 400);
+                }
+                $data['i_password'] = Hash::make($data['i_password']);
+            }
         }
-    
         $instructor->update($data);
         return response()->json(['message' => 'Instructor updated successfully']);
 
-        
     }
-    
 }
+    

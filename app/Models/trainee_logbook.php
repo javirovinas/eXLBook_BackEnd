@@ -26,4 +26,8 @@ class trainee_logbook extends Model
     {
         return $this->belongsTo(Trainee::class);
     }
+    public function notes()
+    {
+        return $this->hasMany(Note::class, 'task_id');
+    }
 }

@@ -20,7 +20,7 @@ class TraineeDetailsController extends Controller
      * Display a listing of the resource.
      */
 
-     
+
     public function index()
     {
         $admin = Auth::guard('sanctum-admin')->user();
@@ -28,35 +28,35 @@ class TraineeDetailsController extends Controller
             return $this->error('Unauthorized', 401);
         }
 
-            $trainees = trainee_details::all();
-            return response()->json(['trainees' => $trainees]);
+        $trainees = trainee_details::all();
+        return response()->json(['trainees' => $trainees]);
 
     }
 
     public function login(Request $request)
     {
-        try{
+        try {
             $credentials = $request->only('username', 'password');
 
             $trainee = trainee_details::where('t_username', $credentials['username'])->first();
-    
+
             if ($trainee && Hash::check($credentials['password'], $trainee->t_password)) {
                 // Login successful
                 $token = $trainee->createToken('api_token', [$trainee->id])->plainTextToken;
                 $trainee->api_token = $token; // Assign the token to the `api_token` attribute
                 $trainee->save(); // Save the model with the updated token
-                
+
                 return $this->success([
                     'token' => $token,
                     'trainee_id' => $trainee->trainee_id
                 ]);
             }
 
-            } catch (\Exception $e) {
-                throw $e;
-            }
-            return response()->json(['error' => 'Incorrect username or password'], 401);
+        } catch (\Exception $e) {
+            throw $e;
         }
+        return response()->json(['error' => 'Incorrect username or password'], 401);
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -71,7 +71,7 @@ class TraineeDetailsController extends Controller
      */
     public function store(Storetrainee_detailsRequest $request)
     {
-       
+
     }
 
     /**
@@ -89,7 +89,7 @@ class TraineeDetailsController extends Controller
         if (!$trainee) {
             return response()->json(['message' => 'Trainee not found'], 404);
         }
-    
+
         return response()->json(['trainee' => $trainee]);
     }
 
@@ -103,19 +103,16 @@ class TraineeDetailsController extends Controller
             return $this->error('Unauthorized', 401);
         }
         $trainee = trainee_details::find($trainee_id);
-        if($trainee)
-        {
+        if ($trainee) {
             return response()->json([
-                'status'=> 200,
+                'status' => 200,
                 'trainee' => $trainee,
 
             ], 200);
-        }
-        else
-        {
+        } else {
             return response()->json([
-                'status'=> 404,
-                'message'=> 'Trainee not found',
+                'status' => 404,
+                'message' => 'Trainee not found',
             ], 404);
         }
     }
@@ -151,7 +148,7 @@ class TraineeDetailsController extends Controller
             $existingTraineeUID = trainee_details::where('uid', $data['uid'])
                 ->where('trainee_id', '!=', $trainee->trainee_id)
                 ->first();
-            
+
             $existingTraineeUsername = trainee_details::where('t_username', $data['t_username'])
                 ->where('trainee_id', '!=', $trainee->trainee_id)
                 ->first();
@@ -169,20 +166,50 @@ class TraineeDetailsController extends Controller
             if ($existingTraineeEmail) {
                 return response()->json(['error' => 'The Email is already assigned to another trainee'], 400);
             }
+
+            // Validate the input data
+            if (empty($data['t_username']) || empty($data['t_password'])) {
+                return response()->json(['error' => 'Username and Password required.'], 400);
+            }
+
+            if (!is_numeric($data['uid'])) {
+                return response()->json(['error' => 'UID must be an integer.'], 400);
+            }
+
+            $uidString = (string) $data['uid'];
+            if (strlen($uidString) !== 6) {
+                return response()->json(['error' => 'UID must be exactly 6 digits long.'], 400);
+            }
+
+            if (preg_match('/\s/', $data['t_username'])) {
+                return response()->json(['error' => 'Username cannot contain spaces.'], 400);
+            }
+
+            if (strlen($data['t_username']) > 54) {
+                return response()->json(['error' => 'Username is too long.'], 400);
+            }
+
         } catch (QueryException $e) {
             // Handle database connection or query exception
             return response()->json(['error' => 'Failed to update trainee.'], 500);
         }
 
         if (isset($data['t_password'])) {
-            // Hash the updated password
-            $data['t_password'] = Hash::make($data['t_password']);
+            if ($data['t_password'] == $trainee->t_password) {
+                unset($data['t_password']); // Remove password from data if it's the same as the old hash
+            } else {
+                if (strlen($data['t_password']) < 6) {
+                    return response()->json(['error' => 'Password must be at least 6 characters long.'], 400);
+                }
+                if (preg_match('/\s/', $data['t_password'])) {
+                    return response()->json(['error' => 'Password cannot contain spaces.'], 400);
+                }
+                $data['t_password'] = Hash::make($data['t_password']);
+            }
         }
-    
         $trainee->update($data);
         return response()->json(['message' => 'Trainee updated successfully']);
 
-        
     }
     /**
      * Remove the specified resource from storage.
