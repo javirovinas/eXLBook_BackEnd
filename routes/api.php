@@ -92,9 +92,9 @@ Route::post('/trainee/{trainee_id}/taskentry/{logbook_id}', [TraineeLogbookContr
 Route::put('/trainee/taskentry/{taskId}', [TraineeLogbookController::class, 'updateLogbookEntry']);
 
 //Notes
-Route::post('/notesentry', [NoteController::class, 'notesEntry']);
-Route::put('/editnotes', [NoteController::class, 'editNotes']);
-Route::get('/trainee/{trainee_id}/{task_id}/notes', [NoteController::class, 'showNotes']);
+Route::post('/trainee/notesentry', [NoteController::class, 'traineenotesEntry']);
+Route::put('/trainee/editnotes', [NoteController::class, 'traineeeditNotes']);
+Route::get('/trainee/{trainee_id}/{task_id}/notes', [NoteController::class, 'traineeshowNotes']);
 });
 
 
@@ -112,6 +112,12 @@ Route::get('/instructor/logbooks/{traineeId}/{logbookId?}', [InstructorLogbookAc
 
 //updating tasks after instructor signoff
 Route::put('/instructor/tasks/{work_order_no}', [InstructorLogbookAccessController::class, 'update']);
+
+//notes
+Route::post('/instructor/notesentry', [NoteController::class, 'insnotesEntry']);
+Route::put('/instructor/editnotes', [NoteController::class, 'inseditNotes']);
+Route::get('/instructor/{instructor_id}/{task_id}/notes', [NoteController::class, 'insshowNotes']);
+Route::get('/instructor/{trainee_id}/{task_id}/traineenotes', [NoteController::class, 'fetchTraineeNotes']);
 });
 
 

@@ -50,10 +50,7 @@ class TraineeLogbookController extends Controller
             'INS_SO' => 'nullable',
             'archived' => 'boolean',
         ]);
-        // Convert TEE_SO value to valid datetime format
-        if (!empty($data['TEE_SO'])) {
-            $data['TEE_SO'] = Carbon::createFromFormat('m/d/Y, h:i:s A', $data['TEE_SO'])->format('Y-m-d H:i:s');
-        }
+
         // Get the logged-in trainee
         $trainee = Auth::guard('sanctum-trainee')->user();
 
@@ -71,6 +68,7 @@ class TraineeLogbookController extends Controller
             return response()->json(['message' => 'Logbook not found for the given trainee'], 404);
         }
     }
+
     /**
      * Display the specified resource.
      */
@@ -82,10 +80,10 @@ class TraineeLogbookController extends Controller
             return response()->json(['message' => 'Unauthorized'], 401);
         }
 
-            // Retrieve the logbook associated with the provided logbook_id
-            $logbook = logbook::where('trainee_id', $trainee->trainee_id)
-                ->where('logbook_id', $logbook_id)
-                ->first();
+        // Retrieve the logbook associated with the provided logbook_id
+        $logbook = logbook::where('trainee_id', $trainee->trainee_id)
+            ->where('logbook_id', $logbook_id)
+            ->first();
 
         if ($logbook) {
             // Retrieve the tasks associated with the logbook
@@ -101,18 +99,18 @@ class TraineeLogbookController extends Controller
         }
     }
     public function showTraineeLogbooks(Request $request, $trainee_id)
-{
-    // Ensure the authenticated trainee matches the requested trainee_id
-    $authenticatedTrainee = Auth::guard('sanctum-trainee')->user();
-    if (!$authenticatedTrainee || $authenticatedTrainee->trainee_id != $trainee_id) {
-        return response()->json(['message' => 'Unauthorized'], 401);
+    {
+        // Ensure the authenticated trainee matches the requested trainee_id
+        $authenticatedTrainee = Auth::guard('sanctum-trainee')->user();
+        if (!$authenticatedTrainee || $authenticatedTrainee->trainee_id != $trainee_id) {
+            return response()->json(['message' => 'Unauthorized'], 401);
+        }
+
+        // Fetch all logbooks for the requested trainee_id
+        $logbooks = logbook::where('trainee_id', $trainee_id)->get();
+
+        return response()->json(['logbooks' => $logbooks], 200);
     }
-
-    // Fetch all logbooks for the requested trainee_id
-    $logbooks = logbook::where('trainee_id', $trainee_id)->get();
-
-    return response()->json(['logbooks' => $logbooks], 200);
-}
 
     public function showTraineeLogbook(Request $request, $trainee_id, $logbook_id)
     {
@@ -121,14 +119,14 @@ class TraineeLogbookController extends Controller
         if (!$authenticatedTrainee || $authenticatedTrainee->trainee_id != $trainee_id) {
             return response()->json(['message' => 'Unauthorized'], 401);
         }
-    
+
         // Fetch the specific logbook for the requested trainee_id and logbook_id
         $logbook = logbook::where('trainee_id', $trainee_id)->find($logbook_id);
-    
+
         if (!$logbook) {
             return response()->json(['message' => 'Logbook not found'], 404);
         }
-    
+
         return response()->json(['logbook' => $logbook], 200);
     }
 
@@ -151,9 +149,9 @@ class TraineeLogbookController extends Controller
 
         // Convert TEE_SO value to valid datetime format
         if (!empty($data['TEE_SO'])) {
-            $data['TEE_SO'] = Carbon::createFromFormat('Y-m-d, H:i:s', $data['TEE_SO'])->format('Y-m-d H:i:s');
+            $data['TEE_SO'] = Carbon::createFromFormat('Y-m-d H:i:s', $data['TEE_SO'])->format('Y-m-d H:i:s');
         }
-
+      
         $logbookEntry = trainee_logbook::where('task_id', $taskId)->first();
 
         // Check if the logbook entry belongs to the trainee

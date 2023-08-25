@@ -21,6 +21,10 @@ class Note extends Model
     {
         return $this->belongsTo(trainee_logbook::class, 'task_id');
     }
+    public function instrucotr()
+    {
+        return $this->belongsTo(Instructor_logbook_access::class, 'task_id');
+    }
 }
 
 
